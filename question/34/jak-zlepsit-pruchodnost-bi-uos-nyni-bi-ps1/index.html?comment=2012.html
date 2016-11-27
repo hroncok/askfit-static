@@ -1,0 +1,2539 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Jak zlepšit průchodnost BI-UOS (nyní BI-PS1)? - Ask FIT</title> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <meta http-equiv="X-UA-Compatible" content="IE=EDGE" /> <meta name="description" content="[Edit 31.1.2015] Myslím, že teď je ideální příležitost pro čerstvé náměty: Předmět krátce za námi, snad ještě v živé pam ..." /> <meta name="keywords" content="BI,BI-PS1,BI-UOS,Ask,FIT ČVUT" /> <meta name="referrer" content="always" /> <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> <link rel="shortcut icon" href="../../../upfiles/fit.ico" /> <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS feed from AskFIT"
+            href="https://askfit.cz/feeds/rss/"
+        /> <link rel="stylesheet" href="../../../m/CACHE/css/13f37855be5f.css" type="text/css" /> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=latin-ext' rel='stylesheet' type='text/css'> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=cyrillic-ext' rel='stylesheet' type='text/css'> <link rel="canonical" href="https://askfit.cz/question/34/jak-zlepsit-pruchodnost-bi-uos-nyni-bi-ps1/" /> <link rel="stylesheet" type="text/css" href="../../../m/default/media/js/wmd/wmd.css%3Fv=1.css" /> <script type="text/javascript" src="../../../m/default/media/js/modernizr.custom.js%3Fv=1"></script> <script type="text/javascript">
+    var askbot = {};
+    askbot['data'] = {};
+    askbot['data']['userIsAuthenticated'] = false;
+    askbot['data']['languageCode'] = 'en';
+    
+        askbot['data']['userReputation'] = 0;
+        askbot['data']['userIsReadOnly'] = false;//in principle we allow anon users to start posting
+    
+    askbot['urls'] = {};
+    askbot['settings'] = {};
+    askbot['messages'] = {};
+</script> <script type="text/javascript" src="../../../jsi18n/index.html"></script> <script type="text/javascript">
+        /*<![CDATA[*/
+        //below is pure cross-browser javascript, no jQuery
+        askbot['data']['userIsThreadModerator'] = false;
+        askbot['data']['oldestAnswerId'] = 35;
+        (function(){
+
+            var hasClass = function(node, selector) {
+                var classes = (" " + node.className + " ").split(' ');
+                for (var i = 0; i < classes.length; i++) {
+                    if (classes[i] === selector) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            var findChildrenByClassName = function(node, className) {
+                var nodes = [];
+                var walk = function(node) {
+                    if (hasClass(node, className)) {
+                        nodes.push(node);
+                    }
+                    if (node.childNodes) {
+                        for (var i=0; i < node.childNodes.length; i++) {
+                            walk(node.childNodes[i]);
+                        }
+                    }
+                };
+                walk(node);
+                return nodes;
+            };
+
+            var getTextContent = function(node) {
+                var text = node.innerText || node.textContent;
+                if (text === undefined) {
+                    return '';
+                } else {
+                    return text;
+                }
+            };
+
+            var hasAttribute = function(node, attrName) {
+                if (node.hasAttribute) {
+                    return node.hasAttribute(attrName);
+                } else {
+                    return (!(!(node.getAttribute(attrName))));
+                }
+            };
+
+            var findChildByAttribute = function(node, attrName, attrVal) {
+                var children = node.childNodes;
+                for (var i = 0; i < children.length; i++) {
+                    var child = children[i];
+                    if (child.getAttribute(attrName) === attrVal) {
+                        return child;
+                    }
+                };
+                return null;
+            };
+
+            var postIsComment = function(postId) {
+                if (document.getElementById('comment-' + postId)) {
+                    return true;
+                }
+                return false;
+            };
+
+            var removeNode = function(node) {
+                node.parentNode.removeChild(node);
+            };
+
+            var trim = function(text) {
+                return text.replace(/^\s+|\s+$/g, '');
+            };
+
+            var data = askbot['data'];
+            var isAuthorOfPost = function(post_id) {
+                return (data['user_posts'] && data['user_posts'][post_id]);
+            };
+
+            if (data['userIsAuthenticated']){
+                var votes = {};
+                
+                data['user_votes'] = votes;
+                var posts = {};
+                
+                data['user_posts'] = posts;
+            }
+
+            function render_vote_buttons(post_type, post_id){
+                var upvote_btn = document.getElementById(
+                    post_type + '-img-upvote-' + post_id
+                );
+                var downvote_btn = document.getElementById(
+                    post_type + '-img-downvote-' + post_id
+                );
+                if (data['userIsAuthenticated']){
+                    if (post_id in data['user_votes']){
+                        var vote = data['user_votes'][post_id];
+                        if (vote == -1){
+                            var btn = downvote_btn;
+                        } else if (vote == 1){
+                            var btn = upvote_btn;
+                        } else {
+                            return;
+                        }
+                        if (post_type == 'comment'){
+                            btn.className = btn.className + ' upvoted';
+                        } else {
+                            btn.className = btn.className + ' on';
+                        }
+                    }
+                }
+            }
+
+            function hide_convert_answer_links(post_id){
+                var id1 = 'post-' + post_id + '-convert';//for repost as Q comment
+                var repostAsQuestionComment = document.getElementById(id1);
+                var id2 = 'post-' + post_id + '-repost-as-comment-under-previous-answer';
+                var repostAsPrevAnsComment = document.getElementById(id2);
+                var extraOptsList = repostAsQuestionComment.parentNode;
+                var extraOpts = extraOptsList.parentNode;
+
+                var isAuthenticated = data['userIsAuthenticated'];
+                var isMod = data['userIsAdminOrMod'];
+                if (isAuthenticated && (isMod || isAuthorOfPost(post_id))) {
+                    //still may need to hide because answer may be too long
+                    var answer_id = 'post-id-' + post_id;
+                    var answer_container = document.getElementById(answer_id);
+                    var answerBody = findChildrenByClassName(answer_container, 'post-body')[0];
+                    //todo: this is not reliable
+                    var answerBodyNodes = answerBody.childNodes;
+                    var answerElement = answerBodyNodes[answerBodyNodes.length - 1];
+                    if (trim(getTextContent(answerElement)).length > askbot['data']['maxCommentLength']) {
+                        repostAsQuestionComment.parentNode.removeChild(repostAsQuestionComment);
+                        repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                    } else if (parseInt(post_id) === data['oldestAnswerId']) {
+                        repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                    }
+                } else {
+                    repostAsQuestionComment.parentNode.removeChild(repostAsQuestionComment);
+                    repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                }
+
+                //if the whole control is empty - remove it
+                if (extraOptsList.getElementsByTagName('li').length === 0) {
+                    extraOpts.parentNode.removeChild(extraOpts);
+                }
+            }
+
+            function hidePublishAnswerLink(postId) {
+                if (data['userIsThreadModerator'] === false) {
+                    //hide publish/unpublish answer links
+                    var answerId = 'post-' + postId + '-publish';
+                    var pubBtn = document.getElementById(answerId);
+                    pubBtn.parentNode.removeChild(pubBtn);
+                }
+            }
+
+            function render_post_controls(post_id){
+                if (data['userIsAdminOrMod']){
+                    return;//all remaining functions stay on
+                }
+                if (data['user_posts'] && post_id in data['user_posts']){
+                    //todo: remove edit button from older comments
+                    return;
+                }
+                var deleteBtn = document.getElementById('post-' + post_id + '-delete');
+                var controls = deleteBtn.parentNode;
+                if (//maybe remove "delete" button
+                    (data['userReputation'] < 
+                    200) ||
+                    data['userIsReadOnly']
+                ) {
+                    removeNode(deleteBtn);
+                }
+
+                var canFlagPosts = data['userReputation'] >= 5;
+                var flags = findChildrenByClassName(controls, 'question-flag');
+                if (flags.length > 0 && !canFlagPosts) {
+                    removeNode(flags[0]);
+                }
+                var closeBtn = findChildrenByClassName(controls, 'question-close');
+                if (
+                    closeBtn.length === 1 &&
+                    (
+                        (data['userReputation'] < 200) ||
+                        data['userIsReadOnly']
+                    )
+                ) {
+                    removeNode(closeBtn[0]);
+                }
+                var repLow = (data['userReputation'] < 200);
+                if (//maybe remove "edit" button
+                    repLow || data['userIsReadOnly']//only authors edit comments
+                ){
+                    var edit_btn = document.getElementById(
+                        'post-' + post_id + '-edit'
+                    )
+                    edit_btn.parentNode.removeChild(edit_btn);
+                }
+                if (//maybe remove retag button
+                    (data['userReputation'] <
+                    50) ||
+                    data['userIsReadOnly']
+                ){
+                    var retagBtn = document.getElementById('retag');
+                    if (retagBtn) {
+                        retagBtn.parentNode.removeChild(retagBtn);
+                    }
+                }
+            }
+            function render_add_comment_button(post_id, extra_comment_count){
+                if (extra_comment_count > 0){
+                    var text = "see more comments";
+                } else {
+                    var text = "add a comment";
+                }
+                var add_comment_btn = document.getElementById('add-comment-to-post-' + post_id);
+                add_comment_btn.innerHTML = text;
+            }
+
+            function render_add_answer_button(){
+                var add_answer_btn = document.getElementById('add-answer-btn');
+                if (askbot['data']['userIsAuthenticated']){
+                    if (askbot['data']['userId'] == 59){
+                        add_answer_btn.className += ' answer-own-question';
+                        add_answer_btn.setAttribute(
+                            'value',
+                            'Answer Your Own Question'
+                        )
+                    } else {
+                        add_answer_btn.setAttribute(
+                           'value',
+                            'Post Your Answer'
+                        )
+                    }
+                } else {
+                    add_answer_btn.setAttribute(
+                        'value',
+                        'Login/Signup to Post'
+                    );
+                }
+            }
+
+            function hide_convert_links() {
+                var isAuthenticated = data['userIsAuthenticated'];
+                var isMod = data['userIsAdminOrMod'];
+                if (isAuthenticated && isMod) {
+                    return;
+                }
+                var convertForms = findChildrenByClassName(document, 'convert-comment');
+                for (var i = 0; i < convertForms.length; i++) {
+                    //get comment id
+                    var form = convertForms[i];
+                    var idInput = findChildByAttribute(form, 'name', 'comment_id');
+                    var commentId = idInput.getAttribute('value');
+                    if (! isAuthorOfPost(commentId) ) {
+                        form.setAttribute('style', 'display:none;');
+                    }
+                }
+            }
+            
+            askbot['functions'] = askbot['functions'] || {};
+            askbot['functions']['renderPostVoteButtons'] = render_vote_buttons;
+            askbot['functions']['renderPostControls'] = render_post_controls;
+            askbot['functions']['renderAddCommentButton'] = render_add_comment_button;
+            askbot['functions']['renderAddAnswerButton'] = render_add_answer_button;
+            askbot['functions']['hideConvertLinks'] = hide_convert_links;
+            askbot['functions']['hideConvertAnswerLinks'] = hide_convert_answer_links;
+            askbot['functions']['hidePublishAnswerLink'] = hidePublishAnswerLink;
+        })();
+        /*]]>*/
+    </script> </head> <body class="two-col question-page anon lang-en"> <div class="notify" style="display:none"> <a id="closeNotify" onclick="notify.close(true)"></a> </div> <!-- template header.html --> <div 
+    id="header"
+    class="without-logo"
+> <div class="content-wrapper"> <div id="userToolsNav"> <a href="../../../account/signin/index.html%3Fnext=%252Fquestion%252F34%252Fjak-zlepsit-pruchodnost-bi-uos-nyni-bi-ps1%252F.html">Hi there! Please sign in</a> <a class="help" href="../../../help/index.html" title="help">help</a> </div> <div id="metaNav"> <a 
+  id="navTags"
+  href="../../../tags/index.html"
+  
+>tags</a> <a 
+  id="navUsers"
+  href="../../../users/index.html"
+  
+>users</a> <a 
+  id="navBadges"
+  href="../../../badges/index.html"
+  
+>badges</a> </div> <div class="clean"></div> </div> </div> <!-- end template header.html --> <!-- template secondary_header.html --> <div id="secondaryHeader"> <div class="content-wrapper"> <form
+            
+                action="../../2296/bi-zwu-semestralni-prace-media-queries.1.html" id="searchForm"
+            
+            class="scopes-True-True-False"
+            method="get"> <div> <a id="homeButton" href="../../2296/bi-zwu-semestralni-prace-media-queries.1.html"></a> <div id="scopeNav"> <a class="scope-selector "
+            href="../../../questions/scope:all/sort:activity-desc/page:1/index.html"
+            title="see all questions">ALL</a> <a class="scope-selector "
+            href="../../../questions/scope:unanswered/sort:answers-asc/page:1/index.html"
+            title="see unanswered questions">UNANSWERED</a> </div> <a
+        id="askButton"
+        class="button"
+        href="../../../questions/ask/index.html"
+        >Ask Your Question</a> <div class="clearfix"></div> </div> <div 
+    id="searchBar"
+    class=""
+><input 
+        class="searchInput" 
+        type="text" 
+        autocomplete="off"
+        value="" 
+        name="query" 
+        id="keywords"
+    /><input type="submit" value="" name="search" class="searchBtn" /><input type="button"
+        value="X"
+        name="reset_query"
+        class="cancelSearchBtn"
+        
+            style="display: none;"
+        
+    /></div> </form> </div> </div> <div class="content-wrapper"> <div id="ContentLeft"> <div class="post question" data-post-id="34"> <div class="vote-buttons"> <div id="question-img-upvote-34"
+    class="question-img-upvote post-vote upvote"> </div> <div 
+    id="question-vote-number-34"
+    class="vote-number"
+    title="current number of votes"
+>5</div> <div
+    id="question-img-downvote-34"
+    class="question-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('question', '34');
+</script> <a class="twitter-share icon"
+        title="Share this question on twitter"
+    ></a> <a class="facebook-share icon"
+        title="Share this question on facebook"
+    ></a> <g:plusone size="small" count="false"></g:plusone> </div> <div id="post-id-34" class="post-content"> <h1><a href="index.html%3Fanswer=95.html">Jak zlepšit průchodnost BI-UOS (nyní BI-PS1)?</a></h1> <ul id="question-tags"
+    class="tags post-tags tags"
+> <li class="tag-left"><a
+            class="tag tag-right post-tag"
+            
+            href="../../../questions/scope:all/sort:activity-desc/tags:BI/page:1/index.html"
+            title="see questions tagged 'BI'"
+            
+            rel="tag"
+            data-tag-name="BI"
+        >BI</a></li> <li class="tag-left"><a
+            class="tag tag-right post-tag"
+            
+            href="../../../questions/scope:all/sort:activity-desc/tags:BI-PS1/page:1/index.html"
+            title="see questions tagged 'BI-PS1'"
+            
+            rel="tag"
+            data-tag-name="BI-PS1"
+        >BI-PS1</a></li> <li class="tag-left"><a
+            class="tag tag-right post-tag"
+            
+            href="../../../questions/scope:all/sort:activity-desc/tags:BI-UOS/page:1/index.html"
+            title="see questions tagged 'BI-UOS'"
+            
+            rel="tag"
+            data-tag-name="BI-UOS"
+        >BI-UOS</a></li> </ul> <div class="clearfix"></div> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                asked
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 15:27:26 +0100">
+        2014-09-13 15:27:26 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/59/josef-kokes/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/eb947d5f190842171f53ed5b3411af4c?s=32&amp;d=identicon&amp;r=PG"
+    title="Josef Kokeš" 
+    alt="Josef Kokeš gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/59/josef-kokes/index.html">Josef Kokeš</a> <br/> <span class="reputation-score">2956</span> <span class="badges" title="Josef Kokeš has 20 gold badges, 35 silver badges and 73 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">20</span> <span class='badge2'>&#9679;</span><span class="badgecount">35</span> <span class='badge3'>&#9679;</span><span class="badgecount">73</span> </span> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../questions/34/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2015-01-31 08:42:49 +0100">
+        2015-01-31 08:42:49 +0100
+    </abbr></strong></a> </p> </div> </div> <p>[Edit 31.1.2015] Myslím, že teď je ideální příležitost pro čerstvé náměty: Předmět krátce za námi, snad ještě v živé paměti, před námi nový běh, ve kterém se můžeme poučit. Anketa hodnocení výuky je důležitá, ale její výsledky se dozvíme nejdřív v půlce semestru, takže pozdě. Pokud máte nějaké náměty k otázce, pište prosím sem. Díky.</p> <hr> <p>Docela mě trápí nízká průchodnost předmětu BI-UOS. Zajímaly by mě náměty na to, jak cvičení upravit nebo co na nich říct jinak, aby se průchodnost zlepšila. Podmínkou ale je zachování stávajícího systému hodnocení, já ho ovlivnit nemohu vůbec a mám pochybnosti, jestli - vzhledem k tomu, jak je předmět akreditován - to vůbec někdo může ovlivnit. Ale pokud by problém byl jen v tom, že dostatečně nezdůrazňujeme XYZ, tak to by se napravit dalo, když o tom XYZ budeme vědět.</p> </div> <div id="question-controls" class="post-controls"> <a id="post-34-edit" class="question-edit" href="../../../questions/34/edit/index.html">edit</a> <script type="text/javascript">
+    var retagUrl = "/questions/34/retag/";
+</script> <a id="retag" class="question-retag" href="../../../questions/34/retag/index.html">retag</a> <span
+        id="question-offensive-flag-34" class="offensive-flag"
+        title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+    > <a class="question-flag">flag offensive</a> </span> <a class="question-close" href="../../../questions/34/close/index.html">close</a> <a
+    id="post-34-delete"
+    class="question-delete"
+>delete</a> <script type="text/javascript">
+    askbot['functions']['renderPostControls']('34');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-question-34"><div class="content"><div class="comment" id="comment-64"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-64-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pozn.: Mým cílem není zvyšování průchodnosti jako takové, ale dozvědět se, jestli jsme vám třeba neměli důrazněji (nebo vůbec nějak) sdělit nějakou informaci, která by vám v průchodu pomohla. Jinými slovy, nerad bych, aby nízká průchodnost byla způsobená naší nedostatečnou komunikací. Pokud je příčinou jen neznalost studentů, s tím se musím smířit.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:55:31 +0100">
+        2014-09-13 17:55:31 +0100
+    </abbr>)</span><a 
+                                id="post-64-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="64" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('64');
+                </script><div class="comment" id="comment-115"><div class="comment-votes"><div 
+                                id="comment-img-upvote-115" 
+                                class="upvote"
+                            >3</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '115');
+                            </script></div><div class="comment-content"><div 
+                            id="post-115-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>To co chci napsat není úplně odpověď na původní otázku, a navíc je to proti Josefově komentáři.
+
+V BI-UOS cítím zejména problém se zápočtovými testy a nemožností opravy. Kdyby BI-ZMA nemělo opravný zápočtový test (loni až ve zkouškovém) a na zkoušku by studenti neměl tři pokusy, tak průchodnost BI-ZMA bude úplně katastrofální. Řada z nich ten semestr, jak se říká, prokoučuje. Nakonec to dají, ale musí zabrat ve zkouškovém. To u BI-UOS nejde...</p><a 
+                                class="author"
+                                href="../../../users/15/tomas-kalvoda/index.html"
+                            >Tomáš Kalvoda</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 14:16:09 +0100">
+        2014-09-14 14:16:09 +0100
+    </abbr>)</span><a 
+                                id="post-115-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="115" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('115');
+                </script></div><div class="controls"><a id="add-comment-to-post-34" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-question-34'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '34',
+                                                0
+                                            );
+    </script></div></div> </div> </div> <div class="clean"></div> <div class="tabBar tabBar-answer"> <h2 id="questionCount">
+        
+            12 Answers
+        
+    </h2> <div class="tabsA"> <span class="label">
+                    Sort by »
+                    </span> <a id="oldest" href="index.html%3Fsort=oldest.html#sort-top"
+           title="oldest answers will be shown first"
+                ><span>oldest</span></a> <a id="latest" href="index.html%3Fsort=latest.html#sort-top"
+           title="newest answers will be shown first"
+                ><span>newest</span></a> <a id="votes" href="index.html%3Fsort=votes.html#sort-top"
+           title="most voted answers will be shown first"
+                ><span>most voted</span></a> </div> </div> <div class="clean"></div> <div class="paginator" style="float:left"><span class="curr" title="current page">1</span><span class="page"><a href="index.html%3Fsort=votes&amp;amp%3Bpage=2.html#sort-top" title="page 2">2</a></span><span class="next"><a href="index.html%3Fsort=votes&amp;amp%3Bpage=2.html#sort-top" title="next page">next page &raquo;</a></span></div> <div class="clean"></div> <a name="216"></a> <div
+    id="post-id-216"
+    data-post-id="216"
+    class="post answer accepted-answer  answered-by-owner "
+> <div class="vote-buttons"> <div id="answer-img-upvote-216"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-216"
+    class="vote-number"
+    title="current number of votes"
+>10</div> <div
+    id="answer-img-downvote-216"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '216');
+</script> <div
+    id="answer-img-accept-216"
+    class="answer-img-accept"
+        
+    title="this answer has been selected as correct"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-18 12:56:29 +0100">
+        2014-09-18 12:56:29 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/59/josef-kokes/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/eb947d5f190842171f53ed5b3411af4c?s=32&amp;d=identicon&amp;r=PG"
+    title="Josef Kokeš" 
+    alt="Josef Kokeš gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/59/josef-kokes/index.html">Josef Kokeš</a> <br/> <span class="reputation-score">2956</span> <span class="badges" title="Josef Kokeš has 20 gold badges, 35 silver badges and 73 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">20</span> <span class='badge2'>&#9679;</span><span class="badgecount">35</span> <span class='badge3'>&#9679;</span><span class="badgecount">73</span> </span> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../answers/216/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2015-01-31 10:36:46 +0100">
+        2015-01-31 10:36:46 +0100
+    </abbr></strong></a> </p> </div> </div> <p>Díky všem za náměty. Zkompiloval jsem si z nich seznam možných vylepšení, který by třeba mohl pomoci novým studentům. Obecně:</p> <ul> <li>Možnost opravy testů nebude, ale v průběhu semestru mají zájemci možnost napsat si počítačový test "nanečisto" na Progtestu (thx. @Jan Žďárek; <a href="https://edux.fit.cvut.cz/courses/BI-PS1/teacher/zdarekj/pshdemo/start">Popis zde</a>), aby věděli, co se od nich tak zhruba bude chtít, a nešli do toho úplně naslepo. Zároveň se snažím a budu snažit ke konci předmětu nabízet "hybridní" demonstrační testy, které se píšou na počítači, ale vyhodnocuji je já. Výstupem je komentář, co by v "opravdovém" testu vadilo.</li> <li>Papírové testy v LS 2014/15 nebudou, všechny testy budou počítačové ( <a href="https://edux.fit.cvut.cz/courses/BI-PS1/classification/start">https://edux.fit.cvut.cz/courses/BI-PS1/classification/start</a> ). Bojím se toho.</li> <li>Testy na papír zatím zůstávají, čtverečky byly experimentálně nahrazeny obyčejnými čárami s naznačenými chlívky. Snad to pomohlo, uvítáme komentář v Anketě. Každopádně není třeba se jimi nechat deprimovat, vyznačení prostoru je primárně pomoc pro píšícího, protože ho nutí psát aspoň trochu čitelně (co není k přečtení, jako kdyby nebylo). Kdo si věří, že dokáže psát i bez chlívků, může ( <a href="https://edux.fit.cvut.cz/courses/BI-PS1/classification/malytest/start">https://edux.fit.cvut.cz/courses/BI-PS1/classification/malytest/start</a> ).</li> <li>Cvičebnice s řešeními nebude, je určena pro samostatné řešení. Z toho důvodu ani cvičící neposkytují "oficiální správné řešení". Ale jsem si jistý, že když svému cvičícímu přinesete svoje vypracované řešení, tak vás upozorní na jeho slabá místa. Na EDUXu je sekce s řešenými příklady, které mohou posloužit jako vodítko ( <a href="https://edux.fit.cvut.cz/courses/BI-PS1/tutorials/solved/start">https://edux.fit.cvut.cz/courses/BI-PS1/tutorials/solved/start</a> ). E-learning ( <a href="https://e-learning.fit.cvut.cz/courses/BI-UOS/e-learning/about">https://e-learning.fit.cvut.cz/courses/BI-UOS/e-learning/about</a> ) obsahuje jednoduché testovací úlohy, kde si každý může vyzkoušet svoje řešení a dostat "progtestovou" odpověď. Kromě toho je možné řešení diskutovat na cvičeních, od toho ta cvičení máme. Případně se totéž dá řešit na konzultačních hodinách nebo mailem. Loni toho nikdo nevyužil, nevím jestli zrovna proto, že jsem to explicitně neřekl, ale letos to pro jistotu neponechám náhodě a explicitně vysvětlím, že tato možnost existuje.</li> <li>Zrovna tak jsem si poznamenal další "komunikační" problémy, takže určitě několikrát upozorním na nutnost dodržovat case-sensitivitu, že v žádném případě není dobrý nápad učit se manuál a/nebo minulé testy nazpaměť, že bych měl zkusit trochu krotit pokročilejší studenty, aby příliš nedemotivovali začátečníky atd.</li> <li>Předinstalovaná distribuce ke stažení je připravena na serverech Fray v adresáři <strong>/home/courses/BIPS1/public/vbox/PS1vC</strong>. Jde o tzv. applianci pro Virtual Box, mělo by stačit to naimportovat.</li> <li>Víc příkladů k dispozici je, akorát je skoro nikdo ze studentů neřeší.</li> <li>Reálné příklady používání grep/sed jsou na Frayi v adresáři <code>/home/courses/BIPS1/public/07</code>: Skript <code>regexp.demo</code> ukazuje, jak stáhnout HTML stránku a vybrat z ní odkazy na obrázky; s drobnými úpravami by šlo kód použít pro sbírání mailových adres apod. <code>regexp.demo2</code> ukazuje složitější příklad, kdy napřed z jedné pevně dané stránky získáme v čase se měnící adresu stránky s daty, a následně z části stránky vyprodukujeme tabulku obsahující data, která nás zajímají (v tomto případě jde o cenu investičního fondu, ale obdobně by šlo získávat jakákoliv jiná data, např. údaje o teplotě v nějakém místě, kurzu měn, počtu denních návštěv apod.). Pokud bude zájem, rád bych v letním semestru na jednotlivých cvičeních preferoval řešení "příkladů ze života" před projížděním standardních cvičení z EDUXu; ale nevím nevím, mám občas pocit, že větši část studentů stojí spíš o procvičení oficiálních materiálů než probírání souvisejících věcí, které ale nebudou v testu.</li> <li>Stručné dotazy lze pokládat i na Twitteru přes tag <strong>#FITPS1</strong>, pokud se student z nějakého důvodu nechce ozvat nahlas. Zatím si moc nedovedu představit, jak to bude fungovat, ale představa je taková, že to budeme ve volných chvílích na cvičení sledovat a na místě řešit. Jsem zvědav ve středu na první reálný test. Thx. to @Petr Hodač + @Lukáš Bařinka.</li> </ul> <p>Uvidíme, jak to dopadne.</p> </div> <div class="answer-controls post-controls"> <span id='post-216-edit' class="action-link"> <a class="question-edit" href="../../../answers/216/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-216"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-216-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-216-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="216"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=216.html#post-id-216"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-216-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="216"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-216-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="216"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('216');
+    askbot['functions']['hidePublishAnswerLink']('216');
+    askbot['functions']['renderPostControls']('216');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-216"><div class="content"><div class="comment" id="comment-243"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-243-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Hodně štěstí.</p><a 
+                                class="author"
+                                href="../../../users/1/miro-hroncok/index.html"
+                            >Miro Hrončok</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-20 20:03:51 +0100">
+        2014-09-20 20:03:51 +0100
+    </abbr>)</span><a 
+                                id="post-243-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="243" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('243');
+                </script><div class="comment" id="comment-631"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-631-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Doplněná data jsou označena [2014-10-29]</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-10-29 12:47:35 +0100">
+        2014-10-29 12:47:35 +0100
+    </abbr>)</span><a 
+                                id="post-631-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="631" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('631');
+                </script><div class="comment" id="comment-717"><div class="comment-votes"><div 
+                                id="comment-img-upvote-717" 
+                                class="upvote"
+                            >2</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '717');
+                            </script></div><div class="comment-content"><div 
+                            id="post-717-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Doplněno real-world použití grep/sed (označeno [2014-11-05]).
+V pondělí 10.11. bude v 16:15 v místnosti T9:345 hromadná konzultace před testem.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-11-05 20:53:46 +0100">
+        2014-11-05 20:53:46 +0100
+    </abbr>)</span><a 
+                                id="post-717-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="717" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('717');
+                </script><div class="comment" id="comment-1354"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-1354-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Doplněna informace o demo počítačovém testu a povídání k němu (platí pro ZS 2014/15).</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-06 08:13:30 +0100">
+        2014-12-06 08:13:30 +0100
+    </abbr>)</span><a 
+                                id="post-1354-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1354" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1354');
+                </script></div><div class="controls"><a id="add-comment-to-post-216" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-216'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '216',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="62"></a> <div
+    id="post-id-62"
+    data-post-id="62"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-62"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-62"
+    class="vote-number"
+    title="current number of votes"
+>5</div> <div
+    id="answer-img-downvote-62"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '62');
+</script> <div
+    id="answer-img-accept-62"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 17:53:49 +0100">
+        2014-09-13 17:53:49 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1/miro-hroncok/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/9f104fbd3c9fc8f448b2086813a82978?s=32&amp;d=identicon&amp;r=PG"
+    title="Miro Hrončok" 
+    alt="Miro Hrončok gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1/miro-hroncok/index.html">Miro Hrončok</a> <img class="flag" 
+            src="../../../m/default/media/images/flags/cz.gif%3Fv=1"
+            alt="flag of Czech Republic"
+            title="Miro Hrončok is from Czech Republic"
+        /> <br/> <span class="reputation-score">1310</span> <span class="badges" title="Miro Hrončok has 17 gold badges, 30 silver badges and 43 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">17</span> <span class='badge2'>&#9679;</span><span class="badgecount">30</span> <span class='badge3'>&#9679;</span><span class="badgecount">43</span> </span> <a 
+            href="http://hroncok.cz/"
+            title="Miro Hrončok's website is http://hroncok.cz/"
+            
+        >
+        http://hroncok.cz/
+        </a> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../answers/62/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2014-09-17 13:15:47 +0100">
+        2014-09-17 13:15:47 +0100
+    </abbr></strong></a> </p> </div> </div> <p>BI-UOS jsem měl před 4 lety a od té doby jsem viděl asi jen 2 cvičení a slyšel drby, přesto vidím následující zásadní nedostatky předmětu:</p> <p><strong>Předmět neví, co chce naučit</strong>, o tom svědčí i přejmenování na programování v Shellu:</p> <ul> <li>jestli to je skriptování (ať už jednořádkové, jak to bylo dřív) a kouzla s uvozovkama a dolarama a zavináčema, tak selhává příliš jemným úvodem</li> <li>jestli to je základ fungování Unixu (práva, /etc/group apod.) pak taktéž selhává, protože nemá šanci toto téma pojmout</li> <li>přidáním příliš komplikovaného výkladu sedu a awk vzniká hrozný kočkopes, kde schází motivace (co budu umět, k čemu to je)</li> <li>poslední přednáška na téma Windows je už opravdu výsměch studentům do obličeje</li> </ul> <p><strong>Cvičení jsou nezajímavá</strong> a v příliš mnoha lidech:</p> <ul> <li>48 studentů na jednu místnost je masakr, speciálně u předmětu, který nikoho nebaví, bylo by lepší vyučovat po 24 s jedním pedagogem</li> <li>na cvičeních není potřeba nic dělat, studenti často sedí a hrají WOWko nebo čumí na Facebook - motivujte je konkrétními úlohami, které mají (ne mohou) vyřešit - pokud to nevyřeší, nestačí, když to vyřeší jeden, ale je třeba látku zopakovat, protože ji zjevně nechápou</li> </ul> <p><strong>Hodnocení je příliš drsné</strong>:</p> <ul> <li>proč na předmětech jako je BI-PA2, BI-OSY a BI-LIN (které jsou látkou IMHO mnohem těžší než BI-UOS) není jen jeden závěrečný test, který když podělám, tak mám smůlu? Protože je to střelba do studentů. Říkáme jim tím: "Musíte to umět na poprvé, vždy." Hloupost. A to že je BI-UOS klasifikovaný zápočet nebrání v možnosti alespoň jednou si závěrečný test nahradit, případně rozdat víc bodů v průběhu semestru za úlohách na cvičení, nebo něco ala Progtest.</li> </ul> <p><strong>Chybějící cvičebnice</strong> via <a href="../../../users/2/shejby/index.html">@shejby</a> (nejlépe interaktvní) taky hraje roli.</p> </div> <div class="answer-controls post-controls"> <span id='post-62-edit' class="action-link"> <a class="question-edit" href="../../../answers/62/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-62"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-62-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-62-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="62"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=62.html#post-id-62"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-62-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="62"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-62-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="62"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('62');
+    askbot['functions']['hidePublishAnswerLink']('62');
+    askbot['functions']['renderPostControls']('62');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-62"><div class="content"><div class="comment" id="comment-69"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-69-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Jak já jsem předmět pochopil, jeho cílem je dát studentům nějakou praxi s prací v příkazové řádce.</p><hr>SED je snad zbytečný, ale AWK se podle mě dost hodí. Možná by pomohlo vyhodit SED a navýšit AWK?<hr>Jestli se dá s počtem studentů na cvičeních něco dělat, nevím. Předpokládám, že asi ne, jinak už by se to udělalo. Zkusím se zeptat.<hr>Hraní WOW a koukání na Facebook není problém, všichni studenti jsou dospělí a svéprávní, je na jejich rozhodnutí, jak využijí svůj čas.<hr>Že je hodnocení drsné, souhlasím. Osobně bych buď předmět nastavil jako klasickou zkoušku, nebo bych zmírnil hodnocení v počítačovém testu na 100-50-0. Papírové testy jsou ale hodnoceny velmi mírně a hlavně konzistentně (teď, nevím jak před čtyřmi lety).<hr>Cvičebnice je vyřešena, viz výše.<p></p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 18:04:33 +0100">
+        2014-09-13 18:04:33 +0100
+    </abbr>)</span><a 
+                                id="post-69-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="69" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('69');
+                </script><div class="comment" id="comment-86"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-86-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Sed rozhodně neni zbytečný, akorát, že tak jak se probírá se jeví neužitečně (neni na něj moc času, jde se hned na awk) a v testech jsou spíš pořád příklady na awk, cut, tr atd.. Sed je výbornej na práci se po řádkách, naproti tomu awk je spíš na sloupcový úpravy. Když jsem potřeboval řádkový úpravy a googlil jsem, tak jsem našel takový fígle, který se vůbec nevyučujou a jde to s nima raz dva.</p><a 
+                                class="author"
+                                href="../../../users/76/relickus/index.html"
+                            >relickus</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 21:15:19 +0100">
+        2014-09-13 21:15:19 +0100
+    </abbr>)</span><a 
+                                id="post-86-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="86" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('86');
+                </script><div class="comment" id="comment-114"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-114-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>U předmětu mi hlavně přišlo, že ze začátku byl pomalý nájezd a na závěr awk a sed už nemělo tolik prostoru a času k procvičení.</p><a 
+                                class="author"
+                                href="../../../users/103/alkotronikk/index.html"
+                            >Alkotronikk</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 14:14:31 +0100">
+        2014-09-14 14:14:31 +0100
+    </abbr>)</span><a 
+                                id="post-114-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="114" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('114');
+                </script><div class="comment" id="comment-177"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-177-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>sed neni zbytecny je stejne uzitecny jako awk... mnohdy uzitecnejsi :) zalezi ovsem na problemu...</p><a 
+                                class="author"
+                                href="../../../users/10/hody/index.html"
+                            >hody</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-17 12:50:30 +0100">
+        2014-09-17 12:50:30 +0100
+    </abbr>)</span><a 
+                                id="post-177-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="177" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('177');
+                </script><div class="comment" id="comment-181"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-181-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Nemyslím, že je SED zbytečný obecně, ale že s ohledem na to, co cvičíme a co po studentech požadujeme, by mohlo být efektivnější oříznout SED a ušetřený čas věnovat AWK.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-17 13:07:09 +0100">
+        2014-09-17 13:07:09 +0100
+    </abbr>)</span><a 
+                                id="post-181-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="181" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('181');
+                </script></div><div class="controls"><a id="add-comment-to-post-62" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-62'] = {
+            truncated: true
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '62',
+                                                1
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="119"></a> <div
+    id="post-id-119"
+    data-post-id="119"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-119"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-119"
+    class="vote-number"
+    title="current number of votes"
+>2</div> <div
+    id="answer-img-downvote-119"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '119');
+</script> <div
+    id="answer-img-accept-119"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-14 16:41:03 +0100">
+        2014-09-14 16:41:03 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/106/kvido/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/0f60fbaa9c9c9463d8b70f06ccdd3ae8?s=32&amp;d=identicon&amp;r=PG"
+    title="Kvido" 
+    alt="Kvido gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/106/kvido/index.html">Kvido</a> <br/> <span class="reputation-score">21</span> <span class="badges" title="Kvido has one silver badge and 2 bronze badges"> <span class='badge2'>&#9679;</span><span class="badgecount">1</span> <span class='badge3'>&#9679;</span><span class="badgecount">2</span> </span> </div> </div> </div> </div> <p>s linuxama jsem se seznamil taky az v UOSech. Nerikam, ze jsou v zivote k nicemu, uz se mi nektere zakladni veci hodily jak v jinych predmetech, tak i v praci. To ktera temata jsou pak dulezitejsi je samozrejme otazka osobniho pohledu, jestli ucit awk nebo sed atd (= zkratka pro "a tak dale" :-) ).
+Ale co mi nejvice vadilo pri studiu (absolvovano dva roky zpet):</p> <p>1) V prvni rade asi <strong>pristup</strong> nekterych <strong>vyucujicich</strong>. Zatimco u programovacich jazyku se ucitele vzdycky snazi vypichnout to, co je pro studenta prinosem kdyz se dany jazyk nauci, a v cem je treba ten jazyk lepsi nez ostatni atd atd. (viz jak si Ceckari delaji legraci z javistu a naopak), tak v UOSech jsem citil vylozene nepratelsky pristup, hlavne od linuxovych fanatiku (at uz z rad ucitelu nebo studentu). Odnasel jsem si kazdou hodinu pocit ze mi tohle nikdy k nicemu nebude, a ze si na nas jen honi par "zasvecenych radoby nadlidi" ego.
+Jine predmety (matiky, pa2) jsou na vedomosti a schopnosti radove tezsi, ale setkal jsem se s mnohem lepsim pristupem i hodnocenim.</p> <p>2) <strong>Studijni materialy</strong> - cviceni formou kvizovych otazek mi prisly dost k nicemu. Kdyz jsem si chtel doma neco procvicit, tak na "vytvorte adresarovou strukturu" nebo "nastavte prava" je to super. Jenze u naproste vetsiny nebyla uvedena spravna odpoved, takze jsem si udelal funkcni reseni, ale nenapadlo me ze v nejakem extremnim pripade by to nemuselo fungovat (uzivatel by se jmenoval apostrof a podobne), coz nemam sanci si sam zkontrolovat a u testu pak proletim s 3 bodama z 15.</p> <p>3) <strong>Psani testu na papir</strong> - Chapu, ze nekomu vyhovuje, ale kdyz programuju neco slozitejsiho, slozeneho z vice kroku, tak si prece naprogramuju dilci casti, ozkousim jestli jdou a pak teprve pokracuju. Neverim tomu ze by nekdo prisel k testu uplne dutej a spolehal na to ze to zkusi metodou pokus/omyl, na to vazne neni cas. Kdyz mam napriklad najit soubor, zmenit mu prava, vybrat z nej prvnich 20 radek... Prece je logicke ze bych ukoly delal postupne a vzdycky si zkusil jestli to dela to co chci, abych neskoncil s tim ze jsem smazal uplne jiny soubor uplne v jine slozce :-)</p> <p>4) <strong>Nemoznost nahlednout do testu</strong> - pry uz je to ted lepsi, ale za nas se to podarilo jen nekolika stastlivcum kdyz jejich cvicici dokazal nekde ziskat jejich testy. Ja mel napriklad vzdycky pocit ze je ten test jednoduchy a ze to mam dobre a pak jsem dostal 3 body z 12 a podobne... vubec jsem netusil proc a co jsem mel spatne - co bych se mel doucit. A vlastne ani jak to melo byt spravne, nikde nebyly spravne vysledky, takze fakt k nicemu. Nakonec se mi podarilo domluvit se s panem Zdarkem, ze si mam prijit na jeho cviko a ukaze mi ten test, k memu prekvapeni ale jen jeden protoze na vic nebyl cas :-)</p> <p>5) <strong>Hodnoceni</strong> - V testu byl treba ukazkovy soubor se zaznamem peti procesu uzivatele Adam a Bob, ze ktereho mam vybrat procesy uzivatele Adam. Nikde nebylo napsano ze bych mel resit to, pokud se nejaky proces jmenuje Adam (v tom prikladu se nejmenoval), pokud tam takovy uzivatel treba vubec nebude (v prikladu byl) a tak podobne. Kdyz na to mame tak malo casu a nechce se to po nas, tak proc se to pak hodnoti jako chyba a jde 90% dolu? (respektive se to ocividne chtelo, jen se nikdo neobtezoval to rict). Chapu ze pro univerzalni pouziti v provozu je pak potreba delat robustni reseni ktere se hned nesesype, ale tohle mi prijde nefer. I reseni kde vyberu 1., 3., a 5., radek by se podle me melo <strong>pocitat jako spravne pokud udela to co se v zadani chce</strong> libovolnym postupem, ktery je v souladu se zadanim.</p> <p>6) <strong>Informovanost</strong> jak studentu tak cvicich. Pred prvnim testem jsem absolutne nevedel co me ceka a jak se na to pripravit, jestli budou teoreticke otazky nebo prikazy, jakym zpusobem probiha hodnoceni a na co si davat pozor (nebo co je dulezite a cemu mame dat prednost). O tom ze muzeme nahradit parametr poznamkou co dela nam rekli az kdyz byly vsechny testy napsane :-)
+Navic se casto na cvikach stavalo (hlavne u slozitejsi latky ke konci), ze ani cvicici nevedeli jak dany priklad resit nebo jaka je spravna odpoved na kvizovou otazku. A my to pak meli nakrasne v testu, s tim ze sme taky nevedeli :-)
+Hodilo by se alespon ucitelum dat pristup k nejakemu <strong>vzorovemu reseni</strong> v pripade ze nebudou vedet aby se nezabila cela hodina tim ze neco zkousi a pak to stejne nefunguje nebo zabijou cele cviko jednou ulohou :-)</p> <p>7) <strong>Rozumne priklady</strong>, aby i studenti, kteri v tom nevidi absolutne zadny uzitek videli ze to neni jen umele vytvorena nesmyslna zabava zakomplexovanych geeku ktery nikdo nema rad, ale ze se to muze k necemu i v zivote hodit :-) To ze je neskutecna prca psat spoustu specialnich znaku do prikazovky je sice pravda, ale kdyby se to ukazovalo na nejakych prikladech co maji smysl, bylo by to mnohem lepsi. Asi stokrat jsem na cvikach parsoval ten soubor se slovni zasobou (words) a nikdy nic zajimaveho, kde bych videl k cemu se ty nastroje daji ve skutecnosti pouzivat.</p> <p>8) <strong>Apostrofy a jine carecky</strong>. To pro me bylo opravdu nepochopitelne zezacatku, nekolik ruznych carek ktere vypadaji na pohled stejne a kazda dela uplne neco jineho? wtf? jak je mam od sebe poznat? jak mam vedet kdy kterou kam pouzit? co to tam ten cvicici zrovna pouzil ? co to je za divnou carku? aha, jen jinej font. Kde sakra jsou ty carky na ty anglicky klavesnici??? A tak podobne :-D pro nekoho kdo tomu rozumi je to desna sranda, ale vim ze tenkrat to bylo vazne peklo. vzhledem k tomu ze je to potreba cely zbytek semestru bych tomu venoval vic casu kvuli lidem co vidi linux poprve, protoze tohle mi prislo fakt silene a nelogicke :-)</p> <p>.......................................................</p> <p>Dodavam, ze jsem na stredni linux videl jen jednou u kamose na ntb :-)
+Jinak sam dobre vim, ze jakmile neco pochopim, tak je pak dost problem si vlastne vzpomenout "jak jsem to sakra mohl nechapat, vzdyt je to jednoduchy". Proto ucitelum prijde obcas ze studenti to flakaji nebo ze jsou blby nebo ze tomu venujou malo casu, ale nemusi to tak vzdy byt. I kdyz pro ucitele je nejjednodussi si rict ze je to chyba studentu :-D jsem rad, ze Vy takovy nejste a snazite se porozumet tomu kde je chyba. Snad vas zdejsi prispevky v necem inspiruji a napadne vas kde a co posunout k lepsimu prubehu predmetu.</p> </div> <div class="answer-controls post-controls"> <span id='post-119-edit' class="action-link"> <a class="question-edit" href="../../../answers/119/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-119"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-119-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-119-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="119"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=119.html#post-id-119"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-119-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="119"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-119-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="119"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('119');
+    askbot['functions']['hidePublishAnswerLink']('119');
+    askbot['functions']['renderPostControls']('119');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-119"><div class="content"><div class="comment" id="comment-120"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-120-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad 1: To bohužel nemohu ovlivnit, jenom se snažit to sám dělat lépe.</p><p>
+ad 2, 3, 4: K tomu už jsem info psal.</p><p>
+ad 5: Ukázkový soubor je pro vaši představu, jaká asi tak může obsahovat data, ale v žádném případě to nepostihuje všechny možnosti, které mohou nastat. Teď už na to explicitně upozorňujeme i v podmínkách testu, které jsou celou dobu na projektoru.</p><p>
+ad 6: To je právě to, co mě zajímá, protože tohle mohu změnit (aspoň na svých cvičeních). Pokud se můžete vyjádřit detailněji, uvítám to; popisované problémy už snad loni nenastávaly, nebo jsem aspoň na ně nenarazil.</p><p>
+ad 7: Mohu to zkusit. V BEZech jsem s tím těžce neuspěl, ale třeba budou UOSy lepší.</p><p>
+ad 8: Myslím, že už se to zlepšilo, ale můžeme ještě přidat.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 16:58:50 +0100">
+        2014-09-14 16:58:50 +0100
+    </abbr>)</span><a 
+                                id="post-120-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="120" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('120');
+                </script><div class="comment" id="comment-121"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-121-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad 5) problem je v tom, ze nas jaksi nikdo neucil jak takovy "neprustrelny" script ma vypadat, na co si dat pozor ani proti cemu vsemu ma byt odolny (na cviceni jsme vetsinou byli radi ze se stihla nejak tak projet pulka prikladu). Takze jsem to povazoval vcelku za podraz potom :-) Pokud je v zadani "pomoci grep()" nebo nejaka jina podminka tak to beru :-) ale ani ted si nedokazu predstavit to "spravne a neprustrelne reseni". Co kdyz nekdo z uzivatelu bude pouzivat separator mezi sloupecky ve svem jmenu? maji se osetrovat i veci jako ze nemam pristupova prava? (prece ze je mam v prikladu neznamena ze je mam automaticky vsude) atd atd.
+Podle me by idealni bylo pokud chcete aby studenti neco osetrovali nebo si na to dali pozor, tak to dat do zadani nebo takovy zakerny vstup primo do prikladu</p><a 
+                                class="author"
+                                href="../../../users/106/kvido/index.html"
+                            >Kvido</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 20:09:02 +0100">
+        2014-09-14 20:09:02 +0100
+    </abbr>)</span><a 
+                                id="post-121-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="121" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('121');
+                </script><div class="comment" id="comment-122"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-122-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>6) jen takovy navrh, ktery by mi tenkrat pomohl v pochopeni latky - jednak cvicicim dat spravna/ukazkova reseni s komentarem proc a jak. Kazdemu se muze stat ze se nekde zasekne nebo mu to vypadne, tak at se tim pak nezabije cele cviko. Take je u nekterych predmetu (tusim ZDM treba) dobre, ze se zpetne pridava reseni k prikladum ze cvik na eduxu, aby si studenti mohli doma trenovat a kontrolovat jestli na to jdou spravne. Me to treba u matiky dost pomohlo, protoze clovek pak vidi o co ucitelum vlastne jde a co je to stezejni co by si meli odnest. A nakonec hodit na edux nejake ukazkove testy at studenti zhruba vedi do ceho jdou (co se hloubky, rozsahu a typu znalosti tyce). Ale co jsem tu od vas cetl, tak uz se toho asi od mych dob hodne zmenilo k lepsimu, tak treba uz toto praktikujete.</p><a 
+                                class="author"
+                                href="../../../users/106/kvido/index.html"
+                            >Kvido</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 20:15:43 +0100">
+        2014-09-14 20:15:43 +0100
+    </abbr>)</span><a 
+                                id="post-122-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="122" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('122');
+                </script><div class="comment" id="comment-124"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-124-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>7) prakticke priklady v BEZech mi prisly dost dobre, hlavne ty akcni ze zacatku kde se louskaly zpravy od kolegy a tak podobne, clovek to na tom vyborne pochopi a zapamatuje si to. Nejlip bud neco realneho, co se v praxi pouziva (treba nejake dulezite udaje vytahnout z logu) nebo neco zabavneho (v ADS je dokonce nejaky pribeh skrz vsechna cvika myslim). Ale je fakt, ze pokud si nekdo rekne ze ho to nezajima nebo vazne nema cas, tak nepomuze ani tohle no :-(
+
+
+8) Jestli uz je to lip vysvetleno, tak super. Jeste jsem si vzpomnel, ze me zmatlo to, jak si pomalu kazdy program jede vlastni regularni vyrazy a celkem se mi to pletlo. na avc jsem nasel starou prednasku, kde na to nejaky pan upozornoval, tusim ze u grepu, findu a awk jsou uplne jine zastupne znaky atd. Zas  bylo 90% dolu u pisemky.</p><a 
+                                class="author"
+                                href="../../../users/106/kvido/index.html"
+                            >Kvido</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 20:29:39 +0100">
+        2014-09-14 20:29:39 +0100
+    </abbr>)</span><a 
+                                id="post-124-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="124" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('124');
+                </script><div class="comment" id="comment-1454"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-1454-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Staci koukat na #FITPS1 nebo drive na #BI_UOS. A taky na Edux... ad 1) To jako vazne? :)</p><a 
+                                class="author"
+                                href="../../../users/10/hody/index.html"
+                            >hody</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-09 13:43:01 +0100">
+        2014-12-09 13:43:01 +0100
+    </abbr>)</span><a 
+                                id="post-1454-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1454" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1454');
+                </script></div><div class="controls"><a id="add-comment-to-post-119" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-119'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '119',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="35"></a> <div
+    id="post-id-35"
+    data-post-id="35"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-35"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-35"
+    class="vote-number"
+    title="current number of votes"
+>2</div> <div
+    id="answer-img-downvote-35"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '35');
+</script> <div
+    id="answer-img-accept-35"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 16:05:47 +0100">
+        2014-09-13 16:05:47 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/2/shejby/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/eabdb86f0c8671ffca48facb7101a8ae?s=32&amp;d=identicon&amp;r=PG"
+    title="shejby" 
+    alt="shejby gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/2/shejby/index.html">shejby</a> <img class="flag" 
+            src="../../../m/default/media/images/flags/cz.gif%3Fv=1"
+            alt="flag of Czech Republic"
+            title="shejby is from Czech Republic"
+        /> <br/> <span class="reputation-score">271</span> <span class="badges" title="shejby has 5 gold badges, 9 silver badges and 20 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">5</span> <span class='badge2'>&#9679;</span><span class="badgecount">9</span> <span class='badge3'>&#9679;</span><span class="badgecount">20</span> </span> <a 
+            href="http://shejby.cz/"
+            title="shejby's website is http://shejby.cz/"
+            
+        >
+        http://shejby.cz/
+        </a> </div> </div> </div> </div> <p>Já vidím problém ve více věcech 1) plno studentů na začátku nevidělo UNIX/LINUX, nemají ho nainstalovaný a nemají k němu nikde přístup - tohle z mého pohledu trochu nešťastně řeší fray alias UNIX systém na kterém mnoho programů funguje odlišně i přesto, že je na něm plno GNU kompatibilních programů doinstalovaných. 2) Testy na papír, asi věčné téma (netřeba rozvádět), to že chybí možnost si to vyzkoušet ještě jde, ale opravdu se tam nedobře něco dopisuje, nedej bože přepisuje. 3)  Studenti tento předmět podceňují a málo cvičí - s tím nevím co udělat nejsem pedagog. 4) možná by pomohla nějaká cvičebnice jako marast (nejlépe interaktivní...nevím co je v silách)</p> <p>PS: Nevím jaká byla průchodnost poslední rok, ale myslím že se nezhoršuje spíše naopak, ne?</p> </div> <div class="answer-controls post-controls"> <span id='post-35-edit' class="action-link"> <a class="question-edit" href="../../../answers/35/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-35"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-35-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-35-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="35"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=35.html#post-id-35"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-35-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="35"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-35-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="35"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('35');
+    askbot['functions']['hidePublishAnswerLink']('35');
+    askbot['functions']['renderPostControls']('35');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-35"><div class="content"><div class="comment" id="comment-40"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-40-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad 2) Testy na papír jsou potřeba: Za prvé proto, že je třeba otestovat pochopení principů, což by počítačový test narušil (vedl by k řešením typu "zkusím to a uvidím, jak to dopadlo", a za druhé proto, že hodnocení na počítači je dramaticky odlišné a nejspíš by se průchodnost snížila pod 10 %.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:05:04 +0100">
+        2014-09-13 17:05:04 +0100
+    </abbr>)</span><a 
+                                id="post-40-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="40" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('40');
+                </script><div class="comment" id="comment-41"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-41-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad 2) Ale možná by šla vylepšit komunikace - dopisování a přepisování jde řešit šipkami nebo jiným typem vsuvek, netuším, proč se na to málokdo vůbec zeptá. Zkusím to na svých cvičeních oznámit ještě před testem. (Chlívky jsou spíš kvůli studentům, aby bylo jasné, jestli mezera byla nebo nebyla).</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:06:25 +0100">
+        2014-09-13 17:06:25 +0100
+    </abbr>)</span><a 
+                                id="post-41-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="41" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('41');
+                </script><div class="comment" id="comment-42"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-42-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad 4) Cvičebnice existuje, ale nikdo ji nepoužívá, nebo aspoň svoje výsledky nekonzultuje. Zkusím to lépe odprezentovat.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:07:09 +0100">
+        2014-09-13 17:07:09 +0100
+    </abbr>)</span><a 
+                                id="post-42-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="42" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('42');
+                </script><div class="comment" id="comment-43"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-43-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad průchodnost: 2009 - 45%. 2010 - 57%. 2011 - 57%. 2012 - 39%. 2013 - 40%. V letním semestru je to lepší, moje osobní teorie je, že BI-UOS jsou zejména o praxi s příkazovou řádkou a to už je v druhém semestru lepší (protože studenty nutíme do p.ř. dva semestry, ne jen jeden).</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:09:16 +0100">
+        2014-09-13 17:09:16 +0100
+    </abbr>)</span><a 
+                                id="post-43-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="43" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('43');
+                </script><div class="comment" id="comment-63"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-63-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pouzival jsem linuxy i pred FITem, i kdyz ne jako hlavni stroj a stejne jsem opakoval. Jedine co jsem delal pred testem v letnim semestru je ze misto UOSu jsem trenoval psat do ctvereckovaneho papiru. Znalosti se kterymi jsem k testu chodil byly nizsi nez v semestru zimnim.
+
+IMHO: Papirove testy maji smysl, jen bych zrusil ctverecky, podle me to zbytecne komplikuji.</p><a 
+                                class="author"
+                                href="../../../users/75/jindrich-pilar/index.html"
+                            >Jindřich Pilař</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:54:12 +0100">
+        2014-09-13 17:54:12 +0100
+    </abbr>)</span><a 
+                                id="post-63-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="63" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('63');
+                </script></div><div class="controls"><a id="add-comment-to-post-35" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-35'] = {
+            truncated: true
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '35',
+                                                5
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="2005"></a> <div
+    id="post-id-2005"
+    data-post-id="2005"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-2005"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-2005"
+    class="vote-number"
+    title="current number of votes"
+>2</div> <div
+    id="answer-img-downvote-2005"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '2005');
+</script> <div
+    id="answer-img-accept-2005"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2015-02-01 11:56:08 +0100">
+        2015-02-01 11:56:08 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1917/jana/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/44b12559556fed14691d873c46967668?s=32&amp;d=identicon&amp;r=PG"
+    title="Jana" 
+    alt="Jana gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1917/jana/index.html">Jana</a> <br/> <span class="reputation-score">1</span> <span class="badges" title="Jana has one gold badge, 3 silver badges and 5 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">1</span> <span class='badge2'>&#9679;</span><span class="badgecount">3</span> <span class='badge3'>&#9679;</span><span class="badgecount">5</span> </span> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../answers/2005/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2015-02-01 11:56:52 +0100">
+        2015-02-01 11:56:52 +0100
+    </abbr></strong></a> </p> </div> </div> <p>1) Celá příprava během semestru by měla procvičovat to, co bude na zkouškovém Progtestu. Ve cvičeních se probírají většinou jen příkazy samotné nebo tyto v nějakém "drobném" kontextu. Podle mého by se ve cvičeních měly psát skripty, a to systematicky, každé cvičení skripty na cca 5 řádků !VČETNĚ! použití proměnných ve skriptech. </p> <p>Takže: jako na Progtestu na závěr: zadání úkolu, tvorba proměnných v prvních řádcích skriptu a použití proměnných ve finálním příkazu, kterým se vytváří požadované prostředí (například soubor obsahující něco v požadovaném formátu, adresář/e obsahující něco).</p> <p>2) <strong>Tak, jako má PA1 domácí úkoly na Progtestu, totéž by mělo být na PS1.</strong> Jedno demo pár dnů před zápočtovým testem nestačí. <strong>Toto považuji za základní nedostatek předmětu.</strong></p> <p>3) Eduxové materiály (E learning) podává pouze základ předmětu (učí nás "slovíčka" jazyka v drobném kontextu). 
+ALE: Jak v (před)zápočtových testech během roku, tak i na závěrečném zápočtovém testu jsou na 99.9% otázky z <strong>NEZPRACOVANÝCH MATERIÁLŮ</strong> Cvičebnice a spol. Samostudium (=zpracování) těchto otázek je časově náročné, v mnohých případech není možná korekce (vytvořím si příkaz, který sice funguje, ale nemusí být správně).
+Pomohla by (skrytá) řešení Cvičebnice.</p> </div> <div class="answer-controls post-controls"> <span id='post-2005-edit' class="action-link"> <a class="question-edit" href="../../../answers/2005/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-2005"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-2005-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-2005-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="2005"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=2005.html#post-id-2005"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-2005-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="2005"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-2005-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="2005"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('2005');
+    askbot['functions']['hidePublishAnswerLink']('2005');
+    askbot['functions']['renderPostControls']('2005');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-2005"><div class="content"><div class="comment" id="comment-2006"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2006-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Děkuji.</p><p>
+ad 1) Cvičení <b>nejsou</b> od toho, aby vás naučila projít testem, ale aby vám ukázala základní použití jednotlivých konstrukcí a vytvořila vám prostor pro domácí přípravu. A pro ni máte cvičebnici, která je přesně na úkoly tohoto typu zaměřená.</p><p>
+ad 2) Předpokládám, že to už teď nebude problém, protože demo test už existuje. V minulém semestru neexistoval, byly jenom otázky (na velmi podobném principu) v e-Learningu.</p><p>
+ad 3) Předpokládá se, že si cvičebnici vyzkoušíte sami. Ano, je to časově náročné - jak jinak získáte potřebnou <b>zkušenost</b> s programováním v příkazové řádce než dostatečně dlouhým opakováním? Pokud jde o kontrolu, vždy můžete konzultovat s některým cvičícím; sice vám nedá řešení, ale upozorní vás na chyby.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:05:02 +0100">
+        2015-02-01 12:05:02 +0100
+    </abbr>)</span><a 
+                                id="post-2006-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2006" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2006');
+                </script><div class="comment" id="comment-2007"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2007-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>1) Cvičení jsou právě od toho, aby nás naučila projít testem, a také naučit Linuxu. Pokud cvičení nejsou od toho, aby nám pomohly projít zkouškou - jak píšete, tak proč vlastně jsou.
+2) Jeden demo test pár dnů před zápočtovým testem nestačí. Chcete-li mít víc studentů, kteří zvládnou test, vezměte si příklad od kolegů z PA1.
+3) Výuka by byla kvalitnější, kdyby byly příklady ze Cvičebnice řešené (nebo přes Progtest korigovatelné). Na závěrečném Progtestu by pak byly pochopitelně jiné případy založené na stejném principu. Určitě by si studenti odnesli z předmětu víc, než když musí "hádat", zda to mají správně a s tímto podkladem jít na závěrečný Progtest.</p><a 
+                                class="author"
+                                href="../../../users/1917/jana/index.html"
+                            >Jana</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:27:43 +0100">
+        2015-02-01 12:27:43 +0100
+    </abbr>)</span><a 
+                                id="post-2007-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2007" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2007');
+                </script><div class="comment" id="comment-2008"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2008-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Obecně jsem toho názoru, že bakalářské a magisterské studium je o tom, co se již v oboru poznalo a to se také bez hádanek učí. Teprve až doktorské studium je o tom, co se ještě neví nebo nebylo zpracováno a člověk je odkázán jen sám na sebe a přináší něco nového a tápe v nepoznaném.</p><a 
+                                class="author"
+                                href="../../../users/1917/jana/index.html"
+                            >Jana</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:27:48 +0100">
+        2015-02-01 12:27:48 +0100
+    </abbr>)</span><a 
+                                id="post-2008-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2008" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2008');
+                </script><div class="comment" id="comment-2009"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2009-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Je mi líto, nesouhlasím s vámi. Pokud chápete VŠ vzdělání jen jako cestu za titulem, tak máte pravdu - v tom případě by skutečně cvičení mělo být o tom, jak projít zkouškou. Ale já to vidím jinak. Podle mě ty předměty, co se do vás snažíme cpát, mají svůj smysl pro praktický život, a v tu chvíli mi připadá rozumné vám nabízet spíš vědomosti než triky pro projití testem. (No dobře, možná ne všechny předměty, ale BI-PS1 určitě.)</p><p>
+Pokud jde o "hádání": Předpokládám, že časem bude příkladů tolik, aby mohl být splněn váš požadavek. Zatím jich tolik není a není otázkou měsíců, aby bylo - připravit jeden příklad dá opravdu hodně práce. Zatím ale můžete využít konzultací. Proč to neděláte (ne konkrétně vy, ale studenti obecně), nechápu.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:35:49 +0100">
+        2015-02-01 12:35:49 +0100
+    </abbr>)</span><a 
+                                id="post-2009-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2009" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2009');
+                </script><div class="comment" id="comment-2010"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2010-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Ještě ke srovnání s PA1 (protože se nabízí otázka, proč to v PS1 je tak složité, když PA1 má úloh dost a dost): Není to úplně zřejmé, ale testování řešení v PA1 je poměrně jednoduché, protože se pohybují v poměrně striktně kontrolovaném prostředí. V PS1 tenhle luxus nemáme - prostředí je velmi variabilní a <b>záleží</b> na něm (například zvažte takové jednoduché <code>echo *</code> a <code>echo "*"</code>).</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:42:14 +0100">
+        2015-02-01 12:42:14 +0100
+    </abbr>)</span><a 
+                                id="post-2010-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2010" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2010');
+                </script><div class="comment" id="comment-2011"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2011-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Každopádně souhlasím s tím, že je třeba, aby testovacích úloh bylo víc, a snažíme se to zajistit. Bohužel je to běh na dlouhou trať.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:43:39 +0100">
+        2015-02-01 12:43:39 +0100
+    </abbr>)</span><a 
+                                id="post-2011-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2011" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2011');
+                </script><div class="comment" id="comment-2012"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2012-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pokud výuka bude probíhat stylem "zjisti si, sám si přijď na to, co je již všem v oboru dávno jasné", pak tento typ výuky imituje stav: "objevujte již dávno objevené". 
+
+Podle mého je pregraduální studium prostor, kdy má člověk do sebe dostat maximum nejnovějších (v tu dobu jistých a ověřených informací a principů, jak se k těmto informacím dostat) a pokud jsou na studenta v předmětu kladeny otázky (hádanky), pak by měly být i zodpovězeny (pomocí řešených příkladů nebo Progtestem). Jenom takto je student informačně kvalitně připraven na postgraduál ať už ve formě doktorandského studia nebo praxe.</p><a 
+                                class="author"
+                                href="../../../users/1917/jana/index.html"
+                            >Jana</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-02-01 12:59:34 +0100">
+        2015-02-01 12:59:34 +0100
+    </abbr>)</span><a 
+                                id="post-2012-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2012" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2012');
+                </script></div><div class="controls"><a id="add-comment-to-post-2005" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-2005'] = {
+            truncated: true
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '2005',
+                                                3
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="39"></a> <div
+    id="post-id-39"
+    data-post-id="39"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-39"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-39"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-39"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '39');
+</script> <div
+    id="answer-img-accept-39"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 16:35:49 +0100">
+        2014-09-13 16:35:49 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/68/molnarriso/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/4dd66c3196bebf4677b7e6ce27d8d868?s=32&amp;d=identicon&amp;r=PG"
+    title="molnarriso" 
+    alt="molnarriso gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/68/molnarriso/index.html">molnarriso</a> <br/> <span class="reputation-score">68</span> <span class="badges" title="molnarriso has one gold badge, 2 silver badges and 7 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">1</span> <span class='badge2'>&#9679;</span><span class="badgecount">2</span> <span class='badge3'>&#9679;</span><span class="badgecount">7</span> </span> </div> </div> </div> </div> <p>Podla mna je otazkou, ci je vobec vyssia priechodnost pozadovana. Ja som vzdy UOS videl ako predmet, ktoreho ucelom c. 1 bolo zredukovat pocet studentov, shell bol az na druhom mieste. Pokial to nespravi UOS, bude sa musiet vyhadzovat inde. Pokial by tu niekto chcel urobit zmenu, tak by sa cely predmet prekopal a zacalo sa to skusat normalne a nie testy na papier, skuska bez dalsich pokusov a pod. </p> </div> <div class="answer-controls post-controls"> <span id='post-39-edit' class="action-link"> <a class="question-edit" href="../../../answers/39/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-39"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-39-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-39-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="39"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=39.html#post-id-39"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-39-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="39"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-39-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="39"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('39');
+    askbot['functions']['hidePublishAnswerLink']('39');
+    askbot['functions']['renderPostControls']('39');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-39"><div class="content"><div class="comment" id="comment-45"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-45-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Požadovaná nebo nepožadovaná, to nemohu posoudit. Mě každopádně mrzí, když máme zaříznout studijní kariéru tolika lidí, kteří by třeba mohli být úspěšní, kdybychom je jenom dokázali správně motivovat nebo informovat. Proto se ptám, co by vám pomohlo k hladšímu průchodu. Testy na papír viz výše.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:11:25 +0100">
+        2014-09-13 17:11:25 +0100
+    </abbr>)</span><a 
+                                id="post-45-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="45" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('45');
+                </script><div class="comment" id="comment-53"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-53-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>testy by sa dali urobit ovela praktickejsie. Napriklad prist ku stroju, ktory je v stave A do 30 minut ho dat do stavu B. Pri niecom takom by "zkusím to a uvidím, jak to dopadlo" nefungovalo z casovych dovodov. A navyse metoda "zkusím to a uvidím, jak to dopadlo" sa v praxi pouziva aj tak stale a vsade. Ja som vacsinu semestru zabil tym, ze som sa naspamat ucit manual a urcite som nebol jediny( a ruku hore, ak si to este niekto pamata). Tento cas by sa dal vyuzit ovela lepsie, predmet sa sice volal Uvod od OS, ale samutnemu unixu som sa nepriucil vobec....</p><a 
+                                class="author"
+                                href="../../../users/68/molnarriso/index.html"
+                            >molnarriso</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:35:18 +0100">
+        2014-09-13 17:35:18 +0100
+    </abbr>)</span><a 
+                                id="post-53-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="53" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('53');
+                </script><div class="comment" id="comment-56"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-56-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Stav A do stavu B je spíš záležitost BI-ADU.
+
+</p><hr>
+
+Učit se manuál je zbytečnost, opět patrně vyplývající ze špatné komunikace (pokusím se zlepšit): Od studentů se chce, aby věděli, co příkazy umí a jaké jsou předpoklady pro jejich fungování, ale až na výjimky ne to, aby znali jejich parametry nebo dokonce jejich názvy. Jen je potřeba tu "neznalost" udělat podobně jako při psaní vědeckých prací - tam když použiju něčí myšlenku, tak přidám citaci; v UOSech když nevím parametr, tak zvolím zástupný a připíšu k tomu poznámku, co ten parametr dělá.
+
+<hr>
+
+Název je vyřešen v rámci BI-PS1 (Programování v shellu 1).<p></p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:38:45 +0100">
+        2014-09-13 17:38:45 +0100
+    </abbr>)</span><a 
+                                id="post-56-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="56" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('56');
+                </script><div class="comment" id="comment-58"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-58-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>"Stav A do stavu B je spíš záležitost BI-ADU." - no praveze toto sa po nas chcelo na zaverecnom teste, akurat vo forme, ze sme odovzdavali program, ktory toto mal robit. Slo by to spravit takto: student pride ku PC, na ktorom su subory X a maju po nom ostat subory Y. Student napise skript a spusti ho. Ak je vystup Y, dostane plny pocet, ak nie, hodnoti sa rucne program, podla toho, ako to dava zmysel a ako student postupoval. Takto by sa hodnotili realne znalosti a nie to, kolko casu student zabil tym, ze sa babral s papierovym testom. Takto by sa student naucil rychlo pohybovat v terminale a rychlo pouzivat man co je v praxi ovela potrebnejsie ako naspamat poznat detailne chovanie kazdeho programu.</p><a 
+                                class="author"
+                                href="../../../users/68/molnarriso/index.html"
+                            >molnarriso</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:47:49 +0100">
+        2014-09-13 17:47:49 +0100
+    </abbr>)</span><a 
+                                id="post-58-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="58" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('58');
+                </script><div class="comment" id="comment-61"><div class="comment-votes"><div 
+                                id="comment-img-upvote-61" 
+                                class="upvote"
+                            >2</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '61');
+                            </script></div><div class="comment-content"><div 
+                            id="post-61-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Zkusím to přednést jako podnět kolegům, ale nemyslím si, že to povede ke změně. Už proto, že já osobně si myslím, že papírové testy smysl mají</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:52:15 +0100">
+        2014-09-13 17:52:15 +0100
+    </abbr>)</span><a 
+                                id="post-61-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="61" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('61');
+                </script></div><div class="controls"><a id="add-comment-to-post-39" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-39'] = {
+            truncated: true
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '39',
+                                                1
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="92"></a> <div
+    id="post-id-92"
+    data-post-id="92"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-92"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-92"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-92"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '92');
+</script> <div
+    id="answer-img-accept-92"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 23:36:07 +0100">
+        2014-09-13 23:36:07 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/20/hannibal/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/2f1eaa0d81bb42dad6dd741ea3692ee3?s=32&amp;d=identicon&amp;r=PG"
+    title="Hannibal" 
+    alt="Hannibal gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/20/hannibal/index.html">Hannibal</a> <br/> <span class="reputation-score">11</span> <span class="badges" title="Hannibal has one silver badge and 2 bronze badges"> <span class='badge2'>&#9679;</span><span class="badgecount">1</span> <span class='badge3'>&#9679;</span><span class="badgecount">2</span> </span> </div> </div> </div> </div> <p>Já jsem s UOSem problém neměl, ale myslím si, že studentům by pomohlo následující (teď budu mluvit pouze o cvičeních, s přednáškami nemám moc zkušeností):</p> <p>Pokud probíráme nějaký okruh (sed, awk, ..) a probíráme to přes celý cviko, tak se těch příkladů dá projet určitě víc - někteří lidi měli problém stíhat i takhle, ale mnoho se jich skutečně mohlo většinu cvika flákat, protože nebylo kam spěchat.</p> <p>Např. k regexpům rozdat nějaký handouty s řešenýma příkladama - s regexpama podle mě přijde každý programátor do styku hodně často (i webaři, i unixáci, i další)</p> <p>Není potřeba hodinu vysvětlovat, jak přesně fungují symlinky apod. Názorná ukázka by stačila. Místo dlouhého vysvětlování jet příklady - je to cviko, ne přednáška :)</p> <p>Není potřbea ukazovat studentům 5 způsobů, jak zabalit složku/soubory do archivu.</p> <p>Samozřejmě se mnou kdokoliv může nesouhlasit, ale toto je můj pohled na věc.</p> <p>Jinak se mi líbilo, že příkazům, přepínačům a jejich kombinacím cvičící rozumí (někdo lépe, někdo hůře - ale rozumí)</p> </div> <div class="answer-controls post-controls"> <span id='post-92-edit' class="action-link"> <a class="question-edit" href="../../../answers/92/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-92"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-92-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-92-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="92"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=92.html#post-id-92"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-92-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="92"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-92-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="92"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('92');
+    askbot['functions']['hidePublishAnswerLink']('92');
+    askbot['functions']['renderPostControls']('92');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-92"><div class="content"><div class="comment" id="comment-103"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-103-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>To je ale právě ten důvod tý neprůchodnosti. Že jsou cvika ve velký skupině lidí kde část jich to umí dobře a odpovídají učiteli na otázky takže on si pak myslí jak to všichni hezky umí a jede pořád rychlejc a vytahuje složitější věci, takže nakonec se začátečník tak ztratí že už se radši na nic neptá a odsedí to.</p><a 
+                                class="author"
+                                href="../../../users/76/relickus/index.html"
+                            >relickus</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 00:40:32 +0100">
+        2014-09-14 00:40:32 +0100
+    </abbr>)</span><a 
+                                id="post-103-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="103" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('103');
+                </script><div class="comment" id="comment-107"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-107-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Handouty k regexpům jsou dobrý nápad. Já třeba regexpy používám denně, takže mi to ani nepřijde, ale studenti možná opravdu mají problém vidět, v čem by se jim mohly hodit.<br>To ostatní jsem nezažil, možná je to věc různého přístupu různých cvičících.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 05:39:01 +0100">
+        2014-09-14 05:39:01 +0100
+    </abbr>)</span><a 
+                                id="post-107-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="107" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('107');
+                </script></div><div class="controls"><a id="add-comment-to-post-92" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-92'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '92',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="126"></a> <div
+    id="post-id-126"
+    data-post-id="126"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-126"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-126"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-126"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '126');
+</script> <div
+    id="answer-img-accept-126"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-15 08:26:06 +0100">
+        2014-09-15 08:26:06 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/40/mastrdisastr/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/9080eed7fa6b0fda090910ba4c84c5f3?s=32&amp;d=identicon&amp;r=PG"
+    title="Mastrdisastr" 
+    alt="Mastrdisastr gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/40/mastrdisastr/index.html">Mastrdisastr</a> <br/> <span class="reputation-score">13</span> <span class="badges" title="Mastrdisastr has one gold badge, 2 silver badges and 5 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">1</span> <span class='badge2'>&#9679;</span><span class="badgecount">2</span> <span class='badge3'>&#9679;</span><span class="badgecount">5</span> </span> </div> </div> </div> </div> <p>Jen krátce. Já si myslím, že uzavření předmětu je drsné. Jeden pokus je málo, zvlášť když k takové formě testu přijdete poprvé. Možná by bylo fajn, pokud je čas, studentům dát podobný test - stejnou formou - na nečisto, než budou psát ten závěrečný... spoustě by to podle mě pomohlo. </p> <p>Ústní zkouška jak tu navrhoval Fiškulín také není špatný nápad. </p> </div> <div class="answer-controls post-controls"> <span id='post-126-edit' class="action-link"> <a class="question-edit" href="../../../answers/126/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-126"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-126-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-126-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="126"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=126.html#post-id-126"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-126-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="126"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-126-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="126"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('126');
+    askbot['functions']['hidePublishAnswerLink']('126');
+    askbot['functions']['renderPostControls']('126');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-126"><div class="content"><div class="comment" id="comment-128"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-128-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Moznost zorganizovani neceho takoveho prave zjistuju. Rad bych udelal papirovy i pocitacovy pokusny test, ale tezko rict, jestli to pujde.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-15 09:09:07 +0100">
+        2014-09-15 09:09:07 +0100
+    </abbr>)</span><a 
+                                id="post-128-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="128" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('128');
+                </script><div class="comment" id="comment-222"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-222-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Nebo třeba pc test v závěru semestru (před velkym pc testem) pro ty, kdo mají mene bodu, nez urcitej limit a maximum bodu z tohohle testu by je mohlo dorovnat na ten limit. Aby pak nešli k zaverecnymu pc testu s tim, ze potrebujou 30 bodů z 40 (nebo kolik to tam je max). Nevim možná je to blbost, jen mě to tak napadlo :)</p><a 
+                                class="author"
+                                href="../../../users/76/relickus/index.html"
+                            >relickus</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-18 18:49:07 +0100">
+        2014-09-18 18:49:07 +0100
+    </abbr>)</span><a 
+                                id="post-222-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="222" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('222');
+                </script></div><div class="controls"><a id="add-comment-to-post-126" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-126'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '126',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="82"></a> <div
+    id="post-id-82"
+    data-post-id="82"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-82"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-82"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-82"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '82');
+</script> <div
+    id="answer-img-accept-82"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 19:41:50 +0100">
+        2014-09-13 19:41:50 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/32/sandokan/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/c995e2e84ea109db367ecb2c896c72a2?s=32&amp;d=identicon&amp;r=PG"
+    title="Sandokan" 
+    alt="Sandokan gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/32/sandokan/index.html">Sandokan</a> <br/> <span class="reputation-score">66</span> <span class="badges" title="Sandokan has 2 gold badges, 5 silver badges and 8 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">2</span> <span class='badge2'>&#9679;</span><span class="badgecount">5</span> <span class='badge3'>&#9679;</span><span class="badgecount">8</span> </span> </div> </div> </div> </div> <p>Toto je komentář k UOS z roku 2012, za ty léta jsem si to nechal hlavou pořádně projít a z mého pohledu se jedná o pár následujících věcí:</p> <h3>Hodnocení výsledků</h3> <p>Testy z UOS jsou náročné, nejde o to jestli je to špatně nebo dobře, ale je to fakt. Obtížností se nemohou srovnávat s jednoduchými otázkami předmětu PAI, spíše mají blíže ke složitým derivacím či integracím v matematických předmětech. Problém je v tom, že se hodnotí výhradně výsledek, nic víc, nic míň. Je to jako kdyby někdo po studentech chtěl spočítat příklad který zabere postupem celou A4 a pak se podíval jen na výsledek a řekl "hmm, je to špatně, 0 bodů". V normálním světě se hodnotí postup, a to je nutné i pro UOS. To že někdo splete jeden přepínač, nebo že zapomene mírně zpracovat vstup (třeba odstranit mezery) do dalšího podprogramu by nemělo být fatální chybou.</p> <h3>Nahlédnutí do výsledků</h3> <p>V našem ročníku to absolutně nebylo možné. Po tom co jsme dopsali nějaký test už jsme ho v životě neviděli. Jedinou zpětnou vazbou bylo zpětné hodnocení. Snad by měla být samozřejmost poučit se z vlastních chyb. Kolují pouze legendy o pár jedincích kteří si požádali osobně o ukázání opravené písemky a vedlo to většinou k jejímu přísnějšímu zhodnocení. Dále tímto způsobem samozřejmě nemůžeme ověřit že byla kontrola provedena správně. V matematických předmětech se často opravující splete nebo i vynechá nějaký příklad.</p> <h3>Časový limit na závěrečný test</h3> <p>Tak snad když už je kompletně zajištěno že při testu nemáme přístup na internet tak bychom mohli dostat odpovídající časový limit. Pokud si dobře pamatuji byla to dříve hodina a půl? V každém případě se to nedalo stihnout a test spočíval v soutěži "rozpočítej si úlohy tak abys za nejmenší čas měl šanci na nejvíc bodů". Například u PA zabíraly závěrečené testy řádově hodiny (domnívám se že alespoň 2) a to úlohy byly jenom dvě. Pokud je účelem zadat úlohy tak aby 80% studentů stihlo jen polovinu, tak tomu rovnou můžeme říkat soutěž, ne test.</p> <hr> <p>TL;DR; Nechyběla mi v předmětu jediná informace, prostě je blbě hodnocen. Nic co by mi libovolný cvičící řekl navíc by moje šance na bodové skóre nezměnilo.</p> </div> <div class="answer-controls post-controls"> <span id='post-82-edit' class="action-link"> <a class="question-edit" href="../../../answers/82/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-82"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-82-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-82-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="82"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=82.html#post-id-82"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-82-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="82"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-82-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="82"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('82');
+    askbot['functions']['hidePublishAnswerLink']('82');
+    askbot['functions']['renderPostControls']('82');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-82"><div class="content"><div class="comment" id="comment-83"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-83-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>ad hodnocení: Vyřešeno: v papírových testech se hodnotí i částečný výsledek.</p><hr>
+ad nahlédnutí do výsledků: Snad vyřešeno: Nevím o případu, kdy by student neměl možnost se na test podívat, loni jsme to dělali i přímo na cvičeních.<hr>
+ad časový limit: Jestli se nepletu, v současné době to je 70 minut. Stihnout se to dá podle mě v pohodě, pokud má student praxi v používání příkazové řádky (tzn. buď CL používá i někde jinde než v UOS, nebo věnoval odpovídající čas cvičení doma). Je velmi obtížné to stihnout, pokud tu praxi nemá a počítačový test je první příležitost, ve které se setkává s rozsáhlejším úkolem, který má vyřešit vlastními silami. Domnívám se, že tak je to správně.<p></p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 19:54:38 +0100">
+        2014-09-13 19:54:38 +0100
+    </abbr>)</span><a 
+                                id="post-83-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="83" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('83');
+                </script><div class="comment" id="comment-85"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-85-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>V tom případě se zřejmě vše změnilo od té doby, což je dobré znamení. Mohu říct že jsem v té době trénoval opravdu hodně a stejně byl veliký problém doladit rychle příkazy v testu</p><a 
+                                class="author"
+                                href="../../../users/32/sandokan/index.html"
+                            >Sandokan</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 20:56:04 +0100">
+        2014-09-13 20:56:04 +0100
+    </abbr>)</span><a 
+                                id="post-85-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="85" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('85');
+                </script></div><div class="controls"><a id="add-comment-to-post-82" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-82'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '82',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="57"></a> <div
+    id="post-id-57"
+    data-post-id="57"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-57"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-57"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-57"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '57');
+</script> <div
+    id="answer-img-accept-57"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 17:45:17 +0100">
+        2014-09-13 17:45:17 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/76/relickus/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/b60c5b631158fa77dd78db341fccb4b0?s=32&amp;d=identicon&amp;r=PG"
+    title="relickus" 
+    alt="relickus gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/76/relickus/index.html">relickus</a> <br/> <span class="reputation-score">265</span> <span class="badges" title="relickus has 7 gold badges, 13 silver badges and 18 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">7</span> <span class='badge2'>&#9679;</span><span class="badgecount">13</span> <span class='badge3'>&#9679;</span><span class="badgecount">18</span> </span> </div> </div> </div> </div> <p>Přidávám svůj názor-o Linuxu jsem před vstupem na FIT slyšel asi tak z rychlíku (možná ani to ne). Na první pokus jsem měl skoro permanentní WTF dojem. Nešlo o to že bych nedokázal pochopit význam spec. znaků nebo že tenhle backtick se liší od apostrofu atd. spíše jsem měl pocit že to nezvládám dost rychle vstřebávat. Bylo to pro mě něco moc odlišnýho od věcí co jsem do tý doby studoval na gymplu. 
+Při opakování předmětu se dá říct, že tyhle základy mi už natolik přešly do krve, že jsem se s nima už netrápil. Taky pomohlo to, že jsem si nainstaloval Ubuntu a trénoval real-time.</p> <p>Testy na papír jako problém nevidím, chcete prémiovou školu, kde se to naučíte opravdu pořádně a ne metodou pokus omyl? Here you go. Zároveň souhlasim s názorem, že nevím jestli je nutné zvyšovat průchodnost UOSů. Rozhodně mi přijde logičtější vyhazovat na nich, než třeba na LIN, která je (zatim) podle mě zbytečnej masakr těch nadějných studentů (programátorů) o kterých jste tu psal a kteří by ve své budoucí kariéře LIN nejspíš nikdy nepotřebovali. Musí se vyhazovat, ale radši na předmětech užitečných do budoucna-tím zajistíte produkci opravdu schopných ITků.</p> <p>Pokud bych ale měl vybrat jednu věc, která mi vadila, tak to, že v zimním semestru jsme byli smícháni - ti kdo už bashovali a ti s WTF dojmem jako já. Výsledkem bylo, že vyučující položil třídě otázku, kterou pár snaživců s náskokem zodpovědělo a on tak nabyl dojmu že tomu všichni rozumí. Jasně že se pak nikdo neozve když nerozumí, protože neví jestli je jen on zabedněnec a nechce se ztrapnit a/nebo zdržovat ostatní.</p> <p>Závěrem bych jenom chtěl říct, že letní cvika UOSů s Vámi mě bavila a všechno mi bylo mnohem jasnější než v zimě. Takže pro Vás osobně thumbs up.</p> </div> <div class="answer-controls post-controls"> <span id='post-57-edit' class="action-link"> <a class="question-edit" href="../../../answers/57/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-57"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-57-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-57-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="57"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=57.html#post-id-57"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-57-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="57"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-57-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="57"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('57');
+    askbot['functions']['hidePublishAnswerLink']('57');
+    askbot['functions']['renderPostControls']('57');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-57"><div class="content"><div class="comment" id="comment-60"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-60-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Kombinaci "WTF" a "bashujících" se asi nedá vyhnout (i kdyby všichni dodržovali pravidlo, že BI-UOS se mají opakovat v letním semestru, stejně někdo vypadne a může se na FIT přihlásit znovu). Ale pokusím se je trochu mírnit a dát větší prostor "WTF".
+</p><hr>
+Za pochvalu děkuji, pokusím se aspoň udržet laťku.<p></p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:49:50 +0100">
+        2014-09-13 17:49:50 +0100
+    </abbr>)</span><a 
+                                id="post-60-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="60" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('60');
+                </script><div class="comment" id="comment-65"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-65-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>To bylo míněno na jiné nejmenované vyučující, vám konkrétně byla určená jenom ta poslední věta. Ale nechci aby to vyznělo, že dotyčné kritizuju, chápu že to není snadný a sám uznávam, že jsem se v zimním mohl snažit víc. Jak řikám, nejdřív bych vyřešil LIN (rozdělit třeba do dvou semestrů nebo tak) a potom teprve UOSy. No aspoň že ten název už se změnil směrem k realitě :D</p><a 
+                                class="author"
+                                href="../../../users/76/relickus/index.html"
+                            >relickus</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:56:28 +0100">
+        2014-09-13 17:56:28 +0100
+    </abbr>)</span><a 
+                                id="post-65-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="65" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('65');
+                </script><div class="comment" id="comment-87"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-87-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Osobne si myslim, ze hodne programatoru jak rikas, se setka s LIN a naopak bash vubec nevyuzije.</p><a 
+                                class="author"
+                                href="../../../users/88/petr-pikaus/index.html"
+                            >Petr Pikaus</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 21:50:51 +0100">
+        2014-09-13 21:50:51 +0100
+    </abbr>)</span><a 
+                                id="post-87-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="87" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('87');
+                </script><div class="comment" id="comment-105"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-105-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Silně pochybuju. Každej kdo se četl nějakou učebnici o programování v ní určitě narazil na unix.Já třeba teď jednu čtu a dost se mi hodí že z uosů znam escapování a problematiku uvozovek. I v řadě pracovních nabídek chtějí znalost Linuxu. Algebra možná tak těm kdo budou dělat do hloubky s grafikou nebo programovat hry nebo photoshopy a to asi většina fiťáků stejně nebude. Myslim že většina programátorů z praxe zná spíš awkčko než definici lineárního zobrazení.</p><a 
+                                class="author"
+                                href="../../../users/76/relickus/index.html"
+                            >relickus</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 01:09:12 +0100">
+        2014-09-14 01:09:12 +0100
+    </abbr>)</span><a 
+                                id="post-105-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="105" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('105');
+                </script></div><div class="controls"><a id="add-comment-to-post-57" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-57'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '57',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <div class="paginator" style="float:left"><span class="curr" title="current page">1</span><span class="page"><a href="index.html%3Fsort=votes&amp;amp%3Bpage=2.html#sort-top" title="page 2">2</a></span><span class="next"><a href="index.html%3Fsort=votes&amp;amp%3Bpage=2.html#sort-top" title="next page">next page &raquo;</a></span></div> <div class="clean"></div> <form
+        id="fmanswer"
+        action="https://www.askfit.cz/questions/34/answer/"
+        method="post"
+        ><input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <div style="clear:both"></div> <div> <h2>
+                        
+                            Your answer
+                        
+                    </h2> </div> <div class="message"><span class='strong big'>Please start posting your answer anonymously</span> - your answer will be saved within the current session and published after you log in or create a new account. Please try to give a <strong>substantial answer</strong>, for discussions, <strong>please use comments</strong> and <strong>please do remember to vote</strong> (after you log in)!</div> <div class="folded-editor" tabindex="6"> <p class="prompt"><a>Add answer</a></p> <div class="editor-proper"> <div class="wmd-container"> <div id="wmd-button-bar" class="wmd-panel"></div> <textarea cols="40" id="editor" name="text" rows="10"> </textarea> </div> <div class="form-item"> <label for="editor" class="form-error"></label> <p class="editor-status action-status"><span></span></p> </div> <div class="preview-toggle"> <span 
+            id="pre-collapse" 
+            title="Toggle the real time Markdown editor preview"
+        >
+            [hide preview]
+        </span> </div> <div class="clearfix"></div> <div id="previewer" class="wmd-preview"></div> <input id="add-answer-btn" type="submit" class="submit after-editor" style="float:left"/> <script type="text/javascript">
+                        askbot['functions']['renderAddAnswerButton']();
+                    </script> <div class="checkbox"
+        title="if you choose community wiki option, the question and answer do not generate points and name of author will not be shown"> <input id="id_wiki" name="wiki" type="checkbox" /> <label for="id_wiki">community wiki (karma is not awarded &amp;amp; many others can edit wiki post)</label> </div> </div> </div> </form> </div> <div id="ContentRight"> <div class="box vote-buttons"> <h2 >Question tools</h2> <a class="button followed"
+            alt="click to follow this question">
+            Follow
+        </a> <div class="clearfix"></div> <div id="favorite-number" class="favorite-number">
+        
+        
+            5 followers
+        
+    </div> <div class="notify-sidebar"> <p class="rss"> <a
+                href="https://askfit.cz/feeds/question/34"
+                title="subscribe to this question rss feed"
+                >subscribe to rss feed</a> </p> </div> </div> <div class="clearfix"></div> <div class="box statsWidget"> <div class="clearfix"></div> <h2>Stats</h2> <p>
+        Asked: <strong><abbr class="timeago" title="2014-09-13 15:27:26 +0100">
+        2014-09-13 15:27:26 +0100
+    </abbr></strong> </p> <p> 
+        Seen: <strong>3,565 times</strong> </p> <p>
+        Last updated: <strong title="2015-02-01 11:56:52.024419">Feb 01 '15</strong> </p> </div> <div class="box"> <h2>Related questions</h2> <div class="questions-related"> <p> <a href="../../1603/awk-x-mawk.html">Awk x MAwk</a> </p> <p> <a href="../../1757/secure-copy.1.html">secure copy</a> </p> <p> <a href="../../718/cat-file1-file2-file1.html">cat file1 file2 &gt; file1</a> </p> <p> <a href="../../1578/jak-vygrepovat-ve-formatu-ip.html">Jak vygrepovat ve formátu IP</a> </p> <p> <a href="../../1310/hromadne-prejmenovani-souboru.1.html">Hromadné přejmenování souborů</a> </p> <p> <a href="../../728/jak-seradim-random-cisla-pomoci-sortu-seradit-podle-predposledniho-sloupce-z-n-sloupcu.1.html">Jak seřadím Random čísla pomocí sortu, seřadit podle předposledního sloupce z n sloupců.</a> </p> <p> <a href="../../807/uloha-z-2-zapoctoveho-testu-ps1.1.html">Úloha z 2. zápočtového testu PS1</a> </p> <p> <a href="../../1562/zaverecny-test.html">Zaverecny test</a> </p> <p> <a href="../../1196/imitace-find-executable.1.html">Imitace find executable</a> </p> <p> <a href="../../1568/zaverecny-test.html">Záverečný test</a> </p> </div> </div> </div> </div> <!-- template footer.html --> <div id="ground"> <div class="content-wrapper"> <div class="copyright"> <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"> <img
+                            class="license-logo"
+                            src="../../../m/default/media/images/cc-by-sa.png%3Fv=1"
+                            title="cc-by-sa"
+                            alt="cc-by-sa"
+                        /> </a>
+                
+                Copyright students of FIT CTU and others, 2014. Content on this site is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International</a> license.
+
+            </div> <div class="footer-links" > <a href="../../../about/index.html">about</a><span class="link-separator"> |</span> <a href="../../../faq/index.html">faq</a><span class="link-separator"> |</span> <a href="../../../help/index.html" title="help">help</a> <span class="link-separator"> |</span> <a href="../../../privacy/index.html">privacy policy</a><span class="link-separator"> |</span> <a href=
+                        
+                            "../../../feedback/index.html%3Fnext=%252Fquestion%252F34%252Fjak-zlepsit-pruchodnost-bi-uos-nyni-bi-ps1%252F.html">
+                        
+                        give feedback
+                    </a> </div> <div class="powered-link"> <a href="http://askbot.com" target="_blank">
+                Powered by Askbot version 0.7.49
+            </a> </div> <div class="clean"></div> </div> </div> <!-- end template footer.html --> <div id="no-javascript"> <noscript class="noscript">
+        Please note: AskFIT requires javascript to work properly, please enable javascript in your browser, <a href="https://www.google.com/support/bin/answer.py?answer=23852">here is how</a> </noscript> <script type="text/javascript">
+        //IE fix to hide the red margin
+        var noscript = document.getElementsByTagName('noscript')[0];
+        noscript.style.padding = '0px';
+        noscript.style.backgroundColor = 'transparent';
+    </script> </div> <script type="text/javascript">
+    askbot['urls']['mark_read_message'] = '/messages/markread/';
+    askbot['urls']['get_tags_by_wildcard'] = '/get-tags-by-wildcard/';
+    askbot['urls']['get_tag_list'] = '/get-tag-list/';
+    askbot['urls']['follow_user'] = '/followit/follow/user/{{userId}}/';
+    askbot['urls']['unfollow_user'] = '/followit/unfollow/user/{{userId}}/';
+    askbot['urls']['user_signin'] = '/account/signin/';
+    askbot['urls']['getEditor'] = '/get-editor/';
+    askbot['urls']['apiGetQuestions'] = '/api/get_questions/';
+    askbot['urls']['ask'] = '/questions/ask/';
+	askbot['urls']['questions'] = '/questions/';
+    askbot['settings']['groupsEnabled'] = false;
+    askbot['settings']['static_url'] = '/m/';
+    askbot['settings']['minSearchWordLength'] = 4;
+    askbot['settings']['mathjaxEnabled'] = true;
+    askbot['settings']['sharingSuffixText'] = '';
+    askbot['data']['maxCommentLength'] = 800;
+    askbot['settings']['editorType'] = 'markdown';
+    askbot['settings']['commentsEditorType'] = 'plain-text';
+    
+        askbot['settings']['allowedUploadFileTypes'] = [
+            "jpg", "jpeg", "gif", "bmp", "png", "tiff"
+        ];
+    
+    askbot['data']['haveFlashNotifications'] = false;
+    askbot['data']['activeTab'] = 'questions';
+    
+        askbot['data']['searchUrl'] = '';
+    
+</script> <script type="text/javascript" src="../../../m/CACHE/js/9c2bd604370b.js"></script> <script type="text/javascript">
+    /*<![CDATA[*/
+    $('.mceStatusbar').remove();//a hack to remove the tinyMCE status bar
+    $(document).ready(function(){
+        // focus input on the search bar endcomment
+        var activeTab = askbot['data']['activeTab'];
+        if (inArray(activeTab, ['users', 'questions', 'tags', 'badges'])) {
+            var searchInput = $('#keywords');
+        } else if (activeTab === 'ask') {
+            var searchInput = $('#id_title');
+        } else {
+            var searchInput = undefined;
+            animateHashes();
+        }
+
+        if (searchInput) {
+            searchInput.focus();
+            putCursorAtEnd(searchInput);
+        }
+
+        var haveFullTextSearchTab = inArray(activeTab, ['questions', 'badges', 'ask']);
+        var haveUserProfilePage = $('body').hasClass('user-profile-page');
+        if ((haveUserProfilePage || haveFullTextSearchTab) && searchInput.length) {
+            var search = new FullTextSearch();
+            askbot['controllers'] = askbot['controllers'] || {};
+            askbot['controllers']['fullTextSearch'] = search;
+            search.setSearchUrl(askbot['data']['searchUrl']);
+            if (activeTab === 'ask') {
+                search.setAskButtonEnabled(false);
+            }
+            search.decorate(searchInput);
+        } else if (activeTab === 'tags') {
+            var search = new TagSearch();
+            search.decorate(searchInput);
+        }
+
+        if (askbot['data']['userIsAdminOrMod']) {
+            $('body').addClass('admin');
+        }
+        if (askbot['settings']['groupsEnabled']) {
+            askbot['urls']['add_group'] = "/add-group/";
+            var group_dropdown = new GroupDropdown();
+            $('.dropdown').append(group_dropdown.getElement());
+        }
+        var userRep = $('#userToolsNav .reputation');
+        if (userRep.length) {
+            var showPermsTrigger = new ShowPermsTrigger();
+            showPermsTrigger.decorate(userRep);
+        }
+    });
+    if (askbot['data']['haveFlashNotifications']) {
+        $('#validate_email_alert').click(function(){notify.close(true)})
+        notify.show();
+    }
+    $('abbr.timeago').timeago();
+    /*]]>*/
+</script> <script type='text/javascript' src="https://askfit.cz/m/mathjax/MathJax.js">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX","output/HTML-CSS"],
+            tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+        });
+    </script> <script type='text/javascript'>
+        
+        
+        var codeFriendlyMarkdown = true;
+        
+        var maxCommentLength = 800;
+        askbot['urls']['postComments'] = '/post_comments/';
+        askbot['urls']['editComment'] = '/edit_comment/';
+        askbot['urls']['deleteComment'] = '/comment/delete/';
+        askbot['urls']['convertComment'] = '/comment/convert/';
+        askbot['urls']['getComment'] = '/comment/get_text/';
+        askbot['urls']['saveDraftAnswer'] = '/save-draft-answer/';
+        askbot['urls']['vote_url'] = '/vote'
+        askbot['urls']['user_signin'] = '/account/signin/';
+        askbot['urls']['swap_question_with_answer'] = '/swap-question-with-answer/';
+        askbot['urls']['upvote_comment'] = '/comment/upvote/';
+        askbot['urls']['delete_post'] = '/post/delete/';
+        askbot['urls']['get_html_template'] = '/get-html-template/';
+        askbot['urls']['getGroupsList'] = '/get-groups-list/';
+        askbot['urls']['publishAnswer'] = '/answer/publish/';
+        askbot['data']['userIsThreadModerator'] = false;
+        askbot['data']['questionAuthorId'] = 59;
+        askbot['data']['threadIsClosed'] = false;
+        askbot['data']['answersSortTab'] = 'votes';
+        askbot['data']['questionId'] = 34;
+        askbot['data']['threadSlug'] = 'jak-zlepsit-pruchodnost-bi-uos-nyni-bi-ps1';
+        askbot['messages']['addComment'] = 'add a comment';
+        askbot['messages']['userNamePrompt'] = 'User name:';
+        askbot['messages']['userEmailPrompt'] = 'Email address:';
+        askbot['settings']['saveCommentOnEnter'] = false;
+        askbot['settings']['tagSource'] = 'user-input';
+        askbot['settings']['enableSharingGoogle'] = true;
+        askbot['settings']['enableEmailAlerts'] = true;
+    </script> <script type="text/javascript">
+    
+    askbot['settings']['tagsAreRequired'] = true
+    askbot['settings']['maxTagLength'] = 20;
+    askbot['messages']['maxTagLength'] = "each tag must be shorter than 20 characters";
+    askbot['settings']['maxTagsPerPost'] = 5;
+    askbot['messages']['maxTagsPerPost'] = "please use 5 tags or less";
+    askbot['messages']['tagLimits'] = "please use up to 5 tags, less than 20 characters each";
+    askbot['urls']['upload'] = '/upload/';
+    askbot['settings']['minTitleLength'] = 10;
+    askbot['settings']['minQuestionBodyLength'] = 10;
+    askbot['settings']['minAnswerBodyLength'] = 10;
+    askbot['settings']['minCommentBodyLength'] = 3;
+    askbot['settings']['tag_editor'] = '{\u0022max_tag_length\u0022: 20, \u0022tag_regex\u0022: \u0022^[\u005C\u005Cw+.#\u002D]+$\u0022, \u0022max_tags_per_post\u0022: 5, \u0022messages\u0022: {\u0022wrong_chars\u0022: \u0022please use letters, numbers and characters \u005C\u0022\u002D+.#\u005C\u0022\u0022, \u0022required\u0022: \u0022tags are required\u0022}, \u0022tags_are_required\u0022: true, \u0022force_lowercase_tags\u0022: false}';
+    askbot['settings']['tinyMCEPlugins'] = JSON.parse('[]');
+</script> <script type='text/javascript'>
+    (function() {
+        //make images always fit the screen
+        var images = $('.question-page .post-body img');
+        //these breakpoints must match those in css
+        //for explanation see utils.js:LimitedWidthImage
+        var breakpoints = [
+            [980, undefined],
+            [800, 55]
+        ];
+        var maxWidth = 685;
+        images.each(function(idx, item) {
+            var img = new LimitedWidthImage(breakpoints, maxWidth);
+            img.decorate($(item));
+        });
+    })();
+</script> <script type="text/javascript" src="../../../m/CACHE/js/7b67e8c0204c.js"></script> <script type="text/javascript">
+    // define reputation needs for comments
+    $(document).ready(function(){
+        $("#nav_questions").attr('className',"on");
+        $("#" + askbot['data']['answersSortTab']).attr('className',"on");
+        
+        Vote.init(
+            askbot['data']['questionId'],
+            askbot['data']['threadSlug'],
+            askbot['data']['questionAuthorId'],
+            askbot['data']['userId']
+        );
+        
+        if ((askbot['data']['threadIsClosed'] === false) && askbot['data']['userIsAuthenticated']) {
+            initEditor();
+        }
+        
+        lanai.highlightSyntax();
+        $('#btLogin').bind('click', function(){
+            window.location.href='/account/signin/';
+        });
+        if (window.location.hash === 'fmanswer'){
+            $('#fmanswer textarea').focus();
+        }
+
+        if (askbot['settings']['enableSharingGoogle']) {
+            $.getScript("//apis.google.com/js/plusone.js");
+        }
+
+        if (askbot['data']['userId'] === askbot['data']['questionAuthorId']) {
+            $("#fmanswer_button").click(function() {
+                $("#fmanswer").show();
+                $("#fmanswer_button").hide();
+            });
+        }
+
+        if (askbot['data']['userIsAuthenticated']) {
+            var draftHandler = new DraftAnswer();
+            draftHandler.setThreadId(3);
+            draftHandler.decorate($(document));
+        }
+    });
+
+    $(window).bind('hashchange', animate_hashes);
+
+    function animate_hashes(){
+      var id_value = window.location.hash;
+      if (id_value != ""){
+        var previous_color = $(id_value).css('background-color');
+        $(id_value).css('backgroundColor', '#FFF8C6');
+        $(id_value).animate(
+            {backgroundColor: '#ff7f2a'}, 1000
+        ).animate({backgroundColor: '#FFF8C6'}, 1000, function(){
+            $(id_value).css('backgroundColor', previous_color);
+        });
+      }
+    }
+
+    
+    function initEditor(){
+        $('#editor').TextAreaResizer();
+        //highlight code synctax when editor has new text
+        $("#editor").typeWatch({highlight: false, wait: 3000,
+                         captureLength: 5, callback: lanai.highlightSyntax});
+                         
+        var display = true;
+        var txt = "[hide preview]";
+        $('#pre-collapse').text(txt);
+        $('#pre-collapse').bind('click', function(){
+            txt = display ? "[show preview]" : "[hide preview]";
+            display = !display;
+            $('#previewer').toggle();
+            $('#pre-collapse').text(txt);
+        });
+        setupFormValidation(
+            $("#fmanswer"),
+            CPValidator.getAnswerFormRules(),
+            CPValidator.getAnswerFormMessages()
+        );
+    }
+    (function() {
+        var editorBox = $('.folded-editor');
+        if (editorBox.length) {
+            var foldedEditor = new FoldedEditor();
+            foldedEditor.decorate(editorBox);
+        }
+    })();
+</script> <script type="text/javascript">
+            for (url_name in askbot['urls']){
+                askbot['urls'][url_name] = cleanUrl(askbot['urls'][url_name]);
+            }
+        </script> </body> </html>

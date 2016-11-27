@@ -1,0 +1,893 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Mohu se přihlásit ke sledování tagů? - Ask FIT</title> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <meta http-equiv="X-UA-Compatible" content="IE=EDGE" /> <meta name="description" content="Viz subj. Pro mě by bylo velice užitečné, kdybych se mohl přihlásit ke sledování určitých tagů (BI-PS1, například) a aut ..." /> <meta name="keywords" content="askfit,Ask,FIT ČVUT" /> <meta name="referrer" content="always" /> <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> <link rel="shortcut icon" href="../../../upfiles/fit.ico" /> <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS feed from AskFIT"
+            href="https://askfit.cz/feeds/rss/"
+        /> <link rel="stylesheet" href="../../../m/CACHE/css/13f37855be5f.css" type="text/css" /> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=latin-ext' rel='stylesheet' type='text/css'> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=cyrillic-ext' rel='stylesheet' type='text/css'> <link rel="canonical" href="https://askfit.cz/question/49/mohu-se-prihlasit-ke-sledovani-tagu/" /> <link rel="stylesheet" type="text/css" href="../../../m/default/media/js/wmd/wmd.css%3Fv=1.css" /> <script type="text/javascript" src="../../../m/default/media/js/modernizr.custom.js%3Fv=1"></script> <script type="text/javascript">
+    var askbot = {};
+    askbot['data'] = {};
+    askbot['data']['userIsAuthenticated'] = false;
+    askbot['data']['languageCode'] = 'en';
+    
+        askbot['data']['userReputation'] = 0;
+        askbot['data']['userIsReadOnly'] = false;//in principle we allow anon users to start posting
+    
+    askbot['urls'] = {};
+    askbot['settings'] = {};
+    askbot['messages'] = {};
+</script> <script type="text/javascript" src="../../../jsi18n/index.html"></script> <script type="text/javascript">
+        /*<![CDATA[*/
+        //below is pure cross-browser javascript, no jQuery
+        askbot['data']['userIsThreadModerator'] = false;
+        askbot['data']['oldestAnswerId'] = 50;
+        (function(){
+
+            var hasClass = function(node, selector) {
+                var classes = (" " + node.className + " ").split(' ');
+                for (var i = 0; i < classes.length; i++) {
+                    if (classes[i] === selector) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            var findChildrenByClassName = function(node, className) {
+                var nodes = [];
+                var walk = function(node) {
+                    if (hasClass(node, className)) {
+                        nodes.push(node);
+                    }
+                    if (node.childNodes) {
+                        for (var i=0; i < node.childNodes.length; i++) {
+                            walk(node.childNodes[i]);
+                        }
+                    }
+                };
+                walk(node);
+                return nodes;
+            };
+
+            var getTextContent = function(node) {
+                var text = node.innerText || node.textContent;
+                if (text === undefined) {
+                    return '';
+                } else {
+                    return text;
+                }
+            };
+
+            var hasAttribute = function(node, attrName) {
+                if (node.hasAttribute) {
+                    return node.hasAttribute(attrName);
+                } else {
+                    return (!(!(node.getAttribute(attrName))));
+                }
+            };
+
+            var findChildByAttribute = function(node, attrName, attrVal) {
+                var children = node.childNodes;
+                for (var i = 0; i < children.length; i++) {
+                    var child = children[i];
+                    if (child.getAttribute(attrName) === attrVal) {
+                        return child;
+                    }
+                };
+                return null;
+            };
+
+            var postIsComment = function(postId) {
+                if (document.getElementById('comment-' + postId)) {
+                    return true;
+                }
+                return false;
+            };
+
+            var removeNode = function(node) {
+                node.parentNode.removeChild(node);
+            };
+
+            var trim = function(text) {
+                return text.replace(/^\s+|\s+$/g, '');
+            };
+
+            var data = askbot['data'];
+            var isAuthorOfPost = function(post_id) {
+                return (data['user_posts'] && data['user_posts'][post_id]);
+            };
+
+            if (data['userIsAuthenticated']){
+                var votes = {};
+                
+                data['user_votes'] = votes;
+                var posts = {};
+                
+                data['user_posts'] = posts;
+            }
+
+            function render_vote_buttons(post_type, post_id){
+                var upvote_btn = document.getElementById(
+                    post_type + '-img-upvote-' + post_id
+                );
+                var downvote_btn = document.getElementById(
+                    post_type + '-img-downvote-' + post_id
+                );
+                if (data['userIsAuthenticated']){
+                    if (post_id in data['user_votes']){
+                        var vote = data['user_votes'][post_id];
+                        if (vote == -1){
+                            var btn = downvote_btn;
+                        } else if (vote == 1){
+                            var btn = upvote_btn;
+                        } else {
+                            return;
+                        }
+                        if (post_type == 'comment'){
+                            btn.className = btn.className + ' upvoted';
+                        } else {
+                            btn.className = btn.className + ' on';
+                        }
+                    }
+                }
+            }
+
+            function hide_convert_answer_links(post_id){
+                var id1 = 'post-' + post_id + '-convert';//for repost as Q comment
+                var repostAsQuestionComment = document.getElementById(id1);
+                var id2 = 'post-' + post_id + '-repost-as-comment-under-previous-answer';
+                var repostAsPrevAnsComment = document.getElementById(id2);
+                var extraOptsList = repostAsQuestionComment.parentNode;
+                var extraOpts = extraOptsList.parentNode;
+
+                var isAuthenticated = data['userIsAuthenticated'];
+                var isMod = data['userIsAdminOrMod'];
+                if (isAuthenticated && (isMod || isAuthorOfPost(post_id))) {
+                    //still may need to hide because answer may be too long
+                    var answer_id = 'post-id-' + post_id;
+                    var answer_container = document.getElementById(answer_id);
+                    var answerBody = findChildrenByClassName(answer_container, 'post-body')[0];
+                    //todo: this is not reliable
+                    var answerBodyNodes = answerBody.childNodes;
+                    var answerElement = answerBodyNodes[answerBodyNodes.length - 1];
+                    if (trim(getTextContent(answerElement)).length > askbot['data']['maxCommentLength']) {
+                        repostAsQuestionComment.parentNode.removeChild(repostAsQuestionComment);
+                        repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                    } else if (parseInt(post_id) === data['oldestAnswerId']) {
+                        repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                    }
+                } else {
+                    repostAsQuestionComment.parentNode.removeChild(repostAsQuestionComment);
+                    repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                }
+
+                //if the whole control is empty - remove it
+                if (extraOptsList.getElementsByTagName('li').length === 0) {
+                    extraOpts.parentNode.removeChild(extraOpts);
+                }
+            }
+
+            function hidePublishAnswerLink(postId) {
+                if (data['userIsThreadModerator'] === false) {
+                    //hide publish/unpublish answer links
+                    var answerId = 'post-' + postId + '-publish';
+                    var pubBtn = document.getElementById(answerId);
+                    pubBtn.parentNode.removeChild(pubBtn);
+                }
+            }
+
+            function render_post_controls(post_id){
+                if (data['userIsAdminOrMod']){
+                    return;//all remaining functions stay on
+                }
+                if (data['user_posts'] && post_id in data['user_posts']){
+                    //todo: remove edit button from older comments
+                    return;
+                }
+                var deleteBtn = document.getElementById('post-' + post_id + '-delete');
+                var controls = deleteBtn.parentNode;
+                if (//maybe remove "delete" button
+                    (data['userReputation'] < 
+                    200) ||
+                    data['userIsReadOnly']
+                ) {
+                    removeNode(deleteBtn);
+                }
+
+                var canFlagPosts = data['userReputation'] >= 5;
+                var flags = findChildrenByClassName(controls, 'question-flag');
+                if (flags.length > 0 && !canFlagPosts) {
+                    removeNode(flags[0]);
+                }
+                var closeBtn = findChildrenByClassName(controls, 'question-close');
+                if (
+                    closeBtn.length === 1 &&
+                    (
+                        (data['userReputation'] < 200) ||
+                        data['userIsReadOnly']
+                    )
+                ) {
+                    removeNode(closeBtn[0]);
+                }
+                var repLow = (data['userReputation'] < 200);
+                if (//maybe remove "edit" button
+                    repLow || data['userIsReadOnly']//only authors edit comments
+                ){
+                    var edit_btn = document.getElementById(
+                        'post-' + post_id + '-edit'
+                    )
+                    edit_btn.parentNode.removeChild(edit_btn);
+                }
+                if (//maybe remove retag button
+                    (data['userReputation'] <
+                    50) ||
+                    data['userIsReadOnly']
+                ){
+                    var retagBtn = document.getElementById('retag');
+                    if (retagBtn) {
+                        retagBtn.parentNode.removeChild(retagBtn);
+                    }
+                }
+            }
+            function render_add_comment_button(post_id, extra_comment_count){
+                if (extra_comment_count > 0){
+                    var text = "see more comments";
+                } else {
+                    var text = "add a comment";
+                }
+                var add_comment_btn = document.getElementById('add-comment-to-post-' + post_id);
+                add_comment_btn.innerHTML = text;
+            }
+
+            function render_add_answer_button(){
+                var add_answer_btn = document.getElementById('add-answer-btn');
+                if (askbot['data']['userIsAuthenticated']){
+                    if (askbot['data']['userId'] == 59){
+                        add_answer_btn.className += ' answer-own-question';
+                        add_answer_btn.setAttribute(
+                            'value',
+                            'Answer Your Own Question'
+                        )
+                    } else {
+                        add_answer_btn.setAttribute(
+                           'value',
+                            'Post Your Answer'
+                        )
+                    }
+                } else {
+                    add_answer_btn.setAttribute(
+                        'value',
+                        'Login/Signup to Post'
+                    );
+                }
+            }
+
+            function hide_convert_links() {
+                var isAuthenticated = data['userIsAuthenticated'];
+                var isMod = data['userIsAdminOrMod'];
+                if (isAuthenticated && isMod) {
+                    return;
+                }
+                var convertForms = findChildrenByClassName(document, 'convert-comment');
+                for (var i = 0; i < convertForms.length; i++) {
+                    //get comment id
+                    var form = convertForms[i];
+                    var idInput = findChildByAttribute(form, 'name', 'comment_id');
+                    var commentId = idInput.getAttribute('value');
+                    if (! isAuthorOfPost(commentId) ) {
+                        form.setAttribute('style', 'display:none;');
+                    }
+                }
+            }
+            
+            askbot['functions'] = askbot['functions'] || {};
+            askbot['functions']['renderPostVoteButtons'] = render_vote_buttons;
+            askbot['functions']['renderPostControls'] = render_post_controls;
+            askbot['functions']['renderAddCommentButton'] = render_add_comment_button;
+            askbot['functions']['renderAddAnswerButton'] = render_add_answer_button;
+            askbot['functions']['hideConvertLinks'] = hide_convert_links;
+            askbot['functions']['hideConvertAnswerLinks'] = hide_convert_answer_links;
+            askbot['functions']['hidePublishAnswerLink'] = hidePublishAnswerLink;
+        })();
+        /*]]>*/
+    </script> </head> <body class="two-col question-page anon lang-en"> <div class="notify" style="display:none"> <a id="closeNotify" onclick="notify.close(true)"></a> </div> <!-- template header.html --> <div 
+    id="header"
+    class="without-logo"
+> <div class="content-wrapper"> <div id="userToolsNav"> <a href="../../../account/signin/index.html%3Fnext=%252Fquestion%252F49%252Fmohu-se-prihlasit-ke-sledovani-tagu%252F.html">Hi there! Please sign in</a> <a class="help" href="../../../help/index.html" title="help">help</a> </div> <div id="metaNav"> <a 
+  id="navTags"
+  href="../../../tags/index.html"
+  
+>tags</a> <a 
+  id="navUsers"
+  href="../../../users/index.html"
+  
+>users</a> <a 
+  id="navBadges"
+  href="../../../badges/index.html"
+  
+>badges</a> </div> <div class="clean"></div> </div> </div> <!-- end template header.html --> <!-- template secondary_header.html --> <div id="secondaryHeader"> <div class="content-wrapper"> <form
+            
+                action="../../2296/bi-zwu-semestralni-prace-media-queries.1.html" id="searchForm"
+            
+            class="scopes-True-True-False"
+            method="get"> <div> <a id="homeButton" href="../../2296/bi-zwu-semestralni-prace-media-queries.1.html"></a> <div id="scopeNav"> <a class="scope-selector "
+            href="../../../questions/scope:all/sort:activity-desc/page:1/index.html"
+            title="see all questions">ALL</a> <a class="scope-selector "
+            href="../../../questions/scope:unanswered/sort:answers-asc/page:1/index.html"
+            title="see unanswered questions">UNANSWERED</a> </div> <a
+        id="askButton"
+        class="button"
+        href="../../../questions/ask/index.html"
+        >Ask Your Question</a> <div class="clearfix"></div> </div> <div 
+    id="searchBar"
+    class=""
+><input 
+        class="searchInput" 
+        type="text" 
+        autocomplete="off"
+        value="" 
+        name="query" 
+        id="keywords"
+    /><input type="submit" value="" name="search" class="searchBtn" /><input type="button"
+        value="X"
+        name="reset_query"
+        class="cancelSearchBtn"
+        
+            style="display: none;"
+        
+    /></div> </form> </div> </div> <div class="content-wrapper"> <div id="ContentLeft"> <div class="post question" data-post-id="49"> <div class="vote-buttons"> <div id="question-img-upvote-49"
+    class="question-img-upvote post-vote upvote"> </div> <div 
+    id="question-vote-number-49"
+    class="vote-number"
+    title="current number of votes"
+>0</div> <div
+    id="question-img-downvote-49"
+    class="question-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('question', '49');
+</script> <a class="twitter-share icon"
+        title="Share this question on twitter"
+    ></a> <a class="facebook-share icon"
+        title="Share this question on facebook"
+    ></a> <g:plusone size="small" count="false"></g:plusone> </div> <div id="post-id-49" class="post-content"> <h1><a href="../mohu-se-prihlasit-ke-sledovani-tagu.1.html">Mohu se přihlásit ke sledování tagů?</a></h1> <ul id="question-tags"
+    class="tags post-tags tags"
+> <li class="tag-left"><a
+            class="tag tag-right post-tag"
+            
+            href="../../../questions/scope:all/sort:activity-desc/tags:askfit/page:1/index.html"
+            title="see questions tagged 'askfit'"
+            
+            rel="tag"
+            data-tag-name="askfit"
+        >askfit</a></li> </ul> <div class="clearfix"></div> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                asked
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 17:25:22 +0100">
+        2014-09-13 17:25:22 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/59/josef-kokes/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/eb947d5f190842171f53ed5b3411af4c?s=32&amp;d=identicon&amp;r=PG"
+    title="Josef Kokeš" 
+    alt="Josef Kokeš gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/59/josef-kokes/index.html">Josef Kokeš</a> <br/> <span class="reputation-score">2956</span> <span class="badges" title="Josef Kokeš has 20 gold badges, 35 silver badges and 73 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">20</span> <span class='badge2'>&#9679;</span><span class="badgecount">35</span> <span class='badge3'>&#9679;</span><span class="badgecount">73</span> </span> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../questions/49/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2014-09-13 18:38:16 +0100">
+        2014-09-13 18:38:16 +0100
+    </abbr></strong></a> </p> </div> </div> <p>Viz subj. Pro mě by bylo velice užitečné, kdybych se mohl přihlásit ke sledování určitých tagů (BI-PS1, například) a automaticky followoval všechny otázky s těmito tagy. Nenašel jsem, jak to udělat, zdá se mi, že to nejde - že musím jednou za občas přijít, dát vyhledat požadovaný tag a zkusit si vzpomenout, co už jsou vyřešené otázky a co jsou nové.</p> </div> <div id="question-controls" class="post-controls"> <a id="post-49-edit" class="question-edit" href="../../../questions/49/edit/index.html">edit</a> <script type="text/javascript">
+    var retagUrl = "/questions/49/retag/";
+</script> <a id="retag" class="question-retag" href="../../../questions/49/retag/index.html">retag</a> <span
+        id="question-offensive-flag-49" class="offensive-flag"
+        title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+    > <a class="question-flag">flag offensive</a> </span> <a class="question-close" href="../../../questions/49/close/index.html">close</a> <a
+    id="post-49-delete"
+    class="question-delete"
+>delete</a> <script type="text/javascript">
+    askbot['functions']['renderPostControls']('49');
+</script> </div> <div class="comments empty" id="comments-for-question-49"><div class="content"></div><div class="controls"><a id="add-comment-to-post-49" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-question-49'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '49',
+                                                0
+                                            );
+    </script></div></div> </div> </div> <div class="clean"></div> <div class="tabBar tabBar-answer"> <h2 id="questionCount">
+        
+            1 Answer
+            
+    </h2> <div class="tabsA"> <span class="label">
+                    Sort by »
+                    </span> <a id="oldest" href="index.html%3Fsort=oldest.html#sort-top"
+           title="oldest answers will be shown first"
+                ><span>oldest</span></a> <a id="latest" href="index.html%3Fsort=latest.html#sort-top"
+           title="newest answers will be shown first"
+                ><span>newest</span></a> <a id="votes" href="index.html%3Fsort=votes.html#sort-top"
+           title="most voted answers will be shown first"
+                ><span>most voted</span></a> </div> </div> <div class="clean"></div> <div class="clean"></div> <a name="50"></a> <div
+    id="post-id-50"
+    data-post-id="50"
+    class="post answer accepted-answer  "
+> <div class="vote-buttons"> <div id="answer-img-upvote-50"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-50"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-50"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '50');
+</script> <div
+    id="answer-img-accept-50"
+    class="answer-img-accept"
+        
+    title="this answer has been selected as correct"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-09-13 17:27:40 +0100">
+        2014-09-13 17:27:40 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1/miro-hroncok/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/9f104fbd3c9fc8f448b2086813a82978?s=32&amp;d=identicon&amp;r=PG"
+    title="Miro Hrončok" 
+    alt="Miro Hrončok gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1/miro-hroncok/index.html">Miro Hrončok</a> <img class="flag" 
+            src="../../../m/default/media/images/flags/cz.gif%3Fv=1"
+            alt="flag of Czech Republic"
+            title="Miro Hrončok is from Czech Republic"
+        /> <br/> <span class="reputation-score">1310</span> <span class="badges" title="Miro Hrončok has 17 gold badges, 30 silver badges and 43 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">17</span> <span class='badge2'>&#9679;</span><span class="badgecount">30</span> <span class='badge3'>&#9679;</span><span class="badgecount">43</span> </span> <a 
+            href="http://hroncok.cz/"
+            title="Miro Hrončok's website is http://hroncok.cz/"
+            
+        >
+        http://hroncok.cz/
+        </a> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../answers/50/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2014-09-13 17:29:48 +0100">
+        2014-09-13 17:29:48 +0100
+    </abbr></strong></a> </p> </div> </div> <p>Vím, že se dá tag přidat do interesting tagů a pak zobrazit (vpravo dole na hlavní stránce) pouze interesting tagy. Přímo se k nim přihlásit ale (asi) nejde.</p> <p><strong>EDIT:</strong> V nastavení e-mailů v profilu lze pak ale vykřesat nastavení, které vede k e-mailování interesting tagů.</p> </div> <div class="answer-controls post-controls"> <span id='post-50-edit' class="action-link"> <a class="question-edit" href="../../../answers/50/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-50"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-50-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-50-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="50"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=50.html#post-id-50"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-50-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="50"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-50-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="50"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('50');
+    askbot['functions']['hidePublishAnswerLink']('50');
+    askbot['functions']['renderPostControls']('50');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-50"><div class="content"><div class="comment" id="comment-51"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-51-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Myslíš "Entire forum (tag filtered)"? No dobře, zkusíme to nastavit, co mi začne chodit za maily. Spíš jsem měl tendenci to vypnout úplně...</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:33:54 +0100">
+        2014-09-13 17:33:54 +0100
+    </abbr>)</span><a 
+                                id="post-51-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="51" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('51');
+                </script><div class="comment" id="comment-55"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-55-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pak samozřejmě stačí koukat na ten výpis, kde je interesting only.</p><a 
+                                class="author"
+                                href="../../../users/1/miro-hroncok/index.html"
+                            >Miro Hrončok</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-13 17:37:03 +0100">
+        2014-09-13 17:37:03 +0100
+    </abbr>)</span><a 
+                                id="post-55-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="55" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('55');
+                </script><div class="comment" id="comment-117"><div class="comment-votes"><div 
+                                id="comment-img-upvote-117" 
+                                class="upvote"
+                            >2</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '117');
+                            </script></div><div class="comment-content"><div 
+                            id="post-117-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pokud dobře vidím, tak každý tag má RSS feed (ideální řešení pro mě).</p><a 
+                                class="author"
+                                href="../../../users/15/tomas-kalvoda/index.html"
+                            >Tomáš Kalvoda</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 14:39:12 +0100">
+        2014-09-14 14:39:12 +0100
+    </abbr>)</span><a 
+                                id="post-117-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="117" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('117');
+                </script><div class="comment" id="comment-118"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-118-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pro mě taky. Super.</p><a 
+                                class="author"
+                                href="../../../users/59/josef-kokes/index.html"
+                            >Josef Kokeš</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-09-14 16:31:19 +0100">
+        2014-09-14 16:31:19 +0100
+    </abbr>)</span><a 
+                                id="post-118-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="118" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('118');
+                </script></div><div class="controls"><a id="add-comment-to-post-50" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-50'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '50',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <div class="clean"></div> <form
+        id="fmanswer"
+        action="https://www.askfit.cz/questions/49/answer/"
+        method="post"
+        ><input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <div style="clear:both"></div> <div> <h2>
+                        
+                            Your answer
+                        
+                    </h2> </div> <div class="message"><span class='strong big'>Please start posting your answer anonymously</span> - your answer will be saved within the current session and published after you log in or create a new account. Please try to give a <strong>substantial answer</strong>, for discussions, <strong>please use comments</strong> and <strong>please do remember to vote</strong> (after you log in)!</div> <div class="folded-editor" tabindex="6"> <p class="prompt"><a>Add answer</a></p> <div class="editor-proper"> <div class="wmd-container"> <div id="wmd-button-bar" class="wmd-panel"></div> <textarea cols="40" id="editor" name="text" rows="10"> </textarea> </div> <div class="form-item"> <label for="editor" class="form-error"></label> <p class="editor-status action-status"><span></span></p> </div> <div class="preview-toggle"> <span 
+            id="pre-collapse" 
+            title="Toggle the real time Markdown editor preview"
+        >
+            [hide preview]
+        </span> </div> <div class="clearfix"></div> <div id="previewer" class="wmd-preview"></div> <input id="add-answer-btn" type="submit" class="submit after-editor" style="float:left"/> <script type="text/javascript">
+                        askbot['functions']['renderAddAnswerButton']();
+                    </script> <div class="checkbox"
+        title="if you choose community wiki option, the question and answer do not generate points and name of author will not be shown"> <input id="id_wiki" name="wiki" type="checkbox" /> <label for="id_wiki">community wiki (karma is not awarded &amp;amp; many others can edit wiki post)</label> </div> </div> </div> </form> </div> <div id="ContentRight"> <div class="box vote-buttons"> <h2 >Question tools</h2> <a class="button followed"
+            alt="click to follow this question">
+            Follow
+        </a> <div class="clearfix"></div> <div id="favorite-number" class="favorite-number"> </div> <div class="notify-sidebar"> <p class="rss"> <a
+                href="https://askfit.cz/feeds/question/49"
+                title="subscribe to this question rss feed"
+                >subscribe to rss feed</a> </p> </div> </div> <div class="clearfix"></div> <div class="box statsWidget"> <div class="clearfix"></div> <h2>Stats</h2> <p>
+        Asked: <strong><abbr class="timeago" title="2014-09-13 17:25:22 +0100">
+        2014-09-13 17:25:22 +0100
+    </abbr></strong> </p> <p> 
+        Seen: <strong>365 times</strong> </p> <p>
+        Last updated: <strong title="2014-09-13 18:38:16.171041">Sep 13 '14</strong> </p> </div> <div class="box"> <h2>Related questions</h2> <div class="questions-related"> <p> <a href="../../889/oficialni-podpora-askfitcz-ze-strany-fitu.1.html">Oficiální podpora Askfit.cz ze strany FITu</a> </p> <p> <a href="../../395/zavirani-vlaken.1.html">Zavírání vláken [closed]</a> </p> <p> <a href="../../93/bude-tohle-nekdo-pouzivat.1.html">Bude tohle někdo používat? :) [closed]</a> </p> <p> <a href="../../184/kolik-casu-zabralo-vytvoreni-tohoto-projektu.1.html">Kolik času zabralo vytvoření tohoto projektu? [closed]</a> </p> <p> <a href="../../2924/co-dal-s-askfitem.1.html">Co dal s Askfitem ?</a> </p> <p> <a href="../../882/reseni-pro-spamboty.1.html">Řešení pro spamboty</a> </p> <p> <a href="../../1208/zvyrazneni-kodu-v-komentari.1.html">Zvýraznění kódu v komentáři</a> </p> <p> <a href="../../272/pocet-bodu-k-moznosti-hlasovani.1.html">Počet bodů k možnosti hlasování</a> </p> <p> <a href="../../10/co-vam-zde-chybi.1.html">Co vám zde chybí?</a> </p> <p> <a href="../../1076/testovaci-spam-2.html">Testovací spam 2</a> </p> </div> </div> </div> </div> <!-- template footer.html --> <div id="ground"> <div class="content-wrapper"> <div class="copyright"> <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"> <img
+                            class="license-logo"
+                            src="../../../m/default/media/images/cc-by-sa.png%3Fv=1"
+                            title="cc-by-sa"
+                            alt="cc-by-sa"
+                        /> </a>
+                
+                Copyright students of FIT CTU and others, 2014. Content on this site is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International</a> license.
+
+            </div> <div class="footer-links" > <a href="../../../about/index.html">about</a><span class="link-separator"> |</span> <a href="../../../faq/index.html">faq</a><span class="link-separator"> |</span> <a href="../../../help/index.html" title="help">help</a> <span class="link-separator"> |</span> <a href="../../../privacy/index.html">privacy policy</a><span class="link-separator"> |</span> <a href=
+                        
+                            "../../../feedback/index.html%3Fnext=%252Fquestion%252F49%252Fmohu-se-prihlasit-ke-sledovani-tagu%252F.html">
+                        
+                        give feedback
+                    </a> </div> <div class="powered-link"> <a href="http://askbot.com" target="_blank">
+                Powered by Askbot version 0.7.49
+            </a> </div> <div class="clean"></div> </div> </div> <!-- end template footer.html --> <div id="no-javascript"> <noscript class="noscript">
+        Please note: AskFIT requires javascript to work properly, please enable javascript in your browser, <a href="https://www.google.com/support/bin/answer.py?answer=23852">here is how</a> </noscript> <script type="text/javascript">
+        //IE fix to hide the red margin
+        var noscript = document.getElementsByTagName('noscript')[0];
+        noscript.style.padding = '0px';
+        noscript.style.backgroundColor = 'transparent';
+    </script> </div> <script type="text/javascript">
+    askbot['urls']['mark_read_message'] = '/messages/markread/';
+    askbot['urls']['get_tags_by_wildcard'] = '/get-tags-by-wildcard/';
+    askbot['urls']['get_tag_list'] = '/get-tag-list/';
+    askbot['urls']['follow_user'] = '/followit/follow/user/{{userId}}/';
+    askbot['urls']['unfollow_user'] = '/followit/unfollow/user/{{userId}}/';
+    askbot['urls']['user_signin'] = '/account/signin/';
+    askbot['urls']['getEditor'] = '/get-editor/';
+    askbot['urls']['apiGetQuestions'] = '/api/get_questions/';
+    askbot['urls']['ask'] = '/questions/ask/';
+	askbot['urls']['questions'] = '/questions/';
+    askbot['settings']['groupsEnabled'] = false;
+    askbot['settings']['static_url'] = '/m/';
+    askbot['settings']['minSearchWordLength'] = 4;
+    askbot['settings']['mathjaxEnabled'] = true;
+    askbot['settings']['sharingSuffixText'] = '';
+    askbot['data']['maxCommentLength'] = 800;
+    askbot['settings']['editorType'] = 'markdown';
+    askbot['settings']['commentsEditorType'] = 'plain-text';
+    
+        askbot['settings']['allowedUploadFileTypes'] = [
+            "jpg", "jpeg", "gif", "bmp", "png", "tiff"
+        ];
+    
+    askbot['data']['haveFlashNotifications'] = false;
+    askbot['data']['activeTab'] = 'questions';
+    
+        askbot['data']['searchUrl'] = '';
+    
+</script> <script type="text/javascript" src="../../../m/CACHE/js/9c2bd604370b.js"></script> <script type="text/javascript">
+    /*<![CDATA[*/
+    $('.mceStatusbar').remove();//a hack to remove the tinyMCE status bar
+    $(document).ready(function(){
+        // focus input on the search bar endcomment
+        var activeTab = askbot['data']['activeTab'];
+        if (inArray(activeTab, ['users', 'questions', 'tags', 'badges'])) {
+            var searchInput = $('#keywords');
+        } else if (activeTab === 'ask') {
+            var searchInput = $('#id_title');
+        } else {
+            var searchInput = undefined;
+            animateHashes();
+        }
+
+        if (searchInput) {
+            searchInput.focus();
+            putCursorAtEnd(searchInput);
+        }
+
+        var haveFullTextSearchTab = inArray(activeTab, ['questions', 'badges', 'ask']);
+        var haveUserProfilePage = $('body').hasClass('user-profile-page');
+        if ((haveUserProfilePage || haveFullTextSearchTab) && searchInput.length) {
+            var search = new FullTextSearch();
+            askbot['controllers'] = askbot['controllers'] || {};
+            askbot['controllers']['fullTextSearch'] = search;
+            search.setSearchUrl(askbot['data']['searchUrl']);
+            if (activeTab === 'ask') {
+                search.setAskButtonEnabled(false);
+            }
+            search.decorate(searchInput);
+        } else if (activeTab === 'tags') {
+            var search = new TagSearch();
+            search.decorate(searchInput);
+        }
+
+        if (askbot['data']['userIsAdminOrMod']) {
+            $('body').addClass('admin');
+        }
+        if (askbot['settings']['groupsEnabled']) {
+            askbot['urls']['add_group'] = "/add-group/";
+            var group_dropdown = new GroupDropdown();
+            $('.dropdown').append(group_dropdown.getElement());
+        }
+        var userRep = $('#userToolsNav .reputation');
+        if (userRep.length) {
+            var showPermsTrigger = new ShowPermsTrigger();
+            showPermsTrigger.decorate(userRep);
+        }
+    });
+    if (askbot['data']['haveFlashNotifications']) {
+        $('#validate_email_alert').click(function(){notify.close(true)})
+        notify.show();
+    }
+    $('abbr.timeago').timeago();
+    /*]]>*/
+</script> <script type='text/javascript' src="https://askfit.cz/m/mathjax/MathJax.js">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX","output/HTML-CSS"],
+            tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+        });
+    </script> <script type='text/javascript'>
+        
+        
+        var codeFriendlyMarkdown = true;
+        
+        var maxCommentLength = 800;
+        askbot['urls']['postComments'] = '/post_comments/';
+        askbot['urls']['editComment'] = '/edit_comment/';
+        askbot['urls']['deleteComment'] = '/comment/delete/';
+        askbot['urls']['convertComment'] = '/comment/convert/';
+        askbot['urls']['getComment'] = '/comment/get_text/';
+        askbot['urls']['saveDraftAnswer'] = '/save-draft-answer/';
+        askbot['urls']['vote_url'] = '/vote'
+        askbot['urls']['user_signin'] = '/account/signin/';
+        askbot['urls']['swap_question_with_answer'] = '/swap-question-with-answer/';
+        askbot['urls']['upvote_comment'] = '/comment/upvote/';
+        askbot['urls']['delete_post'] = '/post/delete/';
+        askbot['urls']['get_html_template'] = '/get-html-template/';
+        askbot['urls']['getGroupsList'] = '/get-groups-list/';
+        askbot['urls']['publishAnswer'] = '/answer/publish/';
+        askbot['data']['userIsThreadModerator'] = false;
+        askbot['data']['questionAuthorId'] = 59;
+        askbot['data']['threadIsClosed'] = false;
+        askbot['data']['answersSortTab'] = 'oldest';
+        askbot['data']['questionId'] = 49;
+        askbot['data']['threadSlug'] = 'mohu-se-prihlasit-ke-sledovani-tagu';
+        askbot['messages']['addComment'] = 'add a comment';
+        askbot['messages']['userNamePrompt'] = 'User name:';
+        askbot['messages']['userEmailPrompt'] = 'Email address:';
+        askbot['settings']['saveCommentOnEnter'] = false;
+        askbot['settings']['tagSource'] = 'user-input';
+        askbot['settings']['enableSharingGoogle'] = true;
+        askbot['settings']['enableEmailAlerts'] = true;
+    </script> <script type="text/javascript">
+    
+    askbot['settings']['tagsAreRequired'] = true
+    askbot['settings']['maxTagLength'] = 20;
+    askbot['messages']['maxTagLength'] = "each tag must be shorter than 20 characters";
+    askbot['settings']['maxTagsPerPost'] = 5;
+    askbot['messages']['maxTagsPerPost'] = "please use 5 tags or less";
+    askbot['messages']['tagLimits'] = "please use up to 5 tags, less than 20 characters each";
+    askbot['urls']['upload'] = '/upload/';
+    askbot['settings']['minTitleLength'] = 10;
+    askbot['settings']['minQuestionBodyLength'] = 10;
+    askbot['settings']['minAnswerBodyLength'] = 10;
+    askbot['settings']['minCommentBodyLength'] = 3;
+    askbot['settings']['tag_editor'] = '{\u0022max_tag_length\u0022: 20, \u0022tag_regex\u0022: \u0022^[\u005C\u005Cw+.#\u002D]+$\u0022, \u0022max_tags_per_post\u0022: 5, \u0022messages\u0022: {\u0022wrong_chars\u0022: \u0022please use letters, numbers and characters \u005C\u0022\u002D+.#\u005C\u0022\u0022, \u0022required\u0022: \u0022tags are required\u0022}, \u0022tags_are_required\u0022: true, \u0022force_lowercase_tags\u0022: false}';
+    askbot['settings']['tinyMCEPlugins'] = JSON.parse('[]');
+</script> <script type='text/javascript'>
+    (function() {
+        //make images always fit the screen
+        var images = $('.question-page .post-body img');
+        //these breakpoints must match those in css
+        //for explanation see utils.js:LimitedWidthImage
+        var breakpoints = [
+            [980, undefined],
+            [800, 55]
+        ];
+        var maxWidth = 685;
+        images.each(function(idx, item) {
+            var img = new LimitedWidthImage(breakpoints, maxWidth);
+            img.decorate($(item));
+        });
+    })();
+</script> <script type="text/javascript" src="../../../m/CACHE/js/7b67e8c0204c.js"></script> <script type="text/javascript">
+    // define reputation needs for comments
+    $(document).ready(function(){
+        $("#nav_questions").attr('className',"on");
+        $("#" + askbot['data']['answersSortTab']).attr('className',"on");
+        
+        Vote.init(
+            askbot['data']['questionId'],
+            askbot['data']['threadSlug'],
+            askbot['data']['questionAuthorId'],
+            askbot['data']['userId']
+        );
+        
+        if ((askbot['data']['threadIsClosed'] === false) && askbot['data']['userIsAuthenticated']) {
+            initEditor();
+        }
+        
+        lanai.highlightSyntax();
+        $('#btLogin').bind('click', function(){
+            window.location.href='/account/signin/';
+        });
+        if (window.location.hash === 'fmanswer'){
+            $('#fmanswer textarea').focus();
+        }
+
+        if (askbot['settings']['enableSharingGoogle']) {
+            $.getScript("//apis.google.com/js/plusone.js");
+        }
+
+        if (askbot['data']['userId'] === askbot['data']['questionAuthorId']) {
+            $("#fmanswer_button").click(function() {
+                $("#fmanswer").show();
+                $("#fmanswer_button").hide();
+            });
+        }
+
+        if (askbot['data']['userIsAuthenticated']) {
+            var draftHandler = new DraftAnswer();
+            draftHandler.setThreadId(4);
+            draftHandler.decorate($(document));
+        }
+    });
+
+    $(window).bind('hashchange', animate_hashes);
+
+    function animate_hashes(){
+      var id_value = window.location.hash;
+      if (id_value != ""){
+        var previous_color = $(id_value).css('background-color');
+        $(id_value).css('backgroundColor', '#FFF8C6');
+        $(id_value).animate(
+            {backgroundColor: '#ff7f2a'}, 1000
+        ).animate({backgroundColor: '#FFF8C6'}, 1000, function(){
+            $(id_value).css('backgroundColor', previous_color);
+        });
+      }
+    }
+
+    
+    function initEditor(){
+        $('#editor').TextAreaResizer();
+        //highlight code synctax when editor has new text
+        $("#editor").typeWatch({highlight: false, wait: 3000,
+                         captureLength: 5, callback: lanai.highlightSyntax});
+                         
+        var display = true;
+        var txt = "[hide preview]";
+        $('#pre-collapse').text(txt);
+        $('#pre-collapse').bind('click', function(){
+            txt = display ? "[show preview]" : "[hide preview]";
+            display = !display;
+            $('#previewer').toggle();
+            $('#pre-collapse').text(txt);
+        });
+        setupFormValidation(
+            $("#fmanswer"),
+            CPValidator.getAnswerFormRules(),
+            CPValidator.getAnswerFormMessages()
+        );
+    }
+    (function() {
+        var editorBox = $('.folded-editor');
+        if (editorBox.length) {
+            var foldedEditor = new FoldedEditor();
+            foldedEditor.decorate(editorBox);
+        }
+    })();
+</script> <script type="text/javascript">
+            for (url_name in askbot['urls']){
+                askbot['urls'][url_name] = cleanUrl(askbot['urls'][url_name]);
+            }
+        </script> </body> </html>

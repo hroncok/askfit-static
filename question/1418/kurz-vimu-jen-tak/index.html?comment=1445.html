@@ -1,0 +1,1775 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Kurz VIMu - jen tak - Ask FIT</title> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <meta http-equiv="X-UA-Compatible" content="IE=EDGE" /> <meta name="description" content="Byl by zajem o cca 4-cvikovy kurz VIMu? A hlavne jaka forma by byla nejzajimavejsi? Moje predstava je kapacita 48 lid ..." /> <meta name="keywords" content="VIM,Ask,FIT ČVUT" /> <meta name="referrer" content="always" /> <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> <link rel="shortcut icon" href="../../../upfiles/fit.ico" /> <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS feed from AskFIT"
+            href="https://askfit.cz/feeds/rss/"
+        /> <link rel="stylesheet" href="../../../m/CACHE/css/13f37855be5f.css" type="text/css" /> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=latin-ext' rel='stylesheet' type='text/css'> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=cyrillic-ext' rel='stylesheet' type='text/css'> <link rel="canonical" href="https://askfit.cz/question/1418/kurz-vimu-jen-tak/" /> <link rel="stylesheet" type="text/css" href="../../../m/default/media/js/wmd/wmd.css%3Fv=1.css" /> <script type="text/javascript" src="../../../m/default/media/js/modernizr.custom.js%3Fv=1"></script> <script type="text/javascript">
+    var askbot = {};
+    askbot['data'] = {};
+    askbot['data']['userIsAuthenticated'] = false;
+    askbot['data']['languageCode'] = 'en';
+    
+        askbot['data']['userReputation'] = 0;
+        askbot['data']['userIsReadOnly'] = false;//in principle we allow anon users to start posting
+    
+    askbot['urls'] = {};
+    askbot['settings'] = {};
+    askbot['messages'] = {};
+</script> <script type="text/javascript" src="../../../jsi18n/index.html"></script> <script type="text/javascript">
+        /*<![CDATA[*/
+        //below is pure cross-browser javascript, no jQuery
+        askbot['data']['userIsThreadModerator'] = false;
+        askbot['data']['oldestAnswerId'] = 1453;
+        (function(){
+
+            var hasClass = function(node, selector) {
+                var classes = (" " + node.className + " ").split(' ');
+                for (var i = 0; i < classes.length; i++) {
+                    if (classes[i] === selector) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            var findChildrenByClassName = function(node, className) {
+                var nodes = [];
+                var walk = function(node) {
+                    if (hasClass(node, className)) {
+                        nodes.push(node);
+                    }
+                    if (node.childNodes) {
+                        for (var i=0; i < node.childNodes.length; i++) {
+                            walk(node.childNodes[i]);
+                        }
+                    }
+                };
+                walk(node);
+                return nodes;
+            };
+
+            var getTextContent = function(node) {
+                var text = node.innerText || node.textContent;
+                if (text === undefined) {
+                    return '';
+                } else {
+                    return text;
+                }
+            };
+
+            var hasAttribute = function(node, attrName) {
+                if (node.hasAttribute) {
+                    return node.hasAttribute(attrName);
+                } else {
+                    return (!(!(node.getAttribute(attrName))));
+                }
+            };
+
+            var findChildByAttribute = function(node, attrName, attrVal) {
+                var children = node.childNodes;
+                for (var i = 0; i < children.length; i++) {
+                    var child = children[i];
+                    if (child.getAttribute(attrName) === attrVal) {
+                        return child;
+                    }
+                };
+                return null;
+            };
+
+            var postIsComment = function(postId) {
+                if (document.getElementById('comment-' + postId)) {
+                    return true;
+                }
+                return false;
+            };
+
+            var removeNode = function(node) {
+                node.parentNode.removeChild(node);
+            };
+
+            var trim = function(text) {
+                return text.replace(/^\s+|\s+$/g, '');
+            };
+
+            var data = askbot['data'];
+            var isAuthorOfPost = function(post_id) {
+                return (data['user_posts'] && data['user_posts'][post_id]);
+            };
+
+            if (data['userIsAuthenticated']){
+                var votes = {};
+                
+                data['user_votes'] = votes;
+                var posts = {};
+                
+                data['user_posts'] = posts;
+            }
+
+            function render_vote_buttons(post_type, post_id){
+                var upvote_btn = document.getElementById(
+                    post_type + '-img-upvote-' + post_id
+                );
+                var downvote_btn = document.getElementById(
+                    post_type + '-img-downvote-' + post_id
+                );
+                if (data['userIsAuthenticated']){
+                    if (post_id in data['user_votes']){
+                        var vote = data['user_votes'][post_id];
+                        if (vote == -1){
+                            var btn = downvote_btn;
+                        } else if (vote == 1){
+                            var btn = upvote_btn;
+                        } else {
+                            return;
+                        }
+                        if (post_type == 'comment'){
+                            btn.className = btn.className + ' upvoted';
+                        } else {
+                            btn.className = btn.className + ' on';
+                        }
+                    }
+                }
+            }
+
+            function hide_convert_answer_links(post_id){
+                var id1 = 'post-' + post_id + '-convert';//for repost as Q comment
+                var repostAsQuestionComment = document.getElementById(id1);
+                var id2 = 'post-' + post_id + '-repost-as-comment-under-previous-answer';
+                var repostAsPrevAnsComment = document.getElementById(id2);
+                var extraOptsList = repostAsQuestionComment.parentNode;
+                var extraOpts = extraOptsList.parentNode;
+
+                var isAuthenticated = data['userIsAuthenticated'];
+                var isMod = data['userIsAdminOrMod'];
+                if (isAuthenticated && (isMod || isAuthorOfPost(post_id))) {
+                    //still may need to hide because answer may be too long
+                    var answer_id = 'post-id-' + post_id;
+                    var answer_container = document.getElementById(answer_id);
+                    var answerBody = findChildrenByClassName(answer_container, 'post-body')[0];
+                    //todo: this is not reliable
+                    var answerBodyNodes = answerBody.childNodes;
+                    var answerElement = answerBodyNodes[answerBodyNodes.length - 1];
+                    if (trim(getTextContent(answerElement)).length > askbot['data']['maxCommentLength']) {
+                        repostAsQuestionComment.parentNode.removeChild(repostAsQuestionComment);
+                        repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                    } else if (parseInt(post_id) === data['oldestAnswerId']) {
+                        repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                    }
+                } else {
+                    repostAsQuestionComment.parentNode.removeChild(repostAsQuestionComment);
+                    repostAsPrevAnsComment.parentNode.removeChild(repostAsPrevAnsComment);
+                }
+
+                //if the whole control is empty - remove it
+                if (extraOptsList.getElementsByTagName('li').length === 0) {
+                    extraOpts.parentNode.removeChild(extraOpts);
+                }
+            }
+
+            function hidePublishAnswerLink(postId) {
+                if (data['userIsThreadModerator'] === false) {
+                    //hide publish/unpublish answer links
+                    var answerId = 'post-' + postId + '-publish';
+                    var pubBtn = document.getElementById(answerId);
+                    pubBtn.parentNode.removeChild(pubBtn);
+                }
+            }
+
+            function render_post_controls(post_id){
+                if (data['userIsAdminOrMod']){
+                    return;//all remaining functions stay on
+                }
+                if (data['user_posts'] && post_id in data['user_posts']){
+                    //todo: remove edit button from older comments
+                    return;
+                }
+                var deleteBtn = document.getElementById('post-' + post_id + '-delete');
+                var controls = deleteBtn.parentNode;
+                if (//maybe remove "delete" button
+                    (data['userReputation'] < 
+                    200) ||
+                    data['userIsReadOnly']
+                ) {
+                    removeNode(deleteBtn);
+                }
+
+                var canFlagPosts = data['userReputation'] >= 5;
+                var flags = findChildrenByClassName(controls, 'question-flag');
+                if (flags.length > 0 && !canFlagPosts) {
+                    removeNode(flags[0]);
+                }
+                var closeBtn = findChildrenByClassName(controls, 'question-close');
+                if (
+                    closeBtn.length === 1 &&
+                    (
+                        (data['userReputation'] < 200) ||
+                        data['userIsReadOnly']
+                    )
+                ) {
+                    removeNode(closeBtn[0]);
+                }
+                var repLow = (data['userReputation'] < 200);
+                if (//maybe remove "edit" button
+                    repLow || data['userIsReadOnly']//only authors edit comments
+                ){
+                    var edit_btn = document.getElementById(
+                        'post-' + post_id + '-edit'
+                    )
+                    edit_btn.parentNode.removeChild(edit_btn);
+                }
+                if (//maybe remove retag button
+                    (data['userReputation'] <
+                    50) ||
+                    data['userIsReadOnly']
+                ){
+                    var retagBtn = document.getElementById('retag');
+                    if (retagBtn) {
+                        retagBtn.parentNode.removeChild(retagBtn);
+                    }
+                }
+            }
+            function render_add_comment_button(post_id, extra_comment_count){
+                if (extra_comment_count > 0){
+                    var text = "see more comments";
+                } else {
+                    var text = "add a comment";
+                }
+                var add_comment_btn = document.getElementById('add-comment-to-post-' + post_id);
+                add_comment_btn.innerHTML = text;
+            }
+
+            function render_add_answer_button(){
+                var add_answer_btn = document.getElementById('add-answer-btn');
+                if (askbot['data']['userIsAuthenticated']){
+                    if (askbot['data']['userId'] == 10){
+                        add_answer_btn.className += ' answer-own-question';
+                        add_answer_btn.setAttribute(
+                            'value',
+                            'Answer Your Own Question'
+                        )
+                    } else {
+                        add_answer_btn.setAttribute(
+                           'value',
+                            'Post Your Answer'
+                        )
+                    }
+                } else {
+                    add_answer_btn.setAttribute(
+                        'value',
+                        'Login/Signup to Post'
+                    );
+                }
+            }
+
+            function hide_convert_links() {
+                var isAuthenticated = data['userIsAuthenticated'];
+                var isMod = data['userIsAdminOrMod'];
+                if (isAuthenticated && isMod) {
+                    return;
+                }
+                var convertForms = findChildrenByClassName(document, 'convert-comment');
+                for (var i = 0; i < convertForms.length; i++) {
+                    //get comment id
+                    var form = convertForms[i];
+                    var idInput = findChildByAttribute(form, 'name', 'comment_id');
+                    var commentId = idInput.getAttribute('value');
+                    if (! isAuthorOfPost(commentId) ) {
+                        form.setAttribute('style', 'display:none;');
+                    }
+                }
+            }
+            
+            askbot['functions'] = askbot['functions'] || {};
+            askbot['functions']['renderPostVoteButtons'] = render_vote_buttons;
+            askbot['functions']['renderPostControls'] = render_post_controls;
+            askbot['functions']['renderAddCommentButton'] = render_add_comment_button;
+            askbot['functions']['renderAddAnswerButton'] = render_add_answer_button;
+            askbot['functions']['hideConvertLinks'] = hide_convert_links;
+            askbot['functions']['hideConvertAnswerLinks'] = hide_convert_answer_links;
+            askbot['functions']['hidePublishAnswerLink'] = hidePublishAnswerLink;
+        })();
+        /*]]>*/
+    </script> </head> <body class="two-col question-page anon lang-en"> <div class="notify" style="display:none"> <a id="closeNotify" onclick="notify.close(true)"></a> </div> <!-- template header.html --> <div 
+    id="header"
+    class="without-logo"
+> <div class="content-wrapper"> <div id="userToolsNav"> <a href="../../../account/signin/index.html%3Fnext=%252Fquestion%252F1418%252Fkurz-vimu-jen-tak%252F.html">Hi there! Please sign in</a> <a class="help" href="../../../help/index.html" title="help">help</a> </div> <div id="metaNav"> <a 
+  id="navTags"
+  href="../../../tags/index.html"
+  
+>tags</a> <a 
+  id="navUsers"
+  href="../../../users/index.html"
+  
+>users</a> <a 
+  id="navBadges"
+  href="../../../badges/index.html"
+  
+>badges</a> </div> <div class="clean"></div> </div> </div> <!-- end template header.html --> <!-- template secondary_header.html --> <div id="secondaryHeader"> <div class="content-wrapper"> <form
+            
+                action="../../2296/bi-zwu-semestralni-prace-media-queries.1.html" id="searchForm"
+            
+            class="scopes-True-True-False"
+            method="get"> <div> <a id="homeButton" href="../../2296/bi-zwu-semestralni-prace-media-queries.1.html"></a> <div id="scopeNav"> <a class="scope-selector "
+            href="../../../questions/scope:all/sort:activity-desc/page:1/index.html"
+            title="see all questions">ALL</a> <a class="scope-selector "
+            href="../../../questions/scope:unanswered/sort:answers-asc/page:1/index.html"
+            title="see unanswered questions">UNANSWERED</a> </div> <a
+        id="askButton"
+        class="button"
+        href="../../../questions/ask/index.html"
+        >Ask Your Question</a> <div class="clearfix"></div> </div> <div 
+    id="searchBar"
+    class=""
+><input 
+        class="searchInput" 
+        type="text" 
+        autocomplete="off"
+        value="" 
+        name="query" 
+        id="keywords"
+    /><input type="submit" value="" name="search" class="searchBtn" /><input type="button"
+        value="X"
+        name="reset_query"
+        class="cancelSearchBtn"
+        
+            style="display: none;"
+        
+    /></div> </form> </div> </div> <div class="content-wrapper"> <div id="ContentLeft"> <div class="post question" data-post-id="1418"> <div class="vote-buttons"> <div id="question-img-upvote-1418"
+    class="question-img-upvote post-vote upvote"> </div> <div 
+    id="question-vote-number-1418"
+    class="vote-number"
+    title="current number of votes"
+>21</div> <div
+    id="question-img-downvote-1418"
+    class="question-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('question', '1418');
+</script> <a class="twitter-share icon"
+        title="Share this question on twitter"
+    ></a> <a class="facebook-share icon"
+        title="Share this question on facebook"
+    ></a> <g:plusone size="small" count="false"></g:plusone> </div> <div id="post-id-1418" class="post-content"> <h1><a href="index.html%3Fcomment=1443.html">Kurz VIMu - jen tak</a></h1> <ul id="question-tags"
+    class="tags post-tags tags"
+> <li class="tag-left"><a
+            class="tag tag-right post-tag"
+            
+            href="../../../questions/scope:all/sort:activity-desc/tags:VIM/page:1/index.html"
+            title="see questions tagged 'VIM'"
+            
+            rel="tag"
+            data-tag-name="VIM"
+        >VIM</a></li> </ul> <div class="clearfix"></div> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                asked
+            
+            
+                <strong><abbr class="timeago" title="2014-12-08 15:38:09 +0100">
+        2014-12-08 15:38:09 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/10/hody/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/6bd6fc81fe186f149c28aad8cd7450d0?s=32&amp;d=identicon&amp;r=PG"
+    title="hody" 
+    alt="hody gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/10/hody/index.html">hody</a> <br/> <span class="reputation-score">640</span> <span class="badges" title="hody has 13 gold badges, 18 silver badges and 28 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">13</span> <span class='badge2'>&#9679;</span><span class="badgecount">18</span> <span class='badge3'>&#9679;</span><span class="badgecount">28</span> </span> <a 
+            href="https://twitter.com/PetrHodac"
+            title="hody's website is https://twitter.com/PetrHodac"
+            
+        >
+        https://twitter.com/PetrH...
+        </a> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../questions/1418/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2016-03-15 08:02:50 +0100">
+        2016-03-15 08:02:50 +0100
+    </abbr></strong></a> </p> </div> </div> <p>Byl by zajem o cca 4-cvikovy kurz VIMu? A hlavne jaka forma by byla nejzajimavejsi?</p> <p>Moje predstava je</p> <ul> <li>kapacita 48 lidi - kdo prijde ten tam bude</li> <li>porizovani zaznamu s naslednou post produkci (nekdo mi bude muset pomoci)</li> <li>0 kreditu</li> <li>v nejaky hloupy cas asi v ctvrtek/patek vecer (jindy nebude volno)</li> <li>4x90 Min</li> </ul> <p>Dava to smysl? Tak prej jo :)</p> <p><strong>Udelame takovy pokusny kurz ST  16.3.2016 od 19:35 - 21:00</strong> v 349</p> </div> <div id="question-controls" class="post-controls"> <a id="post-1418-edit" class="question-edit" href="../../../questions/1418/edit/index.html">edit</a> <script type="text/javascript">
+    var retagUrl = "/questions/1418/retag/";
+</script> <a id="retag" class="question-retag" href="../../../questions/1418/retag/index.html">retag</a> <span
+        id="question-offensive-flag-1418" class="offensive-flag"
+        title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+    > <a class="question-flag">flag offensive</a> </span> <a class="question-close" href="../../../questions/1418/close/index.html">close</a> <a
+    id="post-1418-delete"
+    class="question-delete"
+>delete</a> <script type="text/javascript">
+    askbot['functions']['renderPostControls']('1418');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-question-1418"><div class="content"><div class="comment" id="comment-1420"><div class="comment-votes"><div 
+                                id="comment-img-upvote-1420" 
+                                class="upvote"
+                            >3</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '1420');
+                            </script></div><div class="comment-content"><div 
+                            id="post-1420-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Zajímavý nápad, hurá do toho! Já bych přišel.</p><a 
+                                class="author"
+                                href="../../../users/758/petr-gondek/index.html"
+                            >Petr Gondek</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-08 16:12:14 +0100">
+        2014-12-08 16:12:14 +0100
+    </abbr>)</span><a 
+                                id="post-1420-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1420" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1420');
+                </script><div class="comment" id="comment-1421"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-1421-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Pres zkouskove?</p><a 
+                                class="author"
+                                href="../../../users/1841/maras/index.html"
+                            >MaRaS</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-08 16:38:36 +0100">
+        2014-12-08 16:38:36 +0100
+    </abbr>)</span><a 
+                                id="post-1421-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1421" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1421');
+                </script><div class="comment" id="comment-1422"><div class="comment-votes"><div 
+                                id="comment-img-upvote-1422" 
+                                class="upvote"
+                            >1</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '1422');
+                            </script></div><div class="comment-content"><div 
+                            id="post-1422-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Nápad rozhodně dobrý! Já bych určitě přišel, jen doufám, že to nebudou pouze ty klasické základy :) Extended VIM jsem rozhodně pro...</p><a 
+                                class="author"
+                                href="../../../users/1843/ondrej-e/index.html"
+                            >Ondřej E</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-08 17:23:20 +0100">
+        2014-12-08 17:23:20 +0100
+    </abbr>)</span><a 
+                                id="post-1422-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1422" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1422');
+                </script><div class="comment" id="comment-1423"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-1423-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>zaklady na 1. pak neco HC :) ZK mozna konec ale spis zacatek LS...</p><a 
+                                class="author"
+                                href="../../../users/10/hody/index.html"
+                            >hody</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-08 17:35:01 +0100">
+        2014-12-08 17:35:01 +0100
+    </abbr>)</span><a 
+                                id="post-1423-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1423" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1423');
+                </script><div class="comment" id="comment-1424"><div class="comment-votes"><div 
+                                id="comment-img-upvote-1424" 
+                                class="upvote"
+                            >6</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '1424');
+                            </script></div><div class="comment-content"><div 
+                            id="post-1424-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Kdyby na to bylo nějaké zajímavé promo (= proč je to užitečný, demo nějakých fintiček, ... ...), tak by to dost pomohlo, IMHO...</p><a 
+                                class="author"
+                                href="../../../users/187/juraj-sedivy/index.html"
+                            >Juraj Šedivý</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-08 18:39:31 +0100">
+        2014-12-08 18:39:31 +0100
+    </abbr>)</span><a 
+                                id="post-1424-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1424" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1424');
+                </script></div><div class="controls"><a id="add-comment-to-post-1418" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-question-1418'] = {
+            truncated: true
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1418',
+                                                12
+                                            );
+    </script></div></div> </div> </div> <div class="clean"></div> <div class="tabBar tabBar-answer"> <h2 id="questionCount">
+        
+            10 Answers
+        
+    </h2> <div class="tabsA"> <span class="label">
+                    Sort by »
+                    </span> <a id="oldest" href="index.html%3Fsort=oldest.html#sort-top"
+           title="oldest answers will be shown first"
+                ><span>oldest</span></a> <a id="latest" href="index.html%3Fsort=latest.html#sort-top"
+           title="newest answers will be shown first"
+                ><span>newest</span></a> <a id="votes" href="index.html%3Fsort=votes.html#sort-top"
+           title="most voted answers will be shown first"
+                ><span>most voted</span></a> </div> </div> <div class="clean"></div> <div class="clean"></div> <a name="1470"></a> <div
+    id="post-id-1470"
+    data-post-id="1470"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1470"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1470"
+    class="vote-number"
+    title="current number of votes"
+>2</div> <div
+    id="answer-img-downvote-1470"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1470');
+</script> <div
+    id="answer-img-accept-1470"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-09 19:43:53 +0100">
+        2014-12-09 19:43:53 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1861/majko/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/0b57b6bf8a8b40d965af3ca8ccfa9956?s=32&amp;d=identicon&amp;r=PG"
+    title="Majko" 
+    alt="Majko gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1861/majko/index.html">Majko</a> <br/> <span class="reputation-score">21</span> <span class="badges" title="Majko has one gold badge, one silver badge and 6 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">1</span> <span class='badge2'>&#9679;</span><span class="badgecount">1</span> <span class='badge3'>&#9679;</span><span class="badgecount">6</span> </span> <a 
+            href="http://majko.cz/"
+            title="Majko's website is http://majko.cz/"
+            
+            rel="nofollow"
+            
+        >
+        http://majko.cz/
+        </a> </div> </div> </div> </div> <p><strong>Jsem pro</strong>, klidně vypomůžu i s videozáznamem a postprodukcí, nějakou tu zkušenost s tím mám :)</p> </div> <div class="answer-controls post-controls"> <span id='post-1470-edit' class="action-link"> <a class="question-edit" href="../../../answers/1470/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1470"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1470-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1470-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1470"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1470.html#post-id-1470"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1470-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1470"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1470-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1470"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1470');
+    askbot['functions']['hidePublishAnswerLink']('1470');
+    askbot['functions']['renderPostControls']('1470');
+</script> </div> <div class="comments empty" id="comments-for-answer-1470"><div class="content"></div><div class="controls"><a id="add-comment-to-post-1470" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1470'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1470',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1453"></a> <div
+    id="post-id-1453"
+    data-post-id="1453"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1453"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1453"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1453"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1453');
+</script> <div
+    id="answer-img-accept-1453"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-09 13:21:16 +0100">
+        2014-12-09 13:21:16 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1856/ondra-exner/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/5e27d52ea8d2807e527f902ec49b7cc5?s=32&amp;d=identicon&amp;r=PG"
+    title="Ondra Exner" 
+    alt="Ondra Exner gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1856/ondra-exner/index.html">Ondra Exner</a> <br/> <span class="reputation-score">78</span> <span class="badges" title="Ondra Exner has 2 gold badges, 5 silver badges and 8 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">2</span> <span class='badge2'>&#9679;</span><span class="badgecount">5</span> <span class='badge3'>&#9679;</span><span class="badgecount">8</span> </span> </div> </div> </div> </div> <p>Super napad. Podobnych rychlokurzu bych uvital vic :)</p> </div> <div class="answer-controls post-controls"> <span id='post-1453-edit' class="action-link"> <a class="question-edit" href="../../../answers/1453/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1453"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1453-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1453-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1453"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1453.html#post-id-1453"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1453-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1453"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1453-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1453"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1453');
+    askbot['functions']['hidePublishAnswerLink']('1453');
+    askbot['functions']['renderPostControls']('1453');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-1453"><div class="content"><div class="comment" id="comment-1458"><div class="comment-votes"><div 
+                                id="comment-img-upvote-1458" 
+                                class="upvote"
+                            >1</div><script type="text/javascript">
+                                askbot['functions']['renderPostVoteButtons']('comment', '1458');
+                            </script></div><div class="comment-content"><div 
+                            id="post-1458-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Přesně tak, rád bych se přidal ;)</p><a 
+                                class="author"
+                                href="../../../users/1857/capekto4/index.html"
+                            >capekto4</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-09 16:08:43 +0100">
+        2014-12-09 16:08:43 +0100
+    </abbr>)</span><a 
+                                id="post-1458-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1458" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1458');
+                </script></div><div class="controls"><a id="add-comment-to-post-1453" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1453'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1453',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1525"></a> <div
+    id="post-id-1525"
+    data-post-id="1525"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1525"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1525"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1525"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1525');
+</script> <div
+    id="answer-img-accept-1525"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-11 18:51:15 +0100">
+        2014-12-11 18:51:15 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/29/syky27/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/699527bbc3c20bacc1747c58c0ad8b68?s=32&amp;d=identicon&amp;r=PG"
+    title="syky27" 
+    alt="syky27 gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/29/syky27/index.html">syky27</a> <br/> <span class="reputation-score">47</span> <span class="badges" title="syky27 has 3 gold badges, 4 silver badges and 11 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">3</span> <span class='badge2'>&#9679;</span><span class="badgecount">4</span> <span class='badge3'>&#9679;</span><span class="badgecount">11</span> </span> </div> </div> </div> </div> <p>Ja bych se prisel podivat taky, uprimne si myslim ze termin v prvnim tydnu letniho semestru by zaujal nejvice lidi... </p> </div> <div class="answer-controls post-controls"> <span id='post-1525-edit' class="action-link"> <a class="question-edit" href="../../../answers/1525/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1525"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1525-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1525-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1525"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1525.html#post-id-1525"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1525-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1525"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1525-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1525"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1525');
+    askbot['functions']['hidePublishAnswerLink']('1525');
+    askbot['functions']['renderPostControls']('1525');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-1525"><div class="content"><div class="comment" id="comment-1526"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-1526-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>a co přesahující zkouškové ..? podívej se jak by se lidem líbil GIT v mé odpovědi je odkaz na doodle.</p><a 
+                                class="author"
+                                href="../../../users/2/shejby/index.html"
+                            >shejby</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-11 21:53:21 +0100">
+        2014-12-11 21:53:21 +0100
+    </abbr>)</span><a 
+                                id="post-1526-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1526" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1526');
+                </script></div><div class="controls"><a id="add-comment-to-post-1525" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1525'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1525',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1524"></a> <div
+    id="post-id-1524"
+    data-post-id="1524"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1524"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1524"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1524"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1524');
+</script> <div
+    id="answer-img-accept-1524"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-11 16:26:29 +0100">
+        2014-12-11 16:26:29 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/65/ruda/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/9f9871531e509152d939097a1b920856?s=32&amp;d=identicon&amp;r=PG"
+    title="ruda" 
+    alt="ruda gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/65/ruda/index.html">ruda</a> <br/> <span class="reputation-score">11</span> <span class="badges" title="ruda has 2 bronze badges"> <span class='badge3'>&#9679;</span><span class="badgecount">2</span> </span> </div> </div> </div> <div class='post-update-info'> <p style="line-height:12px;"> <a 
+        
+            href="../../../answers/1524/revisions/index.html"
+        
+            >updated <strong><abbr class="timeago" title="2014-12-11 16:27:33 +0100">
+        2014-12-11 16:27:33 +0100
+    </abbr></strong></a> </p> </div> </div> <p>jestli budu mít čas, tak bych šel a kdyby ne tak bych se na video podíval 100% </p> </div> <div class="answer-controls post-controls"> <span id='post-1524-edit' class="action-link"> <a class="question-edit" href="../../../answers/1524/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1524"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1524-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1524-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1524"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1524.html#post-id-1524"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1524-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1524"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1524-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1524"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1524');
+    askbot['functions']['hidePublishAnswerLink']('1524');
+    askbot['functions']['renderPostControls']('1524');
+</script> </div> <div class="comments empty" id="comments-for-answer-1524"><div class="content"></div><div class="controls"><a id="add-comment-to-post-1524" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1524'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1524',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1515"></a> <div
+    id="post-id-1515"
+    data-post-id="1515"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1515"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1515"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1515"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1515');
+</script> <div
+    id="answer-img-accept-1515"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-10 22:49:49 +0100">
+        2014-12-10 22:49:49 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/2/shejby/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/eabdb86f0c8671ffca48facb7101a8ae?s=32&amp;d=identicon&amp;r=PG"
+    title="shejby" 
+    alt="shejby gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/2/shejby/index.html">shejby</a> <img class="flag" 
+            src="../../../m/default/media/images/flags/cz.gif%3Fv=1"
+            alt="flag of Czech Republic"
+            title="shejby is from Czech Republic"
+        /> <br/> <span class="reputation-score">271</span> <span class="badges" title="shejby has 5 gold badges, 9 silver badges and 20 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">5</span> <span class='badge2'>&#9679;</span><span class="badgecount">9</span> <span class='badge3'>&#9679;</span><span class="badgecount">20</span> </span> <a 
+            href="http://shejby.cz/"
+            title="shejby's website is http://shejby.cz/"
+            
+        >
+        http://shejby.cz/
+        </a> </div> </div> </div> </div> <p>Pro zjištění zájmu je dobré třeba <a href="http://doodle.com/7f7r697vft4iiuuv">doodle</a> (o GITu). Jinak mě to smysl dává. Chtělo by to i praktickou část (dotazy+řešení problémů). Určitě to hodně lidí bude používat i jako IDE. </p> <p>Zájem vypadá, že bude. (Doodle, jak jsem psal výše by to mělo ověřit nejlépe.)</p> <p>Forma ideálně, tak jak píšeš, kdyby to byl propadák, tak 4x90 minut nikoho nezabije, ale ani naopak to není málo za 4x90m produktivního času věnovanému editoru se už nechá něco naučit. Pátky večer (blbé časy) mohou určitě plno lidí odradit, hlavně ty mimopražské. Hodiny bych rozvrhl na části praktické a teoretické s tím, že teorii jen tu nejnutnější, určitě to chce hodně ukázek a ideálně sdílet ukázky v textové podobě (pokud možno). Dost času bych také věnoval plug-inům bez nich je vim takový polovičatý (ale často potřebují odladit!).</p> </div> <div class="answer-controls post-controls"> <span id='post-1515-edit' class="action-link"> <a class="question-edit" href="../../../answers/1515/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1515"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1515-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1515-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1515"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1515.html#post-id-1515"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1515-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1515"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1515-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1515"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1515');
+    askbot['functions']['hidePublishAnswerLink']('1515');
+    askbot['functions']['renderPostControls']('1515');
+</script> </div> <h2 class="comment-title">Comments</h2><div class="clean"></div><div class="comments" id="comments-for-answer-1515"><div class="content"><div class="comment" id="comment-1574"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-1574-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>zalezi to na obsazenosti ucebny 349... Jinak jo pluginy budou na 90 min :)</p><a 
+                                class="author"
+                                href="../../../users/10/hody/index.html"
+                            >hody</a><span class="age">&nbsp;(<abbr class="timeago" title="2014-12-15 18:31:13 +0100">
+        2014-12-15 18:31:13 +0100
+    </abbr>)</span><a 
+                                id="post-1574-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="1574" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('1574');
+                </script><div class="comment" id="comment-2556"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2556-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>btw kdy se vyucuje git? V kosu vidim v lichou sobotu, ale hodiny tam nejsou a doodle tvrdi, ze anketa neexistuje (do tedka jsem o ankete nevedel)</p><a 
+                                class="author"
+                                href="../../../users/194/vilestra/index.html"
+                            >vilestra</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-10-27 17:21:15 +0100">
+        2015-10-27 17:21:15 +0100
+    </abbr>)</span><a 
+                                id="post-2556-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2556" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2556');
+                </script><div class="comment" id="comment-2557"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2557-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Anketa nebyla k predmetu BI-GIT, ale k dobrovolnemu kurzu (viz datum prispevku 10.12.2014). Pokud mas otazku na to, kdy se kona BI-GIT, je lepsi to dat to vlastniho vlakna. <br>
+BTW: mel by byt videt v lednu na fittable<br></p><a 
+                                class="author"
+                                href="../../../users/264/vojtechmyslivec/index.html"
+                            >VojtechMyslivec</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-10-27 17:26:58 +0100">
+        2015-10-27 17:26:58 +0100
+    </abbr>)</span><a 
+                                id="post-2557-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2557" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2557');
+                </script><div class="comment" id="comment-2558"><div class="comment-votes"><div class="upvote"></div></div><div class="comment-content"><div 
+                            id="post-2558-delete"
+                            class="comment-delete"
+                        ><span 
+                                class="delete-icon"
+                                title="delete this comment"
+                            ></span></div><div class="comment-body"><p>Diky, uz ho tam vidim.</p><a 
+                                class="author"
+                                href="../../../users/194/vilestra/index.html"
+                            >vilestra</a><span class="age">&nbsp;(<abbr class="timeago" title="2015-10-27 17:35:56 +0100">
+        2015-10-27 17:35:56 +0100
+    </abbr>)</span><a 
+                                id="post-2558-edit"
+                                class="edit"
+                            >edit</a><form 
+                                action="https://www.askfit.cz/comment/convert/"
+                                method="POST"
+                                accept-charset="utf-8"
+                                class='convert-comment'
+                            ><input type="hidden" value="2558" name="comment_id" id="id_comment_id"><input type="submit" value="convert to answer"></form></div></div></div><script type="text/javascript">
+                    askbot['functions']['hideConvertLinks']();
+                    askbot['functions']['renderPostControls']('2558');
+                </script></div><div class="controls"><a id="add-comment-to-post-1515" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1515'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1515',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1514"></a> <div
+    id="post-id-1514"
+    data-post-id="1514"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1514"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1514"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1514"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1514');
+</script> <div
+    id="answer-img-accept-1514"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-10 22:21:27 +0100">
+        2014-12-10 22:21:27 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1867/johnnyb/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/8433412baad1da41a78dfbe1a737fffa?s=32&amp;d=identicon&amp;r=PG"
+    title="johnnyb" 
+    alt="johnnyb gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1867/johnnyb/index.html">johnnyb</a> <br/> <span class="reputation-score">11</span> <span class="badges" title="johnnyb has one bronze badge"> <span class='badge3'>&#9679;</span><span class="badgecount">1</span> </span> </div> </div> </div> </div> <p>Urcite bych prisel pokud to bude aspon trochu casove mozne. Nejvic by me zajimalo, jak si vim upravit pro pohodlne pouzivani jako IDE, ale rad se dozvim i nejake dalsi finty </p> </div> <div class="answer-controls post-controls"> <span id='post-1514-edit' class="action-link"> <a class="question-edit" href="../../../answers/1514/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1514"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1514-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1514-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1514"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1514.html#post-id-1514"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1514-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1514"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1514-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1514"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1514');
+    askbot['functions']['hidePublishAnswerLink']('1514');
+    askbot['functions']['renderPostControls']('1514');
+</script> </div> <div class="comments empty" id="comments-for-answer-1514"><div class="content"></div><div class="controls"><a id="add-comment-to-post-1514" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1514'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1514',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1459"></a> <div
+    id="post-id-1459"
+    data-post-id="1459"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1459"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1459"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1459"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1459');
+</script> <div
+    id="answer-img-accept-1459"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-09 16:17:14 +0100">
+        2014-12-09 16:17:14 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1858/hajekvo2/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/3fd7f5374c006d524cca72184d7e8c96?s=32&amp;d=identicon&amp;r=PG"
+    title="hajekvo2" 
+    alt="hajekvo2 gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1858/hajekvo2/index.html">hajekvo2</a> <br/> <span class="reputation-score">36</span> <span class="badges" title="hajekvo2 has one bronze badge"> <span class='badge3'>&#9679;</span><span class="badgecount">1</span> </span> </div> </div> </div> </div> <p>Super! Kdyby mi to časově vyhovovalo, přišel bych :)</p> </div> <div class="answer-controls post-controls"> <span id='post-1459-edit' class="action-link"> <a class="question-edit" href="../../../answers/1459/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1459"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1459-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1459-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1459"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1459.html#post-id-1459"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1459-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1459"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1459-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1459"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1459');
+    askbot['functions']['hidePublishAnswerLink']('1459');
+    askbot['functions']['renderPostControls']('1459');
+</script> </div> <div class="comments empty" id="comments-for-answer-1459"><div class="content"></div><div class="controls"><a id="add-comment-to-post-1459" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1459'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1459',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="1529"></a> <div
+    id="post-id-1529"
+    data-post-id="1529"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-1529"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-1529"
+    class="vote-number"
+    title="current number of votes"
+>1</div> <div
+    id="answer-img-downvote-1529"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '1529');
+</script> <div
+    id="answer-img-accept-1529"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2014-12-11 23:33:33 +0100">
+        2014-12-11 23:33:33 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1173/mazanma/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/19d25fa151dc49a6a583bae30eb47029?s=32&amp;d=identicon&amp;r=PG"
+    title="mazanma" 
+    alt="mazanma gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1173/mazanma/index.html">mazanma</a> <br/> <span class="reputation-score">11</span> <span class="badges" title="mazanma has one gold badge, 2 silver badges and 2 bronze badges"> <span class='badge1'>&#9679;</span><span class="badgecount">1</span> <span class='badge2'>&#9679;</span><span class="badgecount">2</span> <span class='badge3'>&#9679;</span><span class="badgecount">2</span> </span> </div> </div> </div> </div> <p>Když bude čas, určitě bych šel :) </p> </div> <div class="answer-controls post-controls"> <span id='post-1529-edit' class="action-link"> <a class="question-edit" href="../../../answers/1529/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-1529"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-1529-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-1529-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="1529"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=1529.html#post-id-1529"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-1529-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="1529"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-1529-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="1529"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('1529');
+    askbot['functions']['hidePublishAnswerLink']('1529');
+    askbot['functions']['renderPostControls']('1529');
+</script> </div> <div class="comments empty" id="comments-for-answer-1529"><div class="content"></div><div class="controls"><a id="add-comment-to-post-1529" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-1529'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '1529',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="2573"></a> <div
+    id="post-id-2573"
+    data-post-id="2573"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-2573"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-2573"
+    class="vote-number"
+    title="current number of votes"
+>0</div> <div
+    id="answer-img-downvote-2573"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '2573');
+</script> <div
+    id="answer-img-accept-2573"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2015-11-02 09:53:08 +0100">
+        2015-11-02 09:53:08 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/1869/zdeneknovy/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/e7f6d048e762658f436233d6a27c394c?s=32&amp;d=identicon&amp;r=PG"
+    title="ZdenekNovy" 
+    alt="ZdenekNovy gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/1869/zdeneknovy/index.html">ZdenekNovy</a> <br/> <span class="reputation-score">1</span> <span class="badges" title=""> </span> </div> </div> </div> </div> <p>Rad bych prisel, pokud to bude v rozumny hloupy casy :) takze zajem je.</p> </div> <div class="answer-controls post-controls"> <span id='post-2573-edit' class="action-link"> <a class="question-edit" href="../../../answers/2573/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-2573"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-2573-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-2573-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="2573"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=2573.html#post-id-2573"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-2573-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="2573"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-2573-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="2573"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('2573');
+    askbot['functions']['hidePublishAnswerLink']('2573');
+    askbot['functions']['renderPostControls']('2573');
+</script> </div> <div class="comments empty" id="comments-for-answer-2573"><div class="content"></div><div class="controls"><a id="add-comment-to-post-2573" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-2573'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '2573',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <a name="2554"></a> <div
+    id="post-id-2554"
+    data-post-id="2554"
+    class="post answer   "
+> <div class="vote-buttons"> <div id="answer-img-upvote-2554"
+    class="answer-img-upvote post-vote upvote"> </div> <div 
+    id="answer-vote-number-2554"
+    class="vote-number"
+    title="current number of votes"
+>0</div> <div
+    id="answer-img-downvote-2554"
+    class="answer-img-downvote post-vote downvote"> </div> <script type="text/javascript">
+    askbot['functions']['renderPostVoteButtons']('answer', '2554');
+</script> <div
+    id="answer-img-accept-2554"
+    class="answer-img-accept"
+        
+    title="mark this answer as correct (click again to undo)"
+        
+></div> </div> <div class="post-content"> <div class="post-body"> <div class="post-update-info-container"> <div class='post-update-info'> <p style="line-height:12px;">
+            
+            
+                answered
+            
+            
+                <strong><abbr class="timeago" title="2015-10-26 15:46:53 +0100">
+        2015-10-26 15:46:53 +0100
+    </abbr></strong> </p> <div class="user-card"> <a class="avatar-box"
+    href="../../../users/2125/suzie/index.html"
+><img class="gravatar" 
+    width="32" height="32"
+    src="https://www.gravatar.com/avatar/c22b8772b3133192e7169dbafdad961f?s=32&amp;d=identicon&amp;r=PG"
+    title="Suzie" 
+    alt="Suzie gravatar image" 
+/></a> <div class="user-info"> <a href="../../../users/2125/suzie/index.html">Suzie</a> <br/> <span class="reputation-score">1</span> <span class="badges" title=""> </span> </div> </div> </div> </div> <p>Jestli mi to casove vyjde, take bych rada prisla :-) </p> </div> <div class="answer-controls post-controls"> <span id='post-2554-edit' class="action-link"> <a class="question-edit" href="../../../answers/2554/edit/index.html">edit</a> </span> <span 
+    id="answer-offensive-flag-2554"
+    class="action-link offensive-flag"
+    title="report as offensive (i.e containing spam, advertising, malicious text, etc.)"
+> <a class="question-flag">flag offensive</a> </span> <span id='post-2554-delete' class="action-link delete-post"> <a class="question-delete"
+    >delete</a> </span> <span 
+    id="post-2554-publish"
+    class="action-link"
+> <a 
+            class="answer-publish"
+            data-answer-id="2554"
+        >publish</a> </span> <span class="action-link"> <a  class="permant-link"
+        href="index.html%3Fanswer=2554.html#post-id-2554"
+        title="permanent link">
+        link
+    </a> </span> <span class="action-link dropdown-toggle">more
+<ul class="dropdown-menu"> <li id='post-2554-convert'> <form 
+            class="answer-convert"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-question/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" id="id_answer_id" value="2554"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a question comment"
+            /> </form> </li> <li id='post-2554-repost-as-comment-under-previous-answer'> <form class="answer-convert repost-as-comment-under-previous-answer"
+            action="https://www.askfit.cz/answer/repost-as-comment-under-previous-answer/"
+            method="post"
+        > <input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <input type="hidden" name="answer_id" value="2554"/> <input 
+                type="submit"
+                class="link"
+                value="repost as a comment under the older answer"
+            /> </form> </li> </ul> </span> <script type="text/javascript">
+    askbot['functions']['hideConvertAnswerLinks']('2554');
+    askbot['functions']['hidePublishAnswerLink']('2554');
+    askbot['functions']['renderPostControls']('2554');
+</script> </div> <div class="comments empty" id="comments-for-answer-2554"><div class="content"></div><div class="controls"><a id="add-comment-to-post-2554" class="button"></a><script type="text/javascript">
+        askbot['data']['comments-for-answer-2554'] = {
+            truncated: false
+        };
+        askbot['functions']['renderAddCommentButton'](
+                                                '2554',
+                                                0
+                                            );
+    </script></div></div> </div> <div class="clean"></div> </div> <div class="clean"></div> <div class="clean"></div> <form
+        id="fmanswer"
+        action="https://www.askfit.cz/questions/1418/answer/"
+        method="post"
+        ><input type='hidden' name='csrfmiddlewaretoken' value='V3OV4fEa8bTvuWwTdw0JMhoPVOvL1IVe' /> <div style="clear:both"></div> <div> <h2>
+                        
+                            Your answer
+                        
+                    </h2> </div> <div class="message"><span class='strong big'>Please start posting your answer anonymously</span> - your answer will be saved within the current session and published after you log in or create a new account. Please try to give a <strong>substantial answer</strong>, for discussions, <strong>please use comments</strong> and <strong>please do remember to vote</strong> (after you log in)!</div> <div class="folded-editor" tabindex="6"> <p class="prompt"><a>Add answer</a></p> <div class="editor-proper"> <div class="wmd-container"> <div id="wmd-button-bar" class="wmd-panel"></div> <textarea cols="40" id="editor" name="text" rows="10"> </textarea> </div> <div class="form-item"> <label for="editor" class="form-error"></label> <p class="editor-status action-status"><span></span></p> </div> <div class="preview-toggle"> <span 
+            id="pre-collapse" 
+            title="Toggle the real time Markdown editor preview"
+        >
+            [hide preview]
+        </span> </div> <div class="clearfix"></div> <div id="previewer" class="wmd-preview"></div> <input id="add-answer-btn" type="submit" class="submit after-editor" style="float:left"/> <script type="text/javascript">
+                        askbot['functions']['renderAddAnswerButton']();
+                    </script> <div class="checkbox"
+        title="if you choose community wiki option, the question and answer do not generate points and name of author will not be shown"> <input id="id_wiki" name="wiki" type="checkbox" /> <label for="id_wiki">community wiki (karma is not awarded &amp;amp; many others can edit wiki post)</label> </div> </div> </div> </form> </div> <div id="ContentRight"> <div class="box vote-buttons"> <h2 >Question tools</h2> <a class="button followed"
+            alt="click to follow this question">
+            Follow
+        </a> <div class="clearfix"></div> <div id="favorite-number" class="favorite-number">
+        
+        
+            14 followers
+        
+    </div> <div class="notify-sidebar"> <p class="rss"> <a
+                href="https://askfit.cz/feeds/question/1418"
+                title="subscribe to this question rss feed"
+                >subscribe to rss feed</a> </p> </div> </div> <div class="clearfix"></div> <div class="box statsWidget"> <div class="clearfix"></div> <h2>Stats</h2> <p>
+        Asked: <strong><abbr class="timeago" title="2014-12-08 15:38:09 +0100">
+        2014-12-08 15:38:09 +0100
+    </abbr></strong> </p> <p> 
+        Seen: <strong>2,060 times</strong> </p> <p>
+        Last updated: <strong title="2016-03-15 08:02:50.077907">Mar 15</strong> </p> </div> <div class="box"> <h2>Related questions</h2> <div class="questions-related"> <p> <a href="../../2583/kopirovani-mezi-instancemi-vimu.html">Kopírování mezi instancemi VIMu</a> </p> </div> </div> </div> </div> <!-- template footer.html --> <div id="ground"> <div class="content-wrapper"> <div class="copyright"> <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"> <img
+                            class="license-logo"
+                            src="../../../m/default/media/images/cc-by-sa.png%3Fv=1"
+                            title="cc-by-sa"
+                            alt="cc-by-sa"
+                        /> </a>
+                
+                Copyright students of FIT CTU and others, 2014. Content on this site is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International</a> license.
+
+            </div> <div class="footer-links" > <a href="../../../about/index.html">about</a><span class="link-separator"> |</span> <a href="../../../faq/index.html">faq</a><span class="link-separator"> |</span> <a href="../../../help/index.html" title="help">help</a> <span class="link-separator"> |</span> <a href="../../../privacy/index.html">privacy policy</a><span class="link-separator"> |</span> <a href=
+                        
+                            "../../../feedback/index.html%3Fnext=%252Fquestion%252F1418%252Fkurz-vimu-jen-tak%252F.html">
+                        
+                        give feedback
+                    </a> </div> <div class="powered-link"> <a href="http://askbot.com" target="_blank">
+                Powered by Askbot version 0.7.49
+            </a> </div> <div class="clean"></div> </div> </div> <!-- end template footer.html --> <div id="no-javascript"> <noscript class="noscript">
+        Please note: AskFIT requires javascript to work properly, please enable javascript in your browser, <a href="https://www.google.com/support/bin/answer.py?answer=23852">here is how</a> </noscript> <script type="text/javascript">
+        //IE fix to hide the red margin
+        var noscript = document.getElementsByTagName('noscript')[0];
+        noscript.style.padding = '0px';
+        noscript.style.backgroundColor = 'transparent';
+    </script> </div> <script type="text/javascript">
+    askbot['urls']['mark_read_message'] = '/messages/markread/';
+    askbot['urls']['get_tags_by_wildcard'] = '/get-tags-by-wildcard/';
+    askbot['urls']['get_tag_list'] = '/get-tag-list/';
+    askbot['urls']['follow_user'] = '/followit/follow/user/{{userId}}/';
+    askbot['urls']['unfollow_user'] = '/followit/unfollow/user/{{userId}}/';
+    askbot['urls']['user_signin'] = '/account/signin/';
+    askbot['urls']['getEditor'] = '/get-editor/';
+    askbot['urls']['apiGetQuestions'] = '/api/get_questions/';
+    askbot['urls']['ask'] = '/questions/ask/';
+	askbot['urls']['questions'] = '/questions/';
+    askbot['settings']['groupsEnabled'] = false;
+    askbot['settings']['static_url'] = '/m/';
+    askbot['settings']['minSearchWordLength'] = 4;
+    askbot['settings']['mathjaxEnabled'] = true;
+    askbot['settings']['sharingSuffixText'] = '';
+    askbot['data']['maxCommentLength'] = 800;
+    askbot['settings']['editorType'] = 'markdown';
+    askbot['settings']['commentsEditorType'] = 'plain-text';
+    
+        askbot['settings']['allowedUploadFileTypes'] = [
+            "jpg", "jpeg", "gif", "bmp", "png", "tiff"
+        ];
+    
+    askbot['data']['haveFlashNotifications'] = false;
+    askbot['data']['activeTab'] = 'questions';
+    
+        askbot['data']['searchUrl'] = '';
+    
+</script> <script type="text/javascript" src="../../../m/CACHE/js/9c2bd604370b.js"></script> <script type="text/javascript">
+    /*<![CDATA[*/
+    $('.mceStatusbar').remove();//a hack to remove the tinyMCE status bar
+    $(document).ready(function(){
+        // focus input on the search bar endcomment
+        var activeTab = askbot['data']['activeTab'];
+        if (inArray(activeTab, ['users', 'questions', 'tags', 'badges'])) {
+            var searchInput = $('#keywords');
+        } else if (activeTab === 'ask') {
+            var searchInput = $('#id_title');
+        } else {
+            var searchInput = undefined;
+            animateHashes();
+        }
+
+        if (searchInput) {
+            searchInput.focus();
+            putCursorAtEnd(searchInput);
+        }
+
+        var haveFullTextSearchTab = inArray(activeTab, ['questions', 'badges', 'ask']);
+        var haveUserProfilePage = $('body').hasClass('user-profile-page');
+        if ((haveUserProfilePage || haveFullTextSearchTab) && searchInput.length) {
+            var search = new FullTextSearch();
+            askbot['controllers'] = askbot['controllers'] || {};
+            askbot['controllers']['fullTextSearch'] = search;
+            search.setSearchUrl(askbot['data']['searchUrl']);
+            if (activeTab === 'ask') {
+                search.setAskButtonEnabled(false);
+            }
+            search.decorate(searchInput);
+        } else if (activeTab === 'tags') {
+            var search = new TagSearch();
+            search.decorate(searchInput);
+        }
+
+        if (askbot['data']['userIsAdminOrMod']) {
+            $('body').addClass('admin');
+        }
+        if (askbot['settings']['groupsEnabled']) {
+            askbot['urls']['add_group'] = "/add-group/";
+            var group_dropdown = new GroupDropdown();
+            $('.dropdown').append(group_dropdown.getElement());
+        }
+        var userRep = $('#userToolsNav .reputation');
+        if (userRep.length) {
+            var showPermsTrigger = new ShowPermsTrigger();
+            showPermsTrigger.decorate(userRep);
+        }
+    });
+    if (askbot['data']['haveFlashNotifications']) {
+        $('#validate_email_alert').click(function(){notify.close(true)})
+        notify.show();
+    }
+    $('abbr.timeago').timeago();
+    /*]]>*/
+</script> <script type='text/javascript' src="https://askfit.cz/m/mathjax/MathJax.js">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX","output/HTML-CSS"],
+            tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+        });
+    </script> <script type='text/javascript'>
+        
+        
+        var codeFriendlyMarkdown = true;
+        
+        var maxCommentLength = 800;
+        askbot['urls']['postComments'] = '/post_comments/';
+        askbot['urls']['editComment'] = '/edit_comment/';
+        askbot['urls']['deleteComment'] = '/comment/delete/';
+        askbot['urls']['convertComment'] = '/comment/convert/';
+        askbot['urls']['getComment'] = '/comment/get_text/';
+        askbot['urls']['saveDraftAnswer'] = '/save-draft-answer/';
+        askbot['urls']['vote_url'] = '/vote'
+        askbot['urls']['user_signin'] = '/account/signin/';
+        askbot['urls']['swap_question_with_answer'] = '/swap-question-with-answer/';
+        askbot['urls']['upvote_comment'] = '/comment/upvote/';
+        askbot['urls']['delete_post'] = '/post/delete/';
+        askbot['urls']['get_html_template'] = '/get-html-template/';
+        askbot['urls']['getGroupsList'] = '/get-groups-list/';
+        askbot['urls']['publishAnswer'] = '/answer/publish/';
+        askbot['data']['userIsThreadModerator'] = false;
+        askbot['data']['questionAuthorId'] = 10;
+        askbot['data']['threadIsClosed'] = false;
+        askbot['data']['answersSortTab'] = 'votes';
+        askbot['data']['questionId'] = 1418;
+        askbot['data']['threadSlug'] = 'kurz-vimu-jen-tak';
+        askbot['messages']['addComment'] = 'add a comment';
+        askbot['messages']['userNamePrompt'] = 'User name:';
+        askbot['messages']['userEmailPrompt'] = 'Email address:';
+        askbot['settings']['saveCommentOnEnter'] = false;
+        askbot['settings']['tagSource'] = 'user-input';
+        askbot['settings']['enableSharingGoogle'] = true;
+        askbot['settings']['enableEmailAlerts'] = true;
+    </script> <script type="text/javascript">
+    
+    askbot['settings']['tagsAreRequired'] = true
+    askbot['settings']['maxTagLength'] = 20;
+    askbot['messages']['maxTagLength'] = "each tag must be shorter than 20 characters";
+    askbot['settings']['maxTagsPerPost'] = 5;
+    askbot['messages']['maxTagsPerPost'] = "please use 5 tags or less";
+    askbot['messages']['tagLimits'] = "please use up to 5 tags, less than 20 characters each";
+    askbot['urls']['upload'] = '/upload/';
+    askbot['settings']['minTitleLength'] = 10;
+    askbot['settings']['minQuestionBodyLength'] = 10;
+    askbot['settings']['minAnswerBodyLength'] = 10;
+    askbot['settings']['minCommentBodyLength'] = 3;
+    askbot['settings']['tag_editor'] = '{\u0022max_tag_length\u0022: 20, \u0022tag_regex\u0022: \u0022^[\u005C\u005Cw+.#\u002D]+$\u0022, \u0022max_tags_per_post\u0022: 5, \u0022messages\u0022: {\u0022wrong_chars\u0022: \u0022please use letters, numbers and characters \u005C\u0022\u002D+.#\u005C\u0022\u0022, \u0022required\u0022: \u0022tags are required\u0022}, \u0022tags_are_required\u0022: true, \u0022force_lowercase_tags\u0022: false}';
+    askbot['settings']['tinyMCEPlugins'] = JSON.parse('[]');
+</script> <script type='text/javascript'>
+    (function() {
+        //make images always fit the screen
+        var images = $('.question-page .post-body img');
+        //these breakpoints must match those in css
+        //for explanation see utils.js:LimitedWidthImage
+        var breakpoints = [
+            [980, undefined],
+            [800, 55]
+        ];
+        var maxWidth = 685;
+        images.each(function(idx, item) {
+            var img = new LimitedWidthImage(breakpoints, maxWidth);
+            img.decorate($(item));
+        });
+    })();
+</script> <script type="text/javascript" src="../../../m/CACHE/js/7b67e8c0204c.js"></script> <script type="text/javascript">
+    // define reputation needs for comments
+    $(document).ready(function(){
+        $("#nav_questions").attr('className',"on");
+        $("#" + askbot['data']['answersSortTab']).attr('className',"on");
+        
+        Vote.init(
+            askbot['data']['questionId'],
+            askbot['data']['threadSlug'],
+            askbot['data']['questionAuthorId'],
+            askbot['data']['userId']
+        );
+        
+        if ((askbot['data']['threadIsClosed'] === false) && askbot['data']['userIsAuthenticated']) {
+            initEditor();
+        }
+        
+        lanai.highlightSyntax();
+        $('#btLogin').bind('click', function(){
+            window.location.href='/account/signin/';
+        });
+        if (window.location.hash === 'fmanswer'){
+            $('#fmanswer textarea').focus();
+        }
+
+        if (askbot['settings']['enableSharingGoogle']) {
+            $.getScript("//apis.google.com/js/plusone.js");
+        }
+
+        if (askbot['data']['userId'] === askbot['data']['questionAuthorId']) {
+            $("#fmanswer_button").click(function() {
+                $("#fmanswer").show();
+                $("#fmanswer_button").hide();
+            });
+        }
+
+        if (askbot['data']['userIsAuthenticated']) {
+            var draftHandler = new DraftAnswer();
+            draftHandler.setThreadId(283);
+            draftHandler.decorate($(document));
+        }
+    });
+
+    $(window).bind('hashchange', animate_hashes);
+
+    function animate_hashes(){
+      var id_value = window.location.hash;
+      if (id_value != ""){
+        var previous_color = $(id_value).css('background-color');
+        $(id_value).css('backgroundColor', '#FFF8C6');
+        $(id_value).animate(
+            {backgroundColor: '#ff7f2a'}, 1000
+        ).animate({backgroundColor: '#FFF8C6'}, 1000, function(){
+            $(id_value).css('backgroundColor', previous_color);
+        });
+      }
+    }
+
+    
+    function initEditor(){
+        $('#editor').TextAreaResizer();
+        //highlight code synctax when editor has new text
+        $("#editor").typeWatch({highlight: false, wait: 3000,
+                         captureLength: 5, callback: lanai.highlightSyntax});
+                         
+        var display = true;
+        var txt = "[hide preview]";
+        $('#pre-collapse').text(txt);
+        $('#pre-collapse').bind('click', function(){
+            txt = display ? "[show preview]" : "[hide preview]";
+            display = !display;
+            $('#previewer').toggle();
+            $('#pre-collapse').text(txt);
+        });
+        setupFormValidation(
+            $("#fmanswer"),
+            CPValidator.getAnswerFormRules(),
+            CPValidator.getAnswerFormMessages()
+        );
+    }
+    (function() {
+        var editorBox = $('.folded-editor');
+        if (editorBox.length) {
+            var foldedEditor = new FoldedEditor();
+            foldedEditor.decorate(editorBox);
+        }
+    })();
+</script> <script type="text/javascript">
+            for (url_name in askbot['urls']){
+                askbot['urls'][url_name] = cleanUrl(askbot['urls'][url_name]);
+            }
+        </script> </body> </html>

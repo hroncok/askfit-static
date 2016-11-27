@@ -1,0 +1,398 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Questions - Ask FIT</title> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <meta http-equiv="X-UA-Compatible" content="IE=EDGE" /> <meta name="description" content="Otázky a odpovědi studentů FIT ČVUT" /> <meta name="keywords" content=",Ask,FIT ČVUT" /> <meta name="referrer" content="always" /> <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> <link rel="shortcut icon" href="../../../../../upfiles/fit.ico" /> <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS feed from AskFIT"
+            href="https://askfit.cz/feeds/rss/"
+        /> <link rel="stylesheet" href="../../../../../m/CACHE/css/13f37855be5f.css" type="text/css" /> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=latin-ext' rel='stylesheet' type='text/css'> <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&amp;subset=cyrillic-ext' rel='stylesheet' type='text/css'> <script type="text/javascript" src="../../../../../m/default/media/js/modernizr.custom.js%3Fv=1"></script> <script type="text/javascript">
+    var askbot = {};
+    askbot['data'] = {};
+    askbot['data']['userIsAuthenticated'] = false;
+    askbot['data']['languageCode'] = 'en';
+    
+        askbot['data']['userReputation'] = 0;
+        askbot['data']['userIsReadOnly'] = false;//in principle we allow anon users to start posting
+    
+    askbot['urls'] = {};
+    askbot['settings'] = {};
+    askbot['messages'] = {};
+</script> <script type="text/javascript" src="../../../../../jsi18n/index.html"></script> </head> <body class="two-col main-page anon lang-en"> <div class="notify" style="display:none"> <a id="closeNotify" onclick="notify.close(true)"></a> </div> <!-- template header.html --> <div 
+    id="header"
+    class="without-logo"
+> <div class="content-wrapper"> <div id="userToolsNav"> <a href="../../../../../account/signin/index.html%3Fnext=%252F.html">Hi there! Please sign in</a> <a class="help" href="../../../../../help/index.html" title="help">help</a> </div> <div id="metaNav"> <a 
+  id="navTags"
+  href="../../../../../tags/index.html"
+  
+>tags</a> <a 
+  id="navUsers"
+  href="../../../../../users/index.html"
+  
+>users</a> <a 
+  id="navBadges"
+  href="../../../../../badges/index.html"
+  
+>badges</a> </div> <div class="clean"></div> </div> </div> <!-- end template header.html --> <!-- template secondary_header.html --> <div id="secondaryHeader"> <div class="content-wrapper"> <form
+            
+                action="../../../../../question/2296/bi-zwu-semestralni-prace-media-queries.1.html" id="searchForm"
+            
+            class="scopes-True-True-False"
+            method="get"> <div> <a id="homeButton" href="../../../../../question/2296/bi-zwu-semestralni-prace-media-queries.1.html"></a> <div id="scopeNav"> <a class="scope-selector on"
+            href="index.html"
+            title="see all questions">ALL</a> <a class="scope-selector "
+            href="../../../../scope:unanswered/sort:answers-asc/tags:Smalltalk/page:1/index.html"
+            title="see unanswered questions">UNANSWERED</a> </div> <a
+        id="askButton"
+        class="button"
+        href="../../../../ask/index.html"
+        >Ask Your Question</a> <div class="clearfix"></div> </div> <div 
+    id="searchBar"
+    class=""
+><input 
+        class="searchInput" 
+        type="text" 
+        autocomplete="off"
+        value="" 
+        name="query" 
+        id="keywords"
+    /><input type="submit" value="" name="search" class="searchBtn" /><input type="button"
+        value="X"
+        name="reset_query"
+        class="cancelSearchBtn"
+        
+            style="display: none;"
+        
+    /></div> </form> </div> </div> <div class="content-wrapper"> <div id="ContentLeft"> <a class="rss"
+    
+    href="../../../../../feeds/rss/index.html%3Ftags=Smalltalk"
+    
+    title="subscribe to the questions feed"
+    >RSS
+</a> <div class="tabBar"> <div id="sort_tabs" class="tabsA"> <span class="label">Sort by &raquo;</span> <script type="text/javascript">
+                askbot['data']['sortButtonData'] = askbot['data']['sortButtonData'] || {};
+                askbot['data']['sortButtonData']['relevance'] = {
+                    asc_tooltip: "most relevant questions",
+                    desc_tooltip: "click to see most relevant questions",
+                    label: "relevance"
+                };
+            </script> <a id="by_age"
+           href="../../../sort:age-desc/tags:Smalltalk/page:1/index.html"
+           class="off"
+           title="click to see the newest questions"><span>by date</span></a> <script type="text/javascript">
+        askbot['data']['sortButtonData'] = askbot['data']['sortButtonData'] || {};
+        askbot['data']['sortButtonData']['age'] = {
+            label: 'by date',
+            asc_tooltip: 'click to see the oldest questions',
+            desc_tooltip: 'click to see the newest questions'
+        };
+    </script> <a id="by_activity"
+           href="../../../sort:activity-desc/tags:Smalltalk/page:1/index.html"
+           class="off"
+           title="click to see the most recently updated questions"><span>by activity</span></a> <script type="text/javascript">
+        askbot['data']['sortButtonData'] = askbot['data']['sortButtonData'] || {};
+        askbot['data']['sortButtonData']['activity'] = {
+            label: 'by activity',
+            asc_tooltip: 'click to see the least recently updated questions',
+            desc_tooltip: 'click to see the most recently updated questions'
+        };
+    </script> <a id="by_answers"
+           href="../../../sort:answers-desc/tags:Smalltalk/page:1/index.html"
+           class="off"
+           title="click to see the most answered questions"><span>by answers</span></a> <script type="text/javascript">
+        askbot['data']['sortButtonData'] = askbot['data']['sortButtonData'] || {};
+        askbot['data']['sortButtonData']['answers'] = {
+            label: 'by answers',
+            asc_tooltip: 'click to see the least answered questions',
+            desc_tooltip: 'click to see the most answered questions'
+        };
+    </script> <a id="by_votes"
+           href="../../../sort:votes-asc/tags:Smalltalk/page:1/index.html"
+           class="rev on"
+           title="click to see least voted questions"><span>by votes &#9660;</span></a> <script type="text/javascript">
+        askbot['data']['sortButtonData'] = askbot['data']['sortButtonData'] || {};
+        askbot['data']['sortButtonData']['votes'] = {
+            label: 'by votes',
+            asc_tooltip: 'click to see least voted questions',
+            desc_tooltip: 'click to see most voted questions'
+        };
+    </script> </div> </div> <h1 id="questionCount" class="search-result-summary">
+            1 question
+        
+        </h1> <div class="clearfix"></div> <div id="listSearchTags" > <span class="left">Tagged</span> <ul id="searchTags"
+    class="tags"
+> <li class="tag-left deletable-tag"><span
+            class="tag tag-right"
+            
+            rel="tag"
+            data-tag-name="Smalltalk"
+        >Smalltalk</span><div class="delete-icon"
+                
+            >x</div></li> </ul> </div> <div id="question-list"> <div class="short-summary" id="question-1577"> <div class="counts"> <div class="views
+             some-views"> <span class="item-count">160</span> <div>
+            views
+            </div> </div> <div class="answers
+                
+                        accepted"> <span 
+                class="item-count"
+            >1</span> <div>
+            answer
+            </div> </div> <div class="votes 
+                    some-votes"> <span class="item-count">1</span> <div>
+            vote
+            </div> </div> <div style="clear:both"></div> <div class="userinfo"> <abbr class="timeago" title="2014-12-15 20:48:27 +0100">
+        2014-12-15 20:48:27 +0100
+    </abbr> <a href="../../../../../users/116/mib/index.html">MiB</a> </div> </div> <h2><a title="Ahoj, Smalltalk, Pharo.
+potřeboval bych vytvářet instance třídy hned s parametrem - to není problém, vytvořím si třídní  ..." href="../../../../../question/1577/zakazani-pouziti-defaultniho-konstruktoru.html">Zakázání použití defaultního konstruktoru</a></h2> <ul 
+    class="tags"
+> <li class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,BI-OMO/page:1/index.html"
+            title="see questions tagged 'BI-OMO'"
+            
+            rel="tag"
+            data-tag-name="BI-OMO"
+        >BI-OMO</a></li> <li class="tag-left"><a
+            class="tag tag-right"
+            
+            href="index.html"
+            title="see questions tagged 'Smalltalk'"
+            
+            rel="tag"
+            data-tag-name="Smalltalk"
+        >Smalltalk</a></li> <li class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,Pharo/page:1/index.html"
+            title="see questions tagged 'Pharo'"
+            
+            rel="tag"
+            data-tag-name="Pharo"
+        >Pharo</a></li> <li class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,new/page:1/index.html"
+            title="see questions tagged 'new'"
+            
+            rel="tag"
+            data-tag-name="new"
+        >new</a></li> <li class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,BI/page:1/index.html"
+            title="see questions tagged 'BI'"
+            
+            rel="tag"
+            data-tag-name="BI"
+        >BI</a></li> </ul> </div> <div class="evenMore">
+        Did not find what you were looking for? 
+        <a href="../../../../ask/index.html">Ask your question!</a> </div> </div> </div> <div id="ContentRight"> <div id="contrib-users" class="box"> <h2 class="contributorback">Contributors</h2> <a class="avatar-box"
+    href="../../../../../users/1850/uchytmat/index.html"
+><img class="gravatar" 
+    width="48" height="48"
+    src="https://www.gravatar.com/avatar/475639339614de9a857c2a4a1e1e04c3?s=48&amp;d=identicon&amp;r=PG"
+    title="uchytmat" 
+    alt="uchytmat gravatar image" 
+/></a><a class="avatar-box"
+    href="../../../../../users/116/mib/index.html"
+><img class="gravatar" 
+    width="48" height="48"
+    src="https://www.gravatar.com/avatar/9d3bdc2d9e05f002ba3677081666eeee?s=48&amp;d=identicon&amp;r=PG"
+    title="MiB" 
+    alt="MiB gravatar image" 
+/></a> </div> <div class="box"> <h2>Tags</h2> <ul id="related-tags" class="tags"> <li> <div class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,BI/page:1/index.html"
+            title="see questions tagged 'BI'"
+            
+            rel="tag"
+            data-tag-name="BI"
+        >BI</a></div><span class="tag-number">&#215; 1</span> </li> <li> <div class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,BI-OMO/page:1/index.html"
+            title="see questions tagged 'BI-OMO'"
+            
+            rel="tag"
+            data-tag-name="BI-OMO"
+        >BI-OMO</a></div><span class="tag-number">&#215; 1</span> </li> <li> <div class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,new/page:1/index.html"
+            title="see questions tagged 'new'"
+            
+            rel="tag"
+            data-tag-name="new"
+        >new</a></div><span class="tag-number">&#215; 1</span> </li> <li> <div class="tag-left"><a
+            class="tag tag-right"
+            
+            href="../../tags:Smalltalk,Pharo/page:1/index.html"
+            title="see questions tagged 'Pharo'"
+            
+            rel="tag"
+            data-tag-name="Pharo"
+        >Pharo</a></div><span class="tag-number">&#215; 1</span> </li> <li> <div class="tag-left"><a
+            class="tag tag-right"
+            
+            href="index.html"
+            title="see questions tagged 'Smalltalk'"
+            
+            rel="tag"
+            data-tag-name="Smalltalk"
+        >Smalltalk</a></div><span class="tag-number">&#215; 1</span> </li> </ul> </div> </div> </div> <!-- template footer.html --> <div id="ground"> <div class="content-wrapper"> <div class="copyright"> <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"> <img
+                            class="license-logo"
+                            src="../../../../../m/default/media/images/cc-by-sa.png%3Fv=1"
+                            title="cc-by-sa"
+                            alt="cc-by-sa"
+                        /> </a>
+                
+                Copyright students of FIT CTU and others, 2014. Content on this site is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International</a> license.
+
+            </div> <div class="footer-links" > <a href="../../../../../about/index.html">about</a><span class="link-separator"> |</span> <a href="../../../../../faq/index.html">faq</a><span class="link-separator"> |</span> <a href="../../../../../help/index.html" title="help">help</a> <span class="link-separator"> |</span> <a href="../../../../../privacy/index.html">privacy policy</a><span class="link-separator"> |</span> <a href=
+                        
+                            "../../../../../feedback/index.html%3Fnext=%252Fquestions%252Fscope:all%252Fsort:votes-desc%252Ftags:Smalltalk%252Fpage:1%252F.html">
+                        
+                        give feedback
+                    </a> </div> <div class="powered-link"> <a href="http://askbot.com" target="_blank">
+                Powered by Askbot version 0.7.49
+            </a> </div> <div class="clean"></div> </div> </div> <!-- end template footer.html --> <div id="no-javascript"> <noscript class="noscript">
+        Please note: AskFIT requires javascript to work properly, please enable javascript in your browser, <a href="https://www.google.com/support/bin/answer.py?answer=23852">here is how</a> </noscript> <script type="text/javascript">
+        //IE fix to hide the red margin
+        var noscript = document.getElementsByTagName('noscript')[0];
+        noscript.style.padding = '0px';
+        noscript.style.backgroundColor = 'transparent';
+    </script> </div> <script type="text/javascript">
+    askbot['urls']['mark_read_message'] = '/messages/markread/';
+    askbot['urls']['get_tags_by_wildcard'] = '/get-tags-by-wildcard/';
+    askbot['urls']['get_tag_list'] = '/get-tag-list/';
+    askbot['urls']['follow_user'] = '/followit/follow/user/{{userId}}/';
+    askbot['urls']['unfollow_user'] = '/followit/unfollow/user/{{userId}}/';
+    askbot['urls']['user_signin'] = '/account/signin/';
+    askbot['urls']['getEditor'] = '/get-editor/';
+    askbot['urls']['apiGetQuestions'] = '/api/get_questions/';
+    askbot['urls']['ask'] = '/questions/ask/';
+	askbot['urls']['questions'] = '/questions/';
+    askbot['settings']['groupsEnabled'] = false;
+    askbot['settings']['static_url'] = '/m/';
+    askbot['settings']['minSearchWordLength'] = 4;
+    askbot['settings']['mathjaxEnabled'] = true;
+    askbot['settings']['sharingSuffixText'] = '';
+    askbot['data']['maxCommentLength'] = 800;
+    askbot['settings']['editorType'] = 'markdown';
+    askbot['settings']['commentsEditorType'] = 'plain-text';
+    
+        askbot['settings']['allowedUploadFileTypes'] = [
+            "jpg", "jpeg", "gif", "bmp", "png", "tiff"
+        ];
+    
+    askbot['data']['haveFlashNotifications'] = false;
+    askbot['data']['activeTab'] = 'questions';
+    
+        askbot['data']['searchUrl'] = 'scope:all/sort:votes\u002Ddesc/tags:Smalltalk/page:1/';
+    
+</script> <script type="text/javascript" src="../../../../../m/CACHE/js/9c2bd604370b.js"></script> <script type="text/javascript">
+    /*<![CDATA[*/
+    $('.mceStatusbar').remove();//a hack to remove the tinyMCE status bar
+    $(document).ready(function(){
+        // focus input on the search bar endcomment
+        var activeTab = askbot['data']['activeTab'];
+        if (inArray(activeTab, ['users', 'questions', 'tags', 'badges'])) {
+            var searchInput = $('#keywords');
+        } else if (activeTab === 'ask') {
+            var searchInput = $('#id_title');
+        } else {
+            var searchInput = undefined;
+            animateHashes();
+        }
+
+        if (searchInput) {
+            searchInput.focus();
+            putCursorAtEnd(searchInput);
+        }
+
+        var haveFullTextSearchTab = inArray(activeTab, ['questions', 'badges', 'ask']);
+        var haveUserProfilePage = $('body').hasClass('user-profile-page');
+        if ((haveUserProfilePage || haveFullTextSearchTab) && searchInput.length) {
+            var search = new FullTextSearch();
+            askbot['controllers'] = askbot['controllers'] || {};
+            askbot['controllers']['fullTextSearch'] = search;
+            search.setSearchUrl(askbot['data']['searchUrl']);
+            if (activeTab === 'ask') {
+                search.setAskButtonEnabled(false);
+            }
+            search.decorate(searchInput);
+        } else if (activeTab === 'tags') {
+            var search = new TagSearch();
+            search.decorate(searchInput);
+        }
+
+        if (askbot['data']['userIsAdminOrMod']) {
+            $('body').addClass('admin');
+        }
+        if (askbot['settings']['groupsEnabled']) {
+            askbot['urls']['add_group'] = "/add-group/";
+            var group_dropdown = new GroupDropdown();
+            $('.dropdown').append(group_dropdown.getElement());
+        }
+        var userRep = $('#userToolsNav .reputation');
+        if (userRep.length) {
+            var showPermsTrigger = new ShowPermsTrigger();
+            showPermsTrigger.decorate(userRep);
+        }
+    });
+    if (askbot['data']['haveFlashNotifications']) {
+        $('#validate_email_alert').click(function(){notify.close(true)})
+        notify.show();
+    }
+    $('abbr.timeago').timeago();
+    /*]]>*/
+</script> <script type='text/javascript' src="https://askfit.cz/m/mathjax/MathJax.js">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX","output/HTML-CSS"],
+            tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+        });
+    </script> <script type="text/javascript">
+        
+        askbot['settings']['showSortByRelevance'] = true;
+    </script> <script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function(){
+        /*var on_tab = '#nav_questions';
+        $(on_tab).attr('className','on');*/
+        Hilite.exact = false;
+        Hilite.elementid = "question-list";
+        Hilite.debug_referrer = location.href;
+        
+    });
+
+    askbot['urls']['mark_interesting_tag'] = '/mark-tag/interesting/';
+    askbot['urls']['mark_ignored_tag'] = '/mark-tag/ignored/';
+    askbot['urls']['mark_subscribed_tag'] = '/mark-tag/subscribed/';
+    askbot['urls']['unmark_tag'] = '/unmark-tag/';
+    askbot['urls']['set_tag_filter_strategy'] = '/set-tag-filter-strategy/';
+
+    if (Modernizr.history) {
+        // history management works!
+    } else {
+        // no history support :(
+        //hash = unescape(window.location.hash).replace('#','').split("?")[0]
+        
+        var hash = History.unescapeHash(window.location.hash).replace('#','').split("?")[0];
+        var questions_url = askbot['urls']['questions'];
+        if (hash.substring(0, questions_url.length) === questions_url) {
+            var url = hash;
+        } else {
+            var url = questions_url + hash;
+        }
+        if (hash !== '' && hash !== undefined && url !== undefined){
+            
+            window.location = document.location.protocol + '//' + window.location.host + url;
+        }
+    }
+    /*]]>*/
+</script> <script type="text/javascript" src="../../../../../m/CACHE/js/169db1989fdf.js"></script> <script type="text/javascript">
+            for (url_name in askbot['urls']){
+                askbot['urls'][url_name] = cleanUrl(askbot['urls'][url_name]);
+            }
+        </script> </body> </html>
